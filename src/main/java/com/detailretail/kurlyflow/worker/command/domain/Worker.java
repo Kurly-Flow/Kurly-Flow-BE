@@ -1,8 +1,9 @@
-package com.detailretail.kurlyflow.worker;
+package com.detailretail.kurlyflow.worker.command.domain;
 
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class Worker {
   private String name;
 
   @Embedded
-  @Column(name = "phone")
+  @Column(name = "phone", unique = true)
   private Phone phone;
 
   @Embedded
@@ -40,20 +41,42 @@ public class Worker {
   private String password;
 
   @Enumerated(EnumType.STRING)
-  @Column(name="wish_region")
-  private Region wishRegion;
+  @Column(name = "wish_region")
+  private Region wishRegion = Region.UNASSIGNED;
 
   @Enumerated(EnumType.STRING)
-  @Column(name="region")
-  private Region region;
+  @Column(name = "region")
+  private Region region = Region.UNASSIGNED;
+  ;
 
-  @Column(name="is_attended")
+  @Column(name = "is_attended")
   private Boolean isAttended;
 
-  @Column(name="is_worked")
+  @Column(name = "is_worked")
   private Boolean isWorked;
 
   //뭐하는건지 까먹었음
-  @Column(name="location")
+  @Column(name = "location")
   private String location;
+
+  public Worker(String name, Phone phone, String password) {
+    Objects.requireNonNull(name, "name must not be null");
+    Objects.requireNonNull(phone, "phone must not be null");
+    Objects.requireNonNull(password, "password must not be null");
+    this.name = name;
+    this.phone = phone;
+    this.password = password;
+  }
+
+  public void assignRegion(Region region) {
+    this.region = region;
+  }
+
+  public void assignEmployeeNumber(EmployeeNumber employeeNumber) {
+    this.employeeNumber = employeeNumber;
+  }
+
+  public void assignWishRegion(Region wishRegion) {
+    this.wishRegion = wishRegion;
+  }
 }
