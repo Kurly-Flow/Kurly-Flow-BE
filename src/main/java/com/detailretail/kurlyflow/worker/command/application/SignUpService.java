@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
+import com.detailretail.kurlyflow.worker.util.WorkerConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,14 @@ public class SignUpService {
 
   private final WorkerRepository workerRepository;
 
-  public String signUp(SignUpRequest signUpRequest) {
+  public void signUp(SignUpRequest signUpRequest) {
+    validateExistPhone(signUpRequest.getPhone());
+    workerRepository.save(WorkerConverter.toWorker(signUpRequest));
+  }
 
+  public void validateExistPhone(String phone) {
+    workerRepository.findByPhone(phone).ifPresent((s) -> {
+      throw new PhoneConflictException();
+    });
   }
 }
