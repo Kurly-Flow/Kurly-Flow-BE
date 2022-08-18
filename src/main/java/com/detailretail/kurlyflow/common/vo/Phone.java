@@ -9,16 +9,12 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phone {
 
-  private final String PHONE_REGX = "^\\d{3}-\\d{3,4}-\\d{4}$";
+  private static final String PHONE_REGX = "^\\d{3}-\\d{3,4}-\\d{4}$";
   private String number;
 
   public Phone(String number) {
     validationPhone(number);
     this.number = number;
-  }
-
-  public static Phone of(String number) {
-    return new Phone(number);
   }
 
   public String getNumber() {

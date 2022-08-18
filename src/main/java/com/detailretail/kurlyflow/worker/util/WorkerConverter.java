@@ -8,7 +8,7 @@ import com.detailretail.kurlyflow.worker.command.domain.Worker;
 public class WorkerConverter {
 
   public static Worker toWorker(SignUpRequest signUpRequest) {
-    return new Worker(signUpRequest.getName(), Phone.of(signUpRequest.getPhone()),
+    return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
         PasswordEncrypter.encrypt(signUpRequest.getPassword()));
   }
 

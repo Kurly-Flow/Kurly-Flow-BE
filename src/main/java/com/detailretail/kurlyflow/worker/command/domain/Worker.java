@@ -5,6 +5,7 @@ import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
 import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -61,6 +62,8 @@ public class Worker {
   @Column(name = "location")
   private String location;
 
+  private LocalDateTime createdAt;
+
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
     Objects.requireNonNull(phone, "phone must not be null");
@@ -68,6 +71,7 @@ public class Worker {
     this.name = name;
     this.phone = phone;
     this.password = password;
+    this.createdAt = LocalDateTime.now();
   }
 
   public void matchPassword(String password) {
