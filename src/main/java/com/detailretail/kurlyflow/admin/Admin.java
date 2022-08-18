@@ -1,7 +1,6 @@
-package com.detailretail.kurlyflow.worker;
+package com.detailretail.kurlyflow.admin;
 
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
-import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -16,10 +15,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "worker")
+@Table(name = "admin")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Worker {
+public class Admin {
 
   @Id
   @GeneratedValue
@@ -29,10 +28,6 @@ public class Worker {
   private String name;
 
   @Embedded
-  @Column(name = "phone")
-  private Phone phone;
-
-  @Embedded
   @Column(name = "employee_number")
   private EmployeeNumber employeeNumber;
 
@@ -40,23 +35,8 @@ public class Worker {
   private String password;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "wish_region")
-  private Region wishRegion = Region.UNASSIGNED;
-
-  @Enumerated(EnumType.STRING)
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
-  ;
-
-  @Column(name = "is_attended")
-  private Boolean isAttended;
-
-  @Column(name = "is_worked")
-  private Boolean isWorked;
-
-  //뭐하는건지 까먹었음
-  @Column(name = "location")
-  private String location;
 
   public void assignRegion(Region region) {
     this.region = region;
