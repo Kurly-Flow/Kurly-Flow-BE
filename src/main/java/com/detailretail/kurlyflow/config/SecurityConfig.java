@@ -11,15 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  //private final JwtEntryPoint jwtEntryPoint;
-  //private final CustomUserDetailService userDetailsService;
+  private final JwtEntryPoint jwtEntryPoint;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  //private final JwtAuthenticationFilter jwtAuthenticationFilter;
   @Bean
   public PasswordEncoder passwordEncoder() {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -33,21 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http
-        .httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제하겠습니다.
+    http.httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제하겠습니다.
         .csrf().disable() // csrf 보안 토큰 disable처리.
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
-        .and()
-        .authorizeRequests() // 요청에 대한 사용권한 체크
+        .and().authorizeRequests() // 요청에 대한 사용권한 체크
         //회원
-        .antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("USER")
-        .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
-        .and()
-        .exceptionHandling()
-        //.authenticationEntryPoint(jwtEntryPoint)
-        .and();
-    //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        .antMatchers(HttpMethod.GET, "/api/users").hasRole("USER").anyRequest()
+        .permitAll() // 그외 나머지 요청은 누구나 접근 가능
+        .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
   @Override

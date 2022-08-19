@@ -50,7 +50,6 @@ public class Worker {
   @Enumerated(EnumType.STRING)
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
-  ;
 
   @Column(name = "is_attended")
   private Boolean isAttended;
