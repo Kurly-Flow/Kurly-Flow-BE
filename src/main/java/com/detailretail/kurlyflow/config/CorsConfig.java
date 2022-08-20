@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.config;
 
+import com.detailretail.kurlyflow.config.aop.CurrentUserArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
