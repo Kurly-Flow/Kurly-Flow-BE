@@ -11,15 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CheckWorkingService {
+public class CheckRegionService {
 
   private final WorkerRepository workerRepository;
 
   public RegionResponse checkRegion(Long workerId) {
     Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
-    return WorkerConverter.ofWorkingPlace(worker, null);
+    return WorkerConverter.ofRegion(worker, null);
   }
 
-  public RegionResponse checkDetailRegion(Long id) {
+  public DetailRegionResponse checkDetailRegion(Long workerId) {
+    Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+    return WorkerConverter.ofDetailRegion(worker);
   }
 }

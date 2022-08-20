@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkingPlaceResponse {
+public class RegionResponse {
 
   private String code;
   private String region;
