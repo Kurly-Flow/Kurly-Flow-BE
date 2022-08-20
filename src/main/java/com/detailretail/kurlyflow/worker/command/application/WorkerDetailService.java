@@ -1,6 +1,6 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
-import com.detailretail.kurlyflow.worker.command.domain.CustomUserDetails;
+import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class CustomWorkerDetailService implements UserDetailsService {
+public class WorkerDetailService implements UserDetailsService {
 
   private final WorkerRepository workerRepository;
 
   @Override
-  public CustomUserDetails loadUserByUsername(String phone) {
-    Worker worker = workerRepository.findByPhone(phone)
+  public CustomWorkerDetails loadUserByUsername(String workerId) {
+    Worker worker = workerRepository.findById(Long.valueOf(workerId))
         .orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
-    return CustomUserDetails.of(worker);
+    return CustomWorkerDetails.of(worker);
   }
 }
