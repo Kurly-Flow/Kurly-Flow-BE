@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 
 @Entity
 @Table(name = "worker")
@@ -88,15 +87,40 @@ public class Worker {
     }
   }
 
-  public void assignDetailRegion(String detailRegion) {
-    if(Strings.isBlank(detailRegion)) {
+  public void canCheckRegion() {
+    if (Objects.isNull(employeeNumber)) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+  }
 
+  public void canCheckDetailRegion() {
+    if (Objects.isNull(employeeNumber)) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+    if (this.region.equals(Region.UNASSIGNED)) {
+      throw new UnAssignedRegionException();
+    }
+  }
+
+  public void attend() {
+    if (this.wishRegion.equals(Region.UNASSIGNED)) {
+      throw new UnAssignedRegionException();
+    }
+    if (this.isAttended) {
+      throw new AlreadyAssignedRegionException();
+    }
+    this.isAttended = Boolean.TRUE;
+  }
+
+  public void assignDetailRegion(String detailRegion) {
+    if (!isAssignedRegion()) {
+      throw new UnAssignedRegionException();
     }
     this.detailRegion = detailRegion;
   }
 
   public void assignRegion(Region region) {
-    if (!isAssignedRegion()) {
+    if (isAssignedRegion()) {
       throw new AlreadyAssignedRegionException();
     }
     this.region = region;
@@ -111,6 +135,6 @@ public class Worker {
   }
 
   private boolean isAssignedRegion() {
-    return region.equals(Region.UNASSIGNED) ? true : false;
+    return region.equals(Region.UNASSIGNED) ? false : true;
   }
 }

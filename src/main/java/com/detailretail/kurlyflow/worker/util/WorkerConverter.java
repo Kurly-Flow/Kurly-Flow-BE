@@ -9,6 +9,8 @@ import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 
 public class WorkerConverter {
 
+  private static final String ATTENDANCE_API = "/api/workers/attendance";
+
   public static Worker toWorker(SignUpRequest signUpRequest) {
     return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
         PasswordEncrypter.encrypt(signUpRequest.getPassword()));
@@ -18,12 +20,12 @@ public class WorkerConverter {
     return LoginResponse.builder().accessToken(accessToken).name(name).build();
   }
 
-  public static RegionResponse ofRegion(Worker worker, String code) {
-    return RegionResponse.builder().code(code).region(worker.getRegion().name()).build();
+  public static RegionResponse ofRegion(Worker worker) {
+    return RegionResponse.builder().code(ATTENDANCE_API).region(worker.getRegion().name()).build();
   }
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
-    return DetailRegionResponse.builder().region(worker.getRegion().name()).detail(
-        worker.getDetailRegion()).build();
+    return DetailRegionResponse.builder().region(worker.getRegion().name())
+        .detail(worker.getDetailRegion()).build();
   }
 }

@@ -17,11 +17,13 @@ public class CheckRegionService {
 
   public RegionResponse checkRegion(Long workerId) {
     Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
-    return WorkerConverter.ofRegion(worker, null);
+    worker.canCheckRegion();
+    return WorkerConverter.ofRegion(worker);
   }
 
   public DetailRegionResponse checkDetailRegion(Long workerId) {
     Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+    worker.canCheckDetailRegion();
     return WorkerConverter.ofDetailRegion(worker);
   }
 }

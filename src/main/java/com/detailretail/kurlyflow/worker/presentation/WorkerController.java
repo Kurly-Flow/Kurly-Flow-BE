@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
+import com.detailretail.kurlyflow.worker.command.application.AttendanceService;
 import com.detailretail.kurlyflow.worker.command.application.InputRequest;
 import com.detailretail.kurlyflow.worker.command.application.InputService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
@@ -30,6 +31,7 @@ public class WorkerController {
   private final SignUpService signUpService;
   private final LoginService loginService;
   private final InputService inputService;
+  private final AttendanceService attendanceService;
   private final CheckRegionService checkRegionService;
 
 
@@ -67,5 +69,12 @@ public class WorkerController {
     DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(
         worker.getId());
     return ResponseEntity.ok(detailRegionResponse);
+  }
+
+  @PreAuthorize("hasRole('WORKER')")
+  @PostMapping("/attendance")
+  public ResponseEntity<Void> attend(@CurrentUser CustomWorkerDetails worker) {
+    attendanceService.attend(worker.getId());
+    return ResponseEntity.ok(null);
   }
 }
