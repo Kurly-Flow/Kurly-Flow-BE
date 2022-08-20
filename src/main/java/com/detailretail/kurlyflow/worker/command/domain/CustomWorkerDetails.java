@@ -1,9 +1,6 @@
-package com.prgrms.p2p.domain.user.pojo;
+package com.detailretail.kurlyflow.worker.command.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.prgrms.p2p.domain.user.entity.User;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,36 +13,33 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Schema(name = "토큰으로 얻은 유저 정보")
+
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomUserDetails implements UserDetails {
+public class CustomWorkerDetails implements UserDetails {
 
-  @Schema(description = "로그인한 유저의 아이디", example = "1")
+
   private Long id;
 
-  @Schema(description = "로그인한 유저의 이메일", example = "test@gmail.com")
-  private String email;
+  private String phone;
 
   @Builder.Default
   private List<String> authorities = new ArrayList<>();
 
-  public CustomUserDetails(Long id, String email, List<String> authorities) {
+  public CustomWorkerDetails(Long id, String phone, List<String> authorities) {
     this.id = id;
-    this.email = email;
+    this.phone = phone;
     this.authorities = authorities;
   }
 
-  public boolean validate(Long id, String email){
-    return id.equals(this.id) && email.equals(this.email);
+  public static CustomWorkerDetails of(Worker worker) {
+    return CustomWorkerDetails.builder().id(worker.getId()).phone(worker.getPhone().getNumber())
+        .authorities(List.of(worker.getAuthority().name())).build();
   }
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return authorities.stream()
-        .map(SimpleGrantedAuthority::new)
-        .collect(Collectors.toList());
+  public boolean validate(Long id, String phone) {
+    return id.equals(this.id);
   }
 
   @Override
@@ -54,8 +48,8 @@ public class CustomUserDetails implements UserDetails {
   }
 
   @Override
-  public String getUsername() {
-    return email;
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
   }
 
   @Override
@@ -81,11 +75,8 @@ public class CustomUserDetails implements UserDetails {
     return false;
   }
 
-  public static CustomUserDetails of(User user) {
-    return CustomUserDetails.builder()
-        .id(user.getId())
-        .email(user.getEmail())
-        .authorities(user.getAuthorities())
-        .build();
+  @Override
+  public String getUsername() {
+    return phone;
   }
 }
