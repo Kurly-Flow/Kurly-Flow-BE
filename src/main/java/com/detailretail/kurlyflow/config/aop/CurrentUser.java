@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker;
+package com.detailretail.kurlyflow.config.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

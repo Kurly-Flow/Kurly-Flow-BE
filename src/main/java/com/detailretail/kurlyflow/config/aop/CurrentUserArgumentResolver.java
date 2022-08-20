@@ -1,6 +1,5 @@
-package com.detailretail.kurlyflow.config;
+package com.detailretail.kurlyflow.config.aop;
 
-import com.detailretail.kurlyflow.worker.CurrentUser;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
