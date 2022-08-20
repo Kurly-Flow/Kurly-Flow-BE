@@ -22,23 +22,20 @@ public class CustomWorkerDetails implements UserDetails {
 
   private Long id;
 
-  private String phone;
-
   @Builder.Default
   private List<String> authorities = new ArrayList<>();
 
-  public CustomWorkerDetails(Long id, String phone, List<String> authorities) {
+  public CustomWorkerDetails(Long id, List<String> authorities) {
     this.id = id;
-    this.phone = phone;
     this.authorities = authorities;
   }
 
   public static CustomWorkerDetails of(Worker worker) {
-    return CustomWorkerDetails.builder().id(worker.getId()).phone(worker.getPhone().getNumber())
+    return CustomWorkerDetails.builder().id(worker.getId())
         .authorities(List.of(worker.getAuthority().name())).build();
   }
 
-  public boolean validate(Long id, String phone) {
+  public boolean validate(Long id) {
     return id.equals(this.id);
   }
 
@@ -77,6 +74,6 @@ public class CustomWorkerDetails implements UserDetails {
 
   @Override
   public String getUsername() {
-    return phone;
+    return null;
   }
 }
