@@ -1,8 +1,9 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.prgrms.p2p.domain.user.pojo;
 
-import com.detailretail.kurlyflow.common.vo.Phone;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prgrms.p2p.domain.user.entity.User;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,34 +16,29 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Schema(name = "토큰으로 얻은 유저 정보")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomUserDetails implements UserDetails {
 
+  @Schema(description = "로그인한 유저의 아이디", example = "1")
   private Long id;
 
-  private Phone phone;
+  @Schema(description = "로그인한 유저의 이메일", example = "test@gmail.com")
+  private String email;
 
   @Builder.Default
   private List<String> authorities = new ArrayList<>();
 
-  public CustomUserDetails(Long id,
-      Phone phone, List<String> authorities) {
+  public CustomUserDetails(Long id, String email, List<String> authorities) {
     this.id = id;
-    this.phone = phone;
+    this.email = email;
     this.authorities = authorities;
   }
 
-  public static CustomUserDetails of(User user) {
-    return CustomUserDetails.builder()
-        .id(user.getId())
-        .email(user.getEmail())
-        .authorities(user.getAuthorities())
-        .build();
-  }
-
-  public boolean validate(Long id) {
-    return id.equals(this.id);
+  public boolean validate(Long id, String email){
+    return id.equals(this.id) && email.equals(this.email);
   }
 
   @Override
@@ -83,5 +79,13 @@ public class CustomUserDetails implements UserDetails {
   @JsonIgnore
   public boolean isEnabled() {
     return false;
+  }
+
+  public static CustomUserDetails of(User user) {
+    return CustomUserDetails.builder()
+        .id(user.getId())
+        .email(user.getEmail())
+        .authorities(user.getAuthorities())
+        .build();
   }
 }
