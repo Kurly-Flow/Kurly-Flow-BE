@@ -31,9 +31,4 @@ public class ExceptionAdvice {
   public ResponseEntity<ErrorResponse> handleConflictException(ConflictException e) {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
   }
-
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleRuntimeException(Exception e) {
-    return ResponseEntity.internalServerError().body(new ErrorResponse(e.getMessage()));
-  }
 }
