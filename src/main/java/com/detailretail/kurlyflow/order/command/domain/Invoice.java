@@ -32,6 +32,6 @@ public class Invoice {
   private Order order;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "invoice")
-  private List<OrderProduct> orderProducts = new ArrayList<>();
+  private List<InvoiceProduct> invoiceProducts = new ArrayList<>();
 
 }
