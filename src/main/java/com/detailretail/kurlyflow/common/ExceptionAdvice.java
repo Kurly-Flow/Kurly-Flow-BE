@@ -4,6 +4,7 @@ import com.detailretail.kurlyflow.common.exception.BadRequestException;
 import com.detailretail.kurlyflow.common.exception.ConflictException;
 import com.detailretail.kurlyflow.common.exception.NotFoundException;
 import com.detailretail.kurlyflow.common.exception.UnAuthorizedException;
+import com.detailretail.kurlyflow.worker.infra.FirebaseServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,5 +31,12 @@ public class ExceptionAdvice {
   @ExceptionHandler(ConflictException.class)
   public ResponseEntity<ErrorResponse> handleConflictException(ConflictException e) {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
+  }
+
+  @ExceptionHandler(FirebaseServerErrorException.class)
+  public ResponseEntity<ErrorResponse> handleFirebaseServerException(
+      FirebaseServerErrorException e) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new ErrorResponse(e.getMessage()));
   }
 }
