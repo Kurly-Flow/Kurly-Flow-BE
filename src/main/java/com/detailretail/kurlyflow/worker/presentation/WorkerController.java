@@ -38,7 +38,7 @@ public class WorkerController {
   private final AdminCallService adminCallService;
 
   @PreAuthorize("hasRole('WORKER')")
-  @GetMapping("call")
+  @GetMapping("/call")
   public ResponseEntity<Void> adminCall(@CurrentUser CustomWorkerDetails worker) {
     adminCallService.callAdmin(worker.getId());
     return ResponseEntity.ok(null);
