@@ -136,6 +136,23 @@ public class Worker {
     this.isAttended = Boolean.TRUE;
   }
 
+  public void startWork() {
+    if (Objects.isNull(employeeNumber)) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+    if (!isAttended) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+    this.isWorked = Boolean.TRUE;
+  }
+
+  public void breakWork() {
+    if (!isAttended) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+    this.isWorked = Boolean.FALSE;
+  }
+
   public void assignDetailRegion(String detailRegion) {
     if (!isAssignedRegion()) {
       throw new UnAssignedRegionException();
