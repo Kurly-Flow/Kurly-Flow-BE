@@ -7,14 +7,19 @@ import com.detailretail.kurlyflow.common.vo.Region;
 import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -69,11 +74,14 @@ public class Worker {
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_WORKER;
 
-  @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  @Column(name = "login_at")
+  private LocalDateTime loginAt;
 
   @Column(name = "admin_id")
   private Long adminId;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "worker")
+  private List<WorkerHistory> histories = new ArrayList<>();
 
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
@@ -82,7 +90,12 @@ public class Worker {
     this.name = name;
     this.phone = phone;
     this.password = password;
-    this.createdAt = LocalDateTime.now();
+    this.loginAt = LocalDateTime.now();
+  }
+
+  public void addHistory(WorkerHistory workerHistory) {
+    histories.add(workerHistory);
+    workerHistory.setWorker(this);
   }
 
   public void assignAdmin(Long adminId) {
@@ -147,5 +160,9 @@ public class Worker {
 
   private boolean isAssignedRegion() {
     return region.equals(Region.UNASSIGNED) ? false : true;
+  }
+
+  public void updateLoginAt() {
+    this.loginAt = LocalDateTime.now();
   }
 }

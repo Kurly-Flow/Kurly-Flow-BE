@@ -23,6 +23,7 @@ public class LoginService {
     Worker worker = workerRepository.findByPhone(new Phone(loginRequest.getPhone()))
         .orElseThrow(WorkerNotFoundException::new);
     worker.matchPassword(loginRequest.getPassword());
+    worker.updateLoginAt();
     return WorkerConverter.ofLogin(jwtTokenProvider.createToken(String.valueOf(worker.getId()),
         List.of(worker.getAuthority().name())), worker.getName());
   }
