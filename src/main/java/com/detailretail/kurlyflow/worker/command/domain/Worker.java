@@ -113,56 +113,56 @@ public class Worker {
 
   public void canCheckRegion() {
     if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
   }
 
   public void canCheckDetailRegion() {
     if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
     if (this.region.equals(Region.UNASSIGNED)) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
   }
 
   public void attend() {
     if (this.wishRegion.equals(Region.UNASSIGNED)) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
     if (this.isAttended) {
-      throw new AlreadyAssignedRegionException();
+      throw new AlreadyAssignedException();
     }
     this.isAttended = Boolean.TRUE;
   }
 
   public void startWork() {
     if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
     if (!isAttended) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
     this.isWorked = Boolean.TRUE;
   }
 
   public void breakWork() {
     if (!isAttended) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
     this.isWorked = Boolean.FALSE;
   }
 
   public void assignDetailRegion(String detailRegion) {
     if (!isAssignedRegion()) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
     this.detailRegion = detailRegion;
   }
 
   public void assignRegion(Region region) {
     if (isAssignedRegion()) {
-      throw new AlreadyAssignedRegionException();
+      throw new AlreadyAssignedException();
     }
     this.region = region;
   }
