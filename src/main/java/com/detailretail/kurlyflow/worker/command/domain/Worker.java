@@ -69,7 +69,11 @@ public class Worker {
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_WORKER;
 
+  @Column(name = "created_at")
   private LocalDateTime createdAt;
+
+  @Column(name = "admin_id")
+  private Long adminId;
 
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
@@ -79,6 +83,13 @@ public class Worker {
     this.phone = phone;
     this.password = password;
     this.createdAt = LocalDateTime.now();
+  }
+
+  public void assignAdmin(Long adminId) {
+    if (Objects.isNull(adminId)) {
+      throw new AdminIdIsNullException();
+    }
+    this.adminId = adminId;
   }
 
   public void matchPassword(String password) {
