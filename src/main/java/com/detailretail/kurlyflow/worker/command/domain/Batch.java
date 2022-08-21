@@ -30,4 +30,14 @@ public class Batch {
   @ManyToOne
   @JoinColumn(name = "invoice_product_id")
   private InvoiceProduct invoiceProduct;
+
+  @Column(name = "is_barcord_read")
+  private Boolean isBarcordRead = Boolean.FALSE;
+
+  public void readBarcord() {
+    if (isBarcordRead) {
+      throw new UnAssignedFieldException();
+    }
+    this.isBarcordRead = Boolean.TRUE;
+  }
 }
