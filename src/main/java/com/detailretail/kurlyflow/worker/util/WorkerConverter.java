@@ -3,7 +3,9 @@ package com.detailretail.kurlyflow.worker.util;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
+import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
+import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
@@ -33,5 +35,12 @@ public class WorkerConverter {
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
     return DetailRegionResponse.builder().region(worker.getRegion().name())
         .detail(worker.getDetailRegion()).build();
+  }
+
+  public static MultiBatchResponse ofMultiBatch(Batch batch) {
+    return MultiBatchResponse.builder().batchId(batch.getId())
+        .name(batch.getInvoiceProduct().getProduct().getName())
+        .weight(batch.getInvoiceProduct().getProduct().getWeight())
+        .quantity(batch.getInvoiceProduct().getQuantity()).build();
   }
 }
