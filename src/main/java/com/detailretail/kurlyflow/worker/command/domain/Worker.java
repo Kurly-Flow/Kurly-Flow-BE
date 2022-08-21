@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.worker.command.domain;
 
+import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
@@ -50,17 +51,23 @@ public class Worker {
   @Enumerated(EnumType.STRING)
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
-  ;
+
+  @Column(name = "detail_region")
+  private String detailRegion;
 
   @Column(name = "is_attended")
-  private Boolean isAttended;
+  private Boolean isAttended = Boolean.FALSE;
 
   @Column(name = "is_worked")
-  private Boolean isWorked;
+  private Boolean isWorked = Boolean.FALSE;
 
   //뭐하는건지 까먹었음
   @Column(name = "location")
   private String location;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "authority")
+  private Authority authority = Authority.ROLE_WORKER;
 
   private LocalDateTime createdAt;
 
@@ -80,7 +87,42 @@ public class Worker {
     }
   }
 
+  public void canCheckRegion() {
+    if (Objects.isNull(employeeNumber)) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+  }
+
+  public void canCheckDetailRegion() {
+    if (Objects.isNull(employeeNumber)) {
+      throw new UnAssignedEmployeeNumberException();
+    }
+    if (this.region.equals(Region.UNASSIGNED)) {
+      throw new UnAssignedRegionException();
+    }
+  }
+
+  public void attend() {
+    if (this.wishRegion.equals(Region.UNASSIGNED)) {
+      throw new UnAssignedRegionException();
+    }
+    if (this.isAttended) {
+      throw new AlreadyAssignedRegionException();
+    }
+    this.isAttended = Boolean.TRUE;
+  }
+
+  public void assignDetailRegion(String detailRegion) {
+    if (!isAssignedRegion()) {
+      throw new UnAssignedRegionException();
+    }
+    this.detailRegion = detailRegion;
+  }
+
   public void assignRegion(Region region) {
+    if (isAssignedRegion()) {
+      throw new AlreadyAssignedRegionException();
+    }
     this.region = region;
   }
 
@@ -90,5 +132,9 @@ public class Worker {
 
   public void assignWishRegion(Region wishRegion) {
     this.wishRegion = wishRegion;
+  }
+
+  private boolean isAssignedRegion() {
+    return region.equals(Region.UNASSIGNED) ? false : true;
   }
 }
