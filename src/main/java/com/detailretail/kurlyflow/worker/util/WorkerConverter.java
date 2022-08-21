@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.util;
 
 import com.detailretail.kurlyflow.common.vo.Phone;
+import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
@@ -14,6 +15,11 @@ public class WorkerConverter {
   public static Worker toWorker(SignUpRequest signUpRequest) {
     return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
         PasswordEncrypter.encrypt(signUpRequest.getPassword()));
+  }
+
+  public static AdminCallRequest toCall(Worker worker) {
+    return AdminCallRequest.builder().workerId(worker.getId()).region(worker.getRegion())
+        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdminId()).build();
   }
 
   public static LoginResponse ofLogin(String accessToken, String name) {
