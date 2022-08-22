@@ -4,7 +4,7 @@ import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallService;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
-import com.detailretail.kurlyflow.worker.exception.WorkerNotFoundException;
+import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import com.detailretail.kurlyflow.worker.util.WorkerConverter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -45,7 +45,7 @@ public class AdminCallServiceImpl implements AdminCallService {
 
   @Override
   public void callAdmin(Long workerId) {
-    Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+    Worker worker = workerRepository.findById(workerId).orElseThrow(EntityNotFoundException::new);
     AdminCallRequest adminCallRequest = WorkerConverter.toCall(worker);
 //    BatchResponse response;
 //    try {

@@ -11,8 +11,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -130,19 +141,10 @@ public class Worker {
   }
 
   public void startWork() {
-    if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedFieldException();
-    }
-    if (!isAttended) {
-      throw new UnAssignedFieldException();
-    }
     this.isWorked = Boolean.TRUE;
   }
 
   public void breakWork() {
-    if (!isAttended) {
-      throw new UnAssignedFieldException();
-    }
     this.isWorked = Boolean.FALSE;
   }
 

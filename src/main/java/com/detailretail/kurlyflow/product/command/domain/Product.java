@@ -28,6 +28,15 @@ public class Product {
   @Column(name = "weight")
   private Double weight;
 
+  @Column(name = "region")
+  private String region;
+
+  @Column(name = "location")
+  private String location;
+
+  @Column(name = "image_url")
+  private String image;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "packaging")
   private Packaging packaging = Packaging.없음;
