@@ -31,13 +31,26 @@ public class Batch {
   @JoinColumn(name = "invoice_product_id")
   private InvoiceProduct invoiceProduct;
 
+  @ManyToOne
+  @JoinColumn(name = "tote_id")
+  private Tote tote;
+
   @Column(name = "is_barcord_read")
   private Boolean isBarcordRead = Boolean.FALSE;
+
+  public Batch(Worker worker, InvoiceProduct invoiceProduct) {
+    this.worker = worker;
+    this.invoiceProduct = invoiceProduct;
+  }
 
   public void readBarcode() {
     if (isBarcordRead) {
       throw new UnAssignedFieldException();
     }
     this.isBarcordRead = Boolean.TRUE;
+  }
+
+  public void assignTote(Tote tote) {
+    this.tote = tote;
   }
 }
