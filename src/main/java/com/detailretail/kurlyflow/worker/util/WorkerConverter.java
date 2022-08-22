@@ -5,13 +5,9 @@ import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
-import com.detailretail.kurlyflow.batch.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
-import com.detailretail.kurlyflow.batch.MultiBatchResponse;
-import com.detailretail.kurlyflow.batch.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
-import java.util.List;
 
 public class WorkerConverter {
 
