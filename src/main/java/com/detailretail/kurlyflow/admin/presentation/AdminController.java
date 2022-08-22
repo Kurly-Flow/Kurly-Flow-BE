@@ -7,9 +7,14 @@ import com.detailretail.kurlyflow.admin.command.application.AdminRegionRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminRegionService;
 import com.detailretail.kurlyflow.admin.command.application.AdminSignUpRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminSignUpService;
+import com.detailretail.kurlyflow.admin.command.application.TORequest;
+import com.detailretail.kurlyflow.admin.command.application.TOService;
 import com.detailretail.kurlyflow.admin.command.domain.CustomAdminsDetails;
+import com.detailretail.kurlyflow.admin.query.application.AdminQueryService;
+import com.detailretail.kurlyflow.admin.query.application.WorkerStatusResponse;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +32,8 @@ public class AdminController {
   private final AdminSignUpService adminSignUpService;
   private final AdminLoginService adminLoginService;
   private final AdminRegionService adminRegionService;
+  private final AdminQueryService adminQueryService;
+  private final TOService toService;
 
 
   @PostMapping("/signup")
@@ -53,9 +60,24 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
-  public ResponseEntity<Void> getWorkerStatus(@CurrentUser CustomAdminsDetails admin,
-      @RequestBody AdminRegionRequest adminRegionRequest) {
-    adminRegionService.assignRegion(adminRegionRequest, admin.getId());
+  public ResponseEntity<List<WorkerStatusResponse>> getWorkerStatus(
+      @CurrentUser CustomAdminsDetails admin, @RequestBody AdminRegionRequest adminRegionRequest) {
+    List<WorkerStatusResponse> workerStatus = adminQueryService.getWorkerStatus(admin.getId());
+    return ResponseEntity.ok(workerStatus);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/to")
+  public ResponseEntity<Void> inputTo(@CurrentUser CustomAdminsDetails admin,
+      @RequestBody TORequest toRequest) {
+    toService.inputTO(toRequest, admin.getId());
+    return ResponseEntity.ok(null);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/assignment")
+  public ResponseEntity<Void> workerAssignment(@CurrentUser CustomAdminsDetails admin) {
+    toService.assignWorkers(admin.getId());
     return ResponseEntity.ok(null);
   }
 
