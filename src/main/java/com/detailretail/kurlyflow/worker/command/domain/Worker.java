@@ -173,6 +173,7 @@ public class Worker {
     this.wishRegion = wishRegion;
   }
 
+
   private boolean isAssignedRegion() {
     return region.equals(Region.UNASSIGNED) ? false : true;
   }

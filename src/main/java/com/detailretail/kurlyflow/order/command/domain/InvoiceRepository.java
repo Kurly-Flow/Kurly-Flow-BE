@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
-  @Query("SELECT i FROM Invoice i JOIN FETCH i.invoiceProducts ip JOIN FETCH ip.product" )
+  @Query("SELECT i FROM Invoice i JOIN FETCH i.invoiceProducts ip JOIN FETCH ip.product")
   Optional<Invoice> getInvoice(@Param(value = "invoiceId") Long invoiceId);
 }

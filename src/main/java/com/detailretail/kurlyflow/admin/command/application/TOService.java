@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.admin.command.application;
 
-import com.detailretail.kurlyflow.admin.command.domain.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,17 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class TOService {
-    private final AdminRepository adminRepository;
-
-    public AdminResponse inputTO(TORequest toRequest, Long adminId){
-
+//    private final AdminRepository adminRepository;
+//    private final WorkerRepository workerRepository;
+//
+//    public AdminResponse inputTO(TORequest toRequest, Long adminId){
+//
+//        RegionTO regionTO = adminRepository.findById(adminId).orElseThrow(WorkerNotFoundException::new);
+//        regionTO.assignWorkingDate(RegionTO.of(toRequest.getWorkingDate()));
+//        regionTO.assignWorkingTeam(RegionTO.of(toRequest.getWorkingTeam()));
+//        regionTO.assignWorkingNumbers(RegionTO.of(toRequest.getWorkingNumbers()));
+//
+//
 //        Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
-//
-//        admin.assignWorkingDate(Region.of(toRequest.getWorkingDate()));
-//        admin.assignWorkingTeam(Region.of(toRequest.getWorkingTeam()));
-//        admin.assignWorkingNumber(Region.of(toRequest.getWorkingNumbers()));
-//
-//        return WorkerConverter.ofTO(admin);
-        return null;
-    }
+//        return AdminConverter.ofTO(admin);
+//        return null;
+//    }
 }

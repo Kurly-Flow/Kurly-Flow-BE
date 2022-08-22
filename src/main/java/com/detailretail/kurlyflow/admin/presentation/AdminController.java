@@ -3,14 +3,10 @@ package com.detailretail.kurlyflow.admin.presentation;
 import com.detailretail.kurlyflow.admin.command.application.AdminLoginRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminLoginResponse;
 import com.detailretail.kurlyflow.admin.command.application.AdminLoginService;
-import com.detailretail.kurlyflow.admin.command.application.AdminMainResponse;
-import com.detailretail.kurlyflow.admin.command.application.AdminMainService;
 import com.detailretail.kurlyflow.admin.command.application.AdminRegionRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminRegionService;
-import com.detailretail.kurlyflow.admin.command.application.AdminResponse;
 import com.detailretail.kurlyflow.admin.command.application.AdminSignUpRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminSignUpService;
-import com.detailretail.kurlyflow.admin.command.application.TORequest;
 import com.detailretail.kurlyflow.admin.command.application.TOService;
 import com.detailretail.kurlyflow.admin.command.domain.CustomAdminsDetails;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
@@ -19,7 +15,6 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +28,7 @@ public class AdminController {
     private final AdminSignUpService adminSignUpService;
     private final AdminLoginService adminLoginService;
     private final AdminRegionService adminRegionService;
-    private final AdminMainService adminMainService;
+
     private final TOService toService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -73,27 +68,23 @@ public class AdminController {
      * @param admin
      * @return
      */
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("")
-    public void adminMain(@CurrentUser CustomAdminsDetails admin){
-        AdminMainResponse adminMainResponse = adminMainService.checkWorkersRegion(admin.getId());
-    }
 
-    /**
-     * TO 입력
-     * @param admin
-     * @param toRequest
-     * @return
-     */
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/to")
-    public ResponseEntity<AdminResponse> inputTO(@CurrentUser CustomAdminsDetails admin, @RequestBody TORequest toRequest){
-        //존재하는 idx인지 확인
-        Long adminIdx = admin.getId();
-        // region 변경
-        AdminResponse adminResponse = toService.inputTO(toRequest, adminIdx);
-        return ResponseEntity.ok(null);
-    }
+
+//    /**
+//     * TO 입력
+//     * @param admin
+//     * @param toRequest
+//     * @return
+//     */
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PostMapping("/to")
+//    public ResponseEntity<AdminResponse> inputTO(@CurrentUser CustomAdminsDetails admin, @RequestBody TORequest toRequest){
+//        //존재하는 idx인지 확인
+//        Long adminIdx = admin.getId();
+//        // region 변경
+//        AdminResponse adminResponse = toService.inputTO(toRequest, adminIdx);
+//        return ResponseEntity.ok(null);
+//    }
 
 
 

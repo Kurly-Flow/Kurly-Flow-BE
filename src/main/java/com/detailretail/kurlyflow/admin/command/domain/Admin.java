@@ -19,6 +19,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -60,6 +62,9 @@ public class Admin {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
   private List<Worker> workers = new ArrayList<>();
 
+  @ManyToOne
+  @JoinColumn(name = "region")
+  private RegionTO regionTO;
 
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
     Objects.requireNonNull(name, "name must not be null");
