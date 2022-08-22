@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.order.query.application;
+package com.detailretail.kurlyflow.basket.query.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

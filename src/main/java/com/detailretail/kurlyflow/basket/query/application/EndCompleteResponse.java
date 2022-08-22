@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.order.query.application;
+package com.detailretail.kurlyflow.basket.query.application;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
