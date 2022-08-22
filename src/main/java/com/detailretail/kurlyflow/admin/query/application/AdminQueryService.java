@@ -26,5 +26,11 @@ public class AdminQueryService {
         .map(AdminConverter::ofStatus).collect(Collectors.toList());
   }
 
+  public List<WorkerAttendanceResponse> getWorkers(Long adminId) {
+    Admin admin = adminRepository.findWithWorkers(adminId)
+        .orElseThrow(EntityNotFoundException::new);
+    return admin.getWorkers().stream().map(AdminConverter::ofAttendance)
+        .collect(Collectors.toList());
+  }
 
 }
