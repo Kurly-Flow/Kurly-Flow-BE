@@ -34,6 +34,7 @@ public class PickingService {
             List.of(worker.getAuthority().name())), worker);
   }
 
+  @Transactional(readOnly = true)
   public MultiBatchResponse getMultiPickingList(Long workerId) {
     List<Batch> pickingList = batchRepository.findTop50ByWorker_IdAndIsBarcordReadFalse(workerId);
     List<BatchResponse> batchResponses = pickingList.stream().map(WorkerConverter::ofBatch)
@@ -44,5 +45,15 @@ public class PickingService {
   public void readBarcode(Long batchId) {
     Batch batch = batchRepository.findById(batchId).orElseThrow(WorkerNotFoundException::new);
     batch.readBarcode();
+  }
+
+  public void workingToggle(Long workerId) {
+    workerRepository.findById(workerId).ifPresentOrElse(worker -> {
+      if (worker.getIsWorked()) {
+        worker.breakWork();
+      } else {
+        worker.startWork();
+      }
+    }, () -> new WorkerNotFoundException());
   }
 }

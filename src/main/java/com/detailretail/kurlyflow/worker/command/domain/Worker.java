@@ -137,19 +137,10 @@ public class Worker {
   }
 
   public void startWork() {
-    if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedFieldException();
-    }
-    if (!isAttended) {
-      throw new UnAssignedFieldException();
-    }
     this.isWorked = Boolean.TRUE;
   }
 
   public void breakWork() {
-    if (!isAttended) {
-      throw new UnAssignedFieldException();
-    }
     this.isWorked = Boolean.FALSE;
   }
 
