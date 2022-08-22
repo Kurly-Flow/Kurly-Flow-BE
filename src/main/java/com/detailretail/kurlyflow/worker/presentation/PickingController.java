@@ -2,6 +2,7 @@ package com.detailretail.kurlyflow.worker.presentation;
 
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
+import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.PickingService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
@@ -24,13 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PickingController {
 
+  private final LoginService loginService;
   private final PickingService pickingService;
   private final BatchService batchService;
   private final ToteService toteService;
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    WorkingPlaceLoginResponse loginResponse = pickingService.startWork(loginRequest);
+    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 
