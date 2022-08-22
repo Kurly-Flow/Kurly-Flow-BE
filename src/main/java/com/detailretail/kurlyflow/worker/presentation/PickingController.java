@@ -2,10 +2,10 @@ package com.detailretail.kurlyflow.worker.presentation;
 
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
-import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.PickingService;
+import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class PickingController {
   private final PickingService pickingService;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    LoginResponse loginResponse = loginService.startWork(loginRequest);
+  public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 

@@ -6,6 +6,7 @@ import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
+import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
@@ -29,6 +30,11 @@ public class WorkerConverter {
 
   public static LoginResponse ofLogin(String accessToken, String name) {
     return LoginResponse.builder().accessToken(accessToken).name(name).build();
+  }
+
+  public static WorkingPlaceLoginResponse ofWorkingPlaceLogin(String accessToken, Worker worker) {
+    return WorkingPlaceLoginResponse.builder().accessToken(accessToken).name(worker.getName())
+        .region(worker.getRegion().name()).detailRegion(worker.getDetailRegion()).build();
   }
 
   public static RegionResponse ofRegion(Worker worker) {
