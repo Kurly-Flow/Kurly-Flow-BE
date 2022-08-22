@@ -11,8 +11,10 @@ import com.detailretail.kurlyflow.admin.command.application.TORequest;
 import com.detailretail.kurlyflow.admin.command.application.TOService;
 import com.detailretail.kurlyflow.admin.command.domain.CustomAdminsDetails;
 import com.detailretail.kurlyflow.admin.query.application.AdminQueryService;
+import com.detailretail.kurlyflow.admin.query.application.WorkerAttendanceResponse;
 import com.detailretail.kurlyflow.admin.query.application.WorkerStatusResponse;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
+import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +81,30 @@ public class AdminController {
   public ResponseEntity<Void> workerAssignment(@CurrentUser CustomAdminsDetails admin) {
     toService.assignWorkers(admin.getId());
     return ResponseEntity.ok(null);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/attendance")
+  public ResponseEntity<List<WorkerAttendanceResponse>> checkAttendance(
+      @CurrentUser CustomAdminsDetails admin) {
+    List<WorkerAttendanceResponse> workers = adminQueryService.getWorkers(admin.getId());
+    return ResponseEntity.ok(workers);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/detail")
+  public ResponseEntity<List<DetailRegionResponse>> getDetails(
+      @CurrentUser CustomAdminsDetails admin) {
+    List<DetailRegionResponse> workers = adminQueryService.getDetailReionForWorkers(admin.getId());
+    return ResponseEntity.ok(workers);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/detail")
+  public ResponseEntity<List<DetailRegionResponse>> assignWorkers(
+      @CurrentUser CustomAdminsDetails admin) {
+    List<DetailRegionResponse> workers = adminRegionService.assignDetailRegion(admin.getId());
+    return ResponseEntity.ok(workers);
   }
 
 }

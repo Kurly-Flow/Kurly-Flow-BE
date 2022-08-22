@@ -39,7 +39,7 @@ public class WorkerConverter {
   }
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
-    return DetailRegionResponse.builder().region(worker.getRegion().name())
+    return DetailRegionResponse.builder().name(worker.getName()).region(worker.getRegion().name())
         .detailRegion(worker.getDetailRegion()).build();
   }
 
