@@ -13,6 +13,7 @@ import com.detailretail.kurlyflow.worker.command.application.SignUpService;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import com.detailretail.kurlyflow.worker.query.application.CheckRegionService;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoService;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 import java.net.URI;
@@ -48,9 +49,9 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/my")
-  public ResponseEntity<Void> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
-    infoService.findWorkerInfo(worker.getId());
-    return ResponseEntity.ok(null);
+  public ResponseEntity<InfoResponse> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
+    InfoResponse workerInfo = infoService.findWorkerInfo(worker.getId());
+    return ResponseEntity.ok(workerInfo);
   }
 
 

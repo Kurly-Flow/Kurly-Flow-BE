@@ -9,6 +9,7 @@ import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
+import java.util.Objects;
 
 public class WorkerConverter {
 
@@ -44,7 +45,8 @@ public class WorkerConverter {
 
   public static InfoResponse ofInfo(Worker worker) {
     return InfoResponse.builder().name(worker.getName()).phone(worker.getPhone().getNumber())
-        .employeeNumber(worker.getEmployeeNumber().getEmployeeNumber())
+        .employeeNumber(Objects.isNull(worker.getEmployeeNumber()) ? null
+            : worker.getEmployeeNumber().getEmployeeNumber())
         .wishRegion(worker.getWishRegion().name()).region(worker.getRegion().name())
         .detailRegion(worker.getDetailRegion()).isAttended(worker.getIsAttended()).build();
   }
