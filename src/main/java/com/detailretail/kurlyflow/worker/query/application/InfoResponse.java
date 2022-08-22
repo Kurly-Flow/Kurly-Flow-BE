@@ -9,8 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DetailRegionResponse {
+public class InfoResponse {
 
+  private String name;
+  private String phone;
+  private String employeeNumber;
+  private String wishRegion;
   private String region;
   private String detailRegion;
+  private Boolean isAttended;
 }

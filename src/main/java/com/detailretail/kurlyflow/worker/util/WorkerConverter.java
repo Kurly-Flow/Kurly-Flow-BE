@@ -7,6 +7,7 @@ import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 
 public class WorkerConverter {
@@ -38,7 +39,14 @@ public class WorkerConverter {
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
     return DetailRegionResponse.builder().region(worker.getRegion().name())
-        .detail(worker.getDetailRegion()).build();
+        .detailRegion(worker.getDetailRegion()).build();
+  }
+
+  public static InfoResponse ofInfo(Worker worker) {
+    return InfoResponse.builder().name(worker.getName()).phone(worker.getPhone().getNumber())
+        .employeeNumber(worker.getEmployeeNumber().getEmployeeNumber())
+        .wishRegion(worker.getWishRegion().name()).region(worker.getRegion().name())
+        .detailRegion(worker.getDetailRegion()).isAttended(worker.getIsAttended()).build();
   }
 
 }

@@ -13,6 +13,7 @@ import com.detailretail.kurlyflow.worker.command.application.SignUpService;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import com.detailretail.kurlyflow.worker.query.application.CheckRegionService;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoService;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class WorkerController {
   private final InputService inputService;
   private final AttendanceService attendanceService;
   private final CheckRegionService checkRegionService;
+  private final InfoService infoService;
 
   private final AdminCallService adminCallService;
 
@@ -47,7 +49,7 @@ public class WorkerController {
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/my")
   public ResponseEntity<Void> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
-    adminCallService.callAdmin(worker.getId());
+    infoService.findWorkerInfo(worker.getId());
     return ResponseEntity.ok(null);
   }
 
