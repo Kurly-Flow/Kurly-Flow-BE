@@ -45,4 +45,11 @@ public class PickingController {
     pickingService.readBarcode(batchId);
     return ResponseEntity.ok(null);
   }
+
+  @PreAuthorize("hasRole('WORKER')")
+  @GetMapping()
+  public ResponseEntity<Void> workingToggle(@CurrentUser CustomWorkerDetails worker) {
+    pickingService.workingToggle(worker.getId());
+    return ResponseEntity.ok(null);
+  }
 }
