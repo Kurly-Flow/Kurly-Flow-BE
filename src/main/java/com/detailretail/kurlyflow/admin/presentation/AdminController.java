@@ -4,7 +4,6 @@ import com.detailretail.kurlyflow.admin.command.application.AdminLoginRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminLoginResponse;
 import com.detailretail.kurlyflow.admin.command.application.AdminLoginService;
 import com.detailretail.kurlyflow.admin.command.application.AdminMainResponse;
-import com.detailretail.kurlyflow.admin.command.application.AdminMainService;
 import com.detailretail.kurlyflow.admin.command.application.AdminRegionRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminRegionService;
 import com.detailretail.kurlyflow.admin.command.application.AdminResponse;
