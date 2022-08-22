@@ -2,25 +2,28 @@ package com.detailretail.kurlyflow.admin.command.domain;
 
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
-import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
+import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
+import com.detailretail.kurlyflow.worker.command.domain.Worker;
+import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
-import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "admin")
@@ -46,11 +49,16 @@ public class Admin {
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
 
+
+
   @Enumerated(EnumType.STRING)
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_ADMIN;
 
   private LocalDateTime createdAt;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
+  private List<Worker> workers = new ArrayList<>();
 
 
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
@@ -68,5 +76,10 @@ public class Admin {
       throw new LoginFailException();
     }
   }
+
+  public void assignRegion(Region region){
+    this.region = region;
+  }
+
 
 }

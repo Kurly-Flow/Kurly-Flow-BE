@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.worker.command.domain;
 
+import com.detailretail.kurlyflow.admin.command.domain.Admin;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
@@ -19,6 +20,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -77,11 +80,12 @@ public class Worker {
   @Column(name = "login_at")
   private LocalDateTime loginAt;
 
-  @Column(name = "admin_id")
-  private Long adminId;
-
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "worker")
   private List<WorkerHistory> histories = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "admin_id")
+  private Admin admin;
 
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
@@ -98,11 +102,11 @@ public class Worker {
     workerHistory.setWorker(this);
   }
 
-  public void assignAdmin(Long adminId) {
-    if (Objects.isNull(adminId)) {
+  public void assignAdmin(Admin admin) {
+    if (Objects.isNull(admin)) {
       throw new AdminIdIsNullException();
     }
-    this.adminId = adminId;
+    this.admin = admin;
   }
 
   public void matchPassword(String password) {

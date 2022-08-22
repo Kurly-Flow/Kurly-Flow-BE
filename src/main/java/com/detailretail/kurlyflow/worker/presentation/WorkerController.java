@@ -73,10 +73,8 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/region")
-  public ResponseEntity<DetailRegionResponse> checkDetailRegion(
-      @CurrentUser CustomWorkerDetails worker) {
-    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(
-        worker.getId());
+  public ResponseEntity<DetailRegionResponse> checkDetailRegion(@CurrentUser CustomWorkerDetails worker) {
+    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(worker.getId());
     return ResponseEntity.ok(detailRegionResponse);
   }
 
