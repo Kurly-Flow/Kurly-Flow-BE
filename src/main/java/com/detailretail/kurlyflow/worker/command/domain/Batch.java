@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.command.domain;
 
 import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
+import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;

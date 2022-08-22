@@ -3,7 +3,7 @@ package com.detailretail.kurlyflow.admin.command.domain;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Region;
-import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
+import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;

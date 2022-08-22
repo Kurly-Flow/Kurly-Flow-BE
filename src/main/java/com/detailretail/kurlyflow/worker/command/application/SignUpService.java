@@ -3,6 +3,7 @@ package com.detailretail.kurlyflow.worker.command.application;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
+import com.detailretail.kurlyflow.worker.exception.PhoneConflictException;
 import com.detailretail.kurlyflow.worker.util.WorkerConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

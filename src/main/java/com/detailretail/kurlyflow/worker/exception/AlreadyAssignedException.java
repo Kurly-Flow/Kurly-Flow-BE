@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.detailretail.kurlyflow.worker.exception;
 
 import com.detailretail.kurlyflow.common.exception.BadRequestException;
 
