@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.command.domain;
 
 import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,13 +32,28 @@ public class Batch {
   @JoinColumn(name = "invoice_product_id")
   private InvoiceProduct invoiceProduct;
 
+  @ManyToOne
+  @JoinColumn(name = "tote_id")
+  private Tote tote;
+
   @Column(name = "is_barcord_read")
   private Boolean isBarcordRead = Boolean.FALSE;
 
-  public void readBarcord() {
+  @Column(name = "read_at")
+  private LocalDateTime readAt;
+
+  public Batch(Worker worker, InvoiceProduct invoiceProduct) {
+    this.worker = worker;
+    this.invoiceProduct = invoiceProduct;
+  }
+
+  public void readBarcode(Tote tote) {
     if (isBarcordRead) {
       throw new UnAssignedFieldException();
     }
     this.isBarcordRead = Boolean.TRUE;
+    this.tote = tote;
+    this.readAt = LocalDateTime.now();
   }
+
 }

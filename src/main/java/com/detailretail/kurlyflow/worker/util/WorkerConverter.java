@@ -1,19 +1,22 @@
 package com.detailretail.kurlyflow.worker.util;
 
-import com.detailretail.kurlyflow.admin.command.application.AdminResponse;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
-import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
+import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse;
+import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
+import java.util.List;
 
 public class WorkerConverter {
 
   private static final String ATTENDANCE_API = "/api/workers/attendance";
+  private static final double MAX_TOTE_WEIGHT = 8.0;
 
   public static Worker toWorker(SignUpRequest signUpRequest) {
     return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
@@ -22,11 +25,16 @@ public class WorkerConverter {
 
   public static AdminCallRequest toCall(Worker worker) {
     return AdminCallRequest.builder().workerId(worker.getId()).region(worker.getRegion())
-        .detailRegion(worker.getDetailRegion()).adminId(worker.getId()).build();
+        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdmin().getId()).build();
   }
 
   public static LoginResponse ofLogin(String accessToken, String name) {
     return LoginResponse.builder().accessToken(accessToken).name(name).build();
+  }
+
+  public static WorkingPlaceLoginResponse ofWorkingPlaceLogin(String accessToken, Worker worker) {
+    return WorkingPlaceLoginResponse.builder().accessToken(accessToken).name(worker.getName())
+        .region(worker.getRegion().name()).detailRegion(worker.getDetailRegion()).build();
   }
 
   public static RegionResponse ofRegion(Worker worker) {
@@ -38,17 +46,24 @@ public class WorkerConverter {
         .detail(worker.getDetailRegion()).build();
   }
 
-
-  public static AdminResponse ofTO(Worker worker){
-    return AdminResponse.builder().name(worker.getName()).placeOfWork(worker.getRegion().name()).build();
+  public static BatchResponse ofBatch(Batch batch) {
+    return BatchResponse.builder().batchId(batch.getId())
+        .name(batch.getInvoiceProduct().getProduct().getName())
+        .quantity(batch.getInvoiceProduct().getQuantity())
+        .weight(batch.getInvoiceProduct().getProduct().getWeight())
+        .region(batch.getInvoiceProduct().getProduct().getRegion())
+        .location(batch.getInvoiceProduct().getProduct().getLocation()).build();
   }
 
+  public static MultiBatchResponse ofMulti(List<BatchResponse> batchResponses) {
+    return MultiBatchResponse.builder().recommendToteCount(calculateTote(batchResponses))
+        .batchResponses(batchResponses).build();
+  }
 
-  public static MultiBatchResponse ofMultiBatch(Batch batch) {
-    return MultiBatchResponse.builder().batchId(batch.getId())
-        .name(batch.getInvoiceProduct().getProduct().getName())
-        .weight(batch.getInvoiceProduct().getProduct().getWeight())
-        .quantity(batch.getInvoiceProduct().getQuantity()).build();
+  private static Integer calculateTote(List<BatchResponse> batchResponses) {
+    double sum = batchResponses.stream()
+        .mapToDouble(batchResponse -> batchResponse.getWeight() * batchResponse.getQuantity())
+        .sum();
+    return (int) Math.round(sum / MAX_TOTE_WEIGHT);
   }
 }
-

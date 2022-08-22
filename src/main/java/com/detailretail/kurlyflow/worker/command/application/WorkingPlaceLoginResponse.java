@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MultiBatchResponse {
+public class WorkingPlaceLoginResponse {
 
-  private Long batchId;
+  private String accessToken;
   private String name;
-  private Integer quantity;
-  private Double weight;
+  private String region;
+  private String detailRegion;
 }
