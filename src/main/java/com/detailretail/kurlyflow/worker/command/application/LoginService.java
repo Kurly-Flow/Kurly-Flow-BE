@@ -27,14 +27,4 @@ public class LoginService {
     return WorkerConverter.ofLogin(jwtTokenProvider.createToken(String.valueOf(worker.getId()),
         List.of(worker.getAuthority().name())), worker.getName());
   }
-
-  public WorkingPlaceLoginResponse startWork(LoginRequest loginRequest) {
-    Worker worker = workerRepository.findByPhone(new Phone(loginRequest.getPhone()))
-        .orElseThrow(WorkerNotFoundException::new);
-    worker.matchPassword(loginRequest.getPassword());
-    worker.startWork();
-    return WorkerConverter.ofWorkingPlaceLogin(
-        jwtTokenProvider.createToken(String.valueOf(worker.getId()),
-            List.of(worker.getAuthority().name())), worker);
-  }
 }

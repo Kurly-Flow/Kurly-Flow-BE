@@ -50,7 +50,9 @@ public class WorkerConverter {
     return BatchResponse.builder().batchId(batch.getId())
         .name(batch.getInvoiceProduct().getProduct().getName())
         .quantity(batch.getInvoiceProduct().getQuantity())
-        .weight(batch.getInvoiceProduct().getProduct().getWeight()).build();
+        .weight(batch.getInvoiceProduct().getProduct().getWeight())
+        .region(batch.getInvoiceProduct().getProduct().getRegion())
+        .location(batch.getInvoiceProduct().getProduct().getLocation()).build();
   }
 
   public static MultiBatchResponse ofMulti(List<BatchResponse> batchResponses) {

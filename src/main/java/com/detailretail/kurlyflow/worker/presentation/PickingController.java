@@ -27,7 +27,7 @@ public class PickingController {
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
+    WorkingPlaceLoginResponse loginResponse = pickingService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 

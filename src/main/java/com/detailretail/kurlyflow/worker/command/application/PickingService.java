@@ -1,8 +1,12 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
+import com.detailretail.kurlyflow.common.vo.Phone;
+import com.detailretail.kurlyflow.config.jwt.JwtTokenProvider;
 import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.BatchRepository;
+import com.detailretail.kurlyflow.worker.command.domain.Worker;
+import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import com.detailretail.kurlyflow.worker.exception.WorkerNotFoundException;
 import com.detailretail.kurlyflow.worker.util.WorkerConverter;
 import java.util.List;
@@ -16,7 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PickingService {
 
+  private final WorkerRepository workerRepository;
+  private final JwtTokenProvider jwtTokenProvider;
   private final BatchRepository batchRepository;
+
+  public WorkingPlaceLoginResponse startWork(LoginRequest loginRequest) {
+    Worker worker = workerRepository.findByPhone(new Phone(loginRequest.getPhone()))
+        .orElseThrow(WorkerNotFoundException::new);
+    worker.matchPassword(loginRequest.getPassword());
+    worker.startWork();
+    return WorkerConverter.ofWorkingPlaceLogin(
+        jwtTokenProvider.createToken(String.valueOf(worker.getId()),
+            List.of(worker.getAuthority().name())), worker);
+  }
 
   public MultiBatchResponse getMultiPickingList(Long workerId) {
     List<Batch> pickingList = batchRepository.findTop50ByWorker_IdAndIsBarcordReadFalse(workerId);

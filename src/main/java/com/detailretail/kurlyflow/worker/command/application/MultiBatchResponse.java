@@ -25,5 +25,7 @@ public class MultiBatchResponse {
     private String name;
     private Integer quantity;
     private Double weight;
+    private String region;
+    private String location;
   }
 }
