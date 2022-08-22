@@ -5,8 +5,8 @@ import com.detailretail.kurlyflow.admin.command.domain.CustomAdminsDetails;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -18,6 +18,9 @@ public class AdminController {
 
     private final AdminSignUpService adminSignUpService;
     private final AdminLoginService adminLoginService;
+    private final AdminRegionService adminRegionService;
+    private final AdminMainService adminMainService;
+    private final TOService toService;
     private final JwtTokenProvider jwtTokenProvider;
 
 
@@ -34,25 +37,51 @@ public class AdminController {
         return ResponseEntity.ok(adminLoginResponse);
     }
 
-//    @ResponseBody
-//    @PatchMapping("/place")
-//    public ResponseEntity<AdminRegionResponse> modifyRegion(@CurrentUser CustomAdminsDetails admin, @RequestBody AdminSignUpRequest adminSignUpRequest){
-//        Long adminId = admin.getId();
-//        try {
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = jwtTokenProvider.getId();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return ResponseEntity.;
-//            }
-//            //같다면 유저네임 변경
-//            AdminSignUpRequest adminSignUpRequest = new AdminSignUpRequest(userIdx,user.getUserName());
-//            adminRegionService.modifyRegion(adminSignUpRequest);
-//
-//            String result = "";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    /**
+     * 관리자 근무지 선택
+     * @param admin
+     * @param adminRegionRequest
+     * @return void
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/region")
+    public ResponseEntity<Void> modifyRegion(@CurrentUser CustomAdminsDetails admin, @RequestBody AdminRegionRequest adminRegionRequest){
+
+        //존재하는 idx인지 확인
+        Long adminIdx = admin.getId();
+        // region 변경
+        adminRegionService.modifyRegion(adminRegionRequest, adminIdx);
+        return ResponseEntity.ok(null);
+    }
+
+    /**
+     * 관리자 메인
+     * @param admin
+     * @return
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("")
+    public void adminMain(@CurrentUser CustomAdminsDetails admin){
+        AdminMainResponse adminMainResponse = adminMainService.checkWorkersRegion(admin.getId());
+    }
+
+    /**
+     * TO 입력
+     * @param admin
+     * @param toRequest
+     * @return
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/to")
+    public ResponseEntity<AdminResponse> inputTO(@CurrentUser CustomAdminsDetails admin, @RequestBody TORequest toRequest){
+        //존재하는 idx인지 확인
+        Long adminIdx = admin.getId();
+        // region 변경
+        AdminResponse adminResponse = toService.inputTO(toRequest, adminIdx);
+        return ResponseEntity.ok(null);
+    }
+
+
+
+
 }
