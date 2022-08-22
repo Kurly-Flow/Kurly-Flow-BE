@@ -6,6 +6,7 @@ import com.detailretail.kurlyflow.common.vo.Region;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,16 @@ public class Admin {
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
 
+  @Column(name = "working_date")
+  private LocalDate workingDate;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "working_team")
+  private WorkingTeam workingTeam;
+
+  @Column(name = "working_numbers")
+  private Integer workingNumbers;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_ADMIN;
@@ -75,8 +86,20 @@ public class Admin {
     }
   }
 
-  public void assignRegion(Region region){
+  public void assignRegion(Region region) {
     this.region = region;
+  }
+
+  public void assignWorkingDate(LocalDate workingDate) {
+    this.workingDate = workingDate;
+  }
+
+  public void assignWorkingTeam(WorkingTeam workingTeam) {
+    this.workingTeam = workingTeam;
+  }
+
+  public void assignTo(Integer workingNumbers) {
+    this.workingNumbers = workingNumbers;
   }
 
 
