@@ -13,10 +13,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "order_product")
+@Table(name = "invoice_product")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderProduct {
+public class InvoiceProduct {
 
   @Id
   @GeneratedValue
