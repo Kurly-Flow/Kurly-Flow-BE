@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.command.application;
+package com.detailretail.kurlyflow.worker.query.application;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

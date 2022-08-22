@@ -3,20 +3,20 @@ package com.detailretail.kurlyflow.worker.util;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
-import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
-import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse;
+import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 import java.util.List;
 
 public class WorkerConverter {
 
   private static final String ATTENDANCE_API = "/api/workers/attendance";
-  private static final double MAX_TOTE_WEIGHT = 4.7;
+  private static final double MAX_TOTE_WEIGHT = 8.0;
 
   public static Worker toWorker(SignUpRequest signUpRequest) {
     return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
@@ -25,7 +25,7 @@ public class WorkerConverter {
 
   public static AdminCallRequest toCall(Worker worker) {
     return AdminCallRequest.builder().workerId(worker.getId()).region(worker.getRegion())
-        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdminId()).build();
+        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdmin().getId()).build();
   }
 
   public static LoginResponse ofLogin(String accessToken, String name) {
