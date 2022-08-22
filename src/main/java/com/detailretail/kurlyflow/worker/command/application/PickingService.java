@@ -1,9 +1,9 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
-import com.detailretail.kurlyflow.worker.command.domain.Batch;
-import com.detailretail.kurlyflow.worker.command.domain.BatchRepository;
-import com.detailretail.kurlyflow.worker.command.domain.Tote;
-import com.detailretail.kurlyflow.worker.command.domain.ToteRepository;
+import com.detailretail.kurlyflow.batch.Batch;
+import com.detailretail.kurlyflow.batch.BatchRepository;
+import com.detailretail.kurlyflow.tote.command.domain.Tote;
+import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

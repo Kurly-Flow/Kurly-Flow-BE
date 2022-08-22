@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.detailretail.kurlyflow.batch;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

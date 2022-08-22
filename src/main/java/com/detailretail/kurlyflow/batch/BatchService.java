@@ -1,9 +1,6 @@
-package com.detailretail.kurlyflow.worker.query.application;
+package com.detailretail.kurlyflow.batch;
 
-import com.detailretail.kurlyflow.worker.command.domain.Batch;
-import com.detailretail.kurlyflow.worker.command.domain.BatchRepository;
-import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse.BatchResponse;
-import com.detailretail.kurlyflow.worker.util.WorkerConverter;
+import com.detailretail.kurlyflow.batch.MultiBatchResponse.BatchResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,8 @@ public class BatchService {
 
   public MultiBatchResponse getMultiPickingList(Long workerId) {
     List<Batch> pickingList = batchRepository.findTop50ByWorker_IdAndIsBarcordReadFalse(workerId);
-    List<BatchResponse> batchResponses = pickingList.stream().map(WorkerConverter::ofBatch)
+    List<BatchResponse> batchResponses = pickingList.stream().map(BatchConverter::ofBatch)
         .collect(Collectors.toList());
-    return WorkerConverter.ofMulti(batchResponses);
+    return BatchConverter.ofMulti(batchResponses);
   }
 }
