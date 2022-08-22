@@ -4,7 +4,9 @@ import com.detailretail.kurlyflow.admin.command.application.AdminResponse;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
+import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
+import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
@@ -20,7 +22,7 @@ public class WorkerConverter {
 
   public static AdminCallRequest toCall(Worker worker) {
     return AdminCallRequest.builder().workerId(worker.getId()).region(worker.getRegion())
-        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdminId()).build();
+        .detailRegion(worker.getDetailRegion()).adminId(worker.getId()).build();
   }
 
   public static LoginResponse ofLogin(String accessToken, String name) {
@@ -36,7 +38,17 @@ public class WorkerConverter {
         .detail(worker.getDetailRegion()).build();
   }
 
+
   public static AdminResponse ofTO(Worker worker){
     return AdminResponse.builder().name(worker.getName()).placeOfWork(worker.getRegion().name()).build();
   }
+
+
+  public static MultiBatchResponse ofMultiBatch(Batch batch) {
+    return MultiBatchResponse.builder().batchId(batch.getId())
+        .name(batch.getInvoiceProduct().getProduct().getName())
+        .weight(batch.getInvoiceProduct().getProduct().getWeight())
+        .quantity(batch.getInvoiceProduct().getQuantity()).build();
+  }
 }
+
