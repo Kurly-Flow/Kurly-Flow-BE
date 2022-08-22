@@ -9,6 +9,7 @@ import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -169,6 +170,7 @@ public class Worker {
   public void assignWishRegion(Region wishRegion) {
     this.wishRegion = wishRegion;
   }
+
 
   private boolean isAssignedRegion() {
     return region.equals(Region.UNASSIGNED) ? false : true;
