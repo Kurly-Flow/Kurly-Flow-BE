@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class DetailRegionResponse {
 
   private String region;
-  private String detail;
+  private String detailRegion;
 }

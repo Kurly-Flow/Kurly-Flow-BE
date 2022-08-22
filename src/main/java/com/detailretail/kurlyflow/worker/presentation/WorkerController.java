@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
+import com.detailretail.kurlyflow.worker.command.application.AdminCallService;
 import com.detailretail.kurlyflow.worker.command.application.AttendanceService;
 import com.detailretail.kurlyflow.worker.command.application.InputRequest;
 import com.detailretail.kurlyflow.worker.command.application.InputService;
@@ -12,6 +13,8 @@ import com.detailretail.kurlyflow.worker.command.application.SignUpService;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import com.detailretail.kurlyflow.worker.query.application.CheckRegionService;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoService;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,23 @@ public class WorkerController {
   private final InputService inputService;
   private final AttendanceService attendanceService;
   private final CheckRegionService checkRegionService;
+  private final InfoService infoService;
+
+  private final AdminCallService adminCallService;
+
+  @PreAuthorize("hasRole('WORKER')")
+  @GetMapping("/call")
+  public ResponseEntity<Void> adminCall(@CurrentUser CustomWorkerDetails worker) {
+    adminCallService.callAdmin(worker.getId());
+    return ResponseEntity.ok(null);
+  }
+
+  @PreAuthorize("hasRole('WORKER')")
+  @GetMapping("/my")
+  public ResponseEntity<InfoResponse> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
+    InfoResponse workerInfo = infoService.findWorkerInfo(worker.getId());
+    return ResponseEntity.ok(workerInfo);
+  }
 
 
   @PostMapping("/signup")
@@ -64,10 +84,8 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/region")
-  public ResponseEntity<DetailRegionResponse> checkDetailRegion(
-      @CurrentUser CustomWorkerDetails worker) {
-    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(
-        worker.getId());
+  public ResponseEntity<DetailRegionResponse> checkDetailRegion(@CurrentUser CustomWorkerDetails worker) {
+    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(worker.getId());
     return ResponseEntity.ok(detailRegionResponse);
   }
 

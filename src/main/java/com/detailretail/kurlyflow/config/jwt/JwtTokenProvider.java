@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.config.jwt;
 
+import com.detailretail.kurlyflow.admin.command.application.AdminDetailService;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.worker.command.application.WorkerDetailService;
 import io.jsonwebtoken.Claims;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
 
   private final WorkerDetailService workerDetailService;
+  private final AdminDetailService adminDetailService;
   @Value("${jwt.secretKey}")
   private String secretKey;
   // 토큰 유효시간 하루
@@ -62,7 +64,8 @@ public class JwtTokenProvider {
       return workerDetailService.loadUserByUsername(this.getId(token));
     } else {
       //관리자
-      return null;
+      return adminDetailService.loadUserByUsername(this.getId(token));
+
     }
   }
 

@@ -1,12 +1,12 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.detailretail.kurlyflow.worker.exception;
 
 import com.detailretail.kurlyflow.common.exception.BadRequestException;
 
-public class AlreadyAssignedRegionException extends BadRequestException {
+public class AlreadyAssignedException extends BadRequestException {
 
   private static final String ALREADY_ASSIGNED = "이미 권역을 배정받았습니다.";
 
-  public AlreadyAssignedRegionException() {
+  public AlreadyAssignedException() {
     super(ALREADY_ASSIGNED);
   }
 }

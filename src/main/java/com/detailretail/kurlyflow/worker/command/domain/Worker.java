@@ -1,20 +1,31 @@
 package com.detailretail.kurlyflow.worker.command.domain;
 
+import com.detailretail.kurlyflow.admin.command.domain.Admin;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
-import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
+import com.detailretail.kurlyflow.worker.exception.AdminIdIsNullException;
+import com.detailretail.kurlyflow.worker.exception.AlreadyAssignedException;
+import com.detailretail.kurlyflow.worker.exception.LoginFailException;
+import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,7 +50,7 @@ public class Worker {
 
   @Embedded
   @Column(name = "employee_number")
-  private EmployeeNumber employeeNumber;
+  private EmployeeNumber employeeNumber = new EmployeeNumber(null);
 
   @Column(name = "password")
   private String password;
@@ -69,7 +80,15 @@ public class Worker {
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_WORKER;
 
-  private LocalDateTime createdAt;
+  @Column(name = "login_at")
+  private LocalDateTime loginAt;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "worker")
+  private List<WorkerHistory> histories = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "admin_id")
+  private Admin admin;
 
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
@@ -78,7 +97,19 @@ public class Worker {
     this.name = name;
     this.phone = phone;
     this.password = password;
-    this.createdAt = LocalDateTime.now();
+    this.loginAt = LocalDateTime.now();
+  }
+
+  public void addHistory(WorkerHistory workerHistory) {
+    histories.add(workerHistory);
+    workerHistory.setWorker(this);
+  }
+
+  public void assignAdmin(Admin admin) {
+    if (Objects.isNull(admin)) {
+      throw new AdminIdIsNullException();
+    }
+    this.admin = admin;
   }
 
   public void matchPassword(String password) {
@@ -89,39 +120,47 @@ public class Worker {
 
   public void canCheckRegion() {
     if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
   }
 
   public void canCheckDetailRegion() {
     if (Objects.isNull(employeeNumber)) {
-      throw new UnAssignedEmployeeNumberException();
+      throw new UnAssignedFieldException();
     }
     if (this.region.equals(Region.UNASSIGNED)) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
   }
 
   public void attend() {
     if (this.wishRegion.equals(Region.UNASSIGNED)) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
     if (this.isAttended) {
-      throw new AlreadyAssignedRegionException();
+      throw new AlreadyAssignedException();
     }
     this.isAttended = Boolean.TRUE;
   }
 
+  public void startWork() {
+    this.isWorked = Boolean.TRUE;
+  }
+
+  public void breakWork() {
+    this.isWorked = Boolean.FALSE;
+  }
+
   public void assignDetailRegion(String detailRegion) {
     if (!isAssignedRegion()) {
-      throw new UnAssignedRegionException();
+      throw new UnAssignedFieldException();
     }
     this.detailRegion = detailRegion;
   }
 
   public void assignRegion(Region region) {
     if (isAssignedRegion()) {
-      throw new AlreadyAssignedRegionException();
+      throw new AlreadyAssignedException();
     }
     this.region = region;
   }
@@ -134,7 +173,12 @@ public class Worker {
     this.wishRegion = wishRegion;
   }
 
+
   private boolean isAssignedRegion() {
     return region.equals(Region.UNASSIGNED) ? false : true;
+  }
+
+  public void updateLoginAt() {
+    this.loginAt = LocalDateTime.now();
   }
 }
