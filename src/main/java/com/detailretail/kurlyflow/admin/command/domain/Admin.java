@@ -49,8 +49,6 @@ public class Admin {
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
 
-
-
   @Enumerated(EnumType.STRING)
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_ADMIN;
@@ -60,9 +58,6 @@ public class Admin {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
   private List<Worker> workers = new ArrayList<>();
 
-//  @ManyToOne
-//  @JoinColumn(name = "region")
-//  private RegionTO regionTO;
 
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
     Objects.requireNonNull(name, "name must not be null");

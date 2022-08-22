@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.query.application;
+package com.detailretail.kurlyflow.order.query.application;
 
 import com.detailretail.kurlyflow.product.command.domain.Packaging;
 import java.util.List;

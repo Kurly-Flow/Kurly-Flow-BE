@@ -1,10 +1,11 @@
-package com.detailretail.kurlyflow.worker.presentation;
+package com.detailretail.kurlyflow.order.presentation;
 
+import com.detailretail.kurlyflow.order.command.application.InvoiceConsistencyService;
+import com.detailretail.kurlyflow.order.query.application.InvoiceResponse;
+import com.detailretail.kurlyflow.order.query.application.PackingService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
-import com.detailretail.kurlyflow.worker.query.application.InvoiceResponse;
-import com.detailretail.kurlyflow.worker.query.application.PackingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class PackingController {
 
   private final LoginService loginService;
   private final PackingService packingService;
+  private final InvoiceConsistencyService invoiceConsistencyService;
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
@@ -32,5 +34,11 @@ public class PackingController {
   public ResponseEntity<InvoiceResponse> getInvoice(@PathVariable("invoiceId") Long invoiceId) {
     InvoiceResponse invoiceForPacking = packingService.getInvoiceForPacking(invoiceId);
     return ResponseEntity.ok(invoiceForPacking);
+  }
+
+  @PostMapping("/{invoiceId}")
+  public ResponseEntity<Void> invoiceInconsistency(@PathVariable("invoiceId") Long invoiceId) {
+    invoiceConsistencyService.changeInvoiceUnConsistency(invoiceId);
+    return ResponseEntity.ok(null);
   }
 }

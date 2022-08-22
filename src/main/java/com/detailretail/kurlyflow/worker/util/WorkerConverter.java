@@ -1,8 +1,6 @@
 package com.detailretail.kurlyflow.worker.util;
 
 import com.detailretail.kurlyflow.common.vo.Phone;
-import com.detailretail.kurlyflow.order.command.domain.Invoice;
-import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
@@ -10,13 +8,10 @@ import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginRe
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
-import com.detailretail.kurlyflow.worker.query.application.InvoiceResponse;
-import com.detailretail.kurlyflow.worker.query.application.InvoiceResponse.InvoiceProductResponse;
 import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WorkerConverter {
 
@@ -72,15 +67,4 @@ public class WorkerConverter {
     return (int) Math.round(sum / MAX_TOTE_WEIGHT);
   }
 
-  public static InvoiceProductResponse ofInvoiceProduct(InvoiceProduct invoiceProduct) {
-    return InvoiceProductResponse.builder().invoiceProductId(invoiceProduct.getId())
-        .name(invoiceProduct.getProduct().getName()).quantity(invoiceProduct.getQuantity())
-        .packaging(invoiceProduct.getProduct().getPackaging()).build();
-  }
-
-  public static InvoiceResponse ofInvoice(Invoice invoice) {
-    return InvoiceResponse.builder().id(invoice.getId()).products(
-        invoice.getInvoiceProducts().stream().map(WorkerConverter::ofInvoiceProduct)
-            .collect(Collectors.toList())).build();
-  }
 }

@@ -31,7 +31,13 @@ public class Invoice {
   @JoinColumn(name = "order_id")
   private Order order;
 
+  @Column(name = "is_consistency")
+  private Boolean isConsistency = Boolean.TRUE;
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "invoice")
   private List<InvoiceProduct> invoiceProducts = new ArrayList<>();
 
+  public void changeUnConsistency() {
+    this.isConsistency = Boolean.FALSE;
+  }
 }
