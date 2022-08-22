@@ -13,6 +13,7 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,4 +50,13 @@ public class AdminController {
     adminRegionService.assignRegion(adminRegionRequest, admin.getId());
     return ResponseEntity.ok(null);
   }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping
+  public ResponseEntity<Void> getWorkerStatus(@CurrentUser CustomAdminsDetails admin,
+      @RequestBody AdminRegionRequest adminRegionRequest) {
+    adminRegionService.assignRegion(adminRegionRequest, admin.getId());
+    return ResponseEntity.ok(null);
+  }
+
 }

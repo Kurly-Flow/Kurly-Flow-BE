@@ -8,8 +8,6 @@ import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.config.jwt.JwtTokenProvider;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class AdminLoginService {
-    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final AdminRepository adminRepository;
     private final JwtTokenProvider jwtTokenProvider;
