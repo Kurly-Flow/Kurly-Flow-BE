@@ -22,8 +22,8 @@ public class PickingService {
     return pickingList.stream().map(WorkerConverter::ofMultiBatch).collect(Collectors.toList());
   }
 
-  public void readBarcord(Long batchId) {
+  public void readBarcode(Long batchId) {
     Batch batch = batchRepository.findById(batchId).orElseThrow(WorkerNotFoundException::new);
-    batch.readBarcord();
+    batch.readBarcode();
   }
 }

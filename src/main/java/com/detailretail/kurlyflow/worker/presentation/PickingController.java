@@ -42,8 +42,8 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/bacord/{batchId}")
-  public ResponseEntity<Void> readBarcord(@PathVariable("batchId") Long batchId) {
-    pickingService.readBarcord(batchId);
+  public ResponseEntity<Void> readBarcode(@PathVariable("batchId") Long batchId) {
+    pickingService.readBarcode(batchId);
     return ResponseEntity.ok(null);
   }
 }

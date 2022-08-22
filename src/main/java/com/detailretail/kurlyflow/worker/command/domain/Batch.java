@@ -34,7 +34,7 @@ public class Batch {
   @Column(name = "is_barcord_read")
   private Boolean isBarcordRead = Boolean.FALSE;
 
-  public void readBarcord() {
+  public void readBarcode() {
     if (isBarcordRead) {
       throw new UnAssignedFieldException();
     }
