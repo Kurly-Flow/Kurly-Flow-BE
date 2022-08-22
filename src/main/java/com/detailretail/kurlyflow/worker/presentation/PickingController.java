@@ -7,7 +7,6 @@ import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.worker.command.application.PickingService;
 import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,9 +33,9 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/multi")
-  public ResponseEntity<List<MultiBatchResponse>> multiPickingList(
+  public ResponseEntity<MultiBatchResponse> multiPickingList(
       @CurrentUser CustomWorkerDetails worker) {
-    List<MultiBatchResponse> multiPickingList = pickingService.getMultiPickingList(worker.getId());
+    MultiBatchResponse multiPickingList = pickingService.getMultiPickingList(worker.getId());
     return ResponseEntity.ok(multiPickingList);
   }
 

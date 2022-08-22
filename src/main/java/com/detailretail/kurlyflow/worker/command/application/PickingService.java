@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
+import com.detailretail.kurlyflow.worker.command.application.MultiBatchResponse.BatchResponse;
 import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.BatchRepository;
 import com.detailretail.kurlyflow.worker.exception.WorkerNotFoundException;
@@ -17,9 +18,11 @@ public class PickingService {
 
   private final BatchRepository batchRepository;
 
-  public List<MultiBatchResponse> getMultiPickingList(Long workerId) {
+  public MultiBatchResponse getMultiPickingList(Long workerId) {
     List<Batch> pickingList = batchRepository.findTop50ByWorker_IdAndIsBarcordReadFalse(workerId);
-    return pickingList.stream().map(WorkerConverter::ofMultiBatch).collect(Collectors.toList());
+    List<BatchResponse> batchResponses = pickingList.stream().map(WorkerConverter::ofBatch)
+        .collect(Collectors.toList());
+    return WorkerConverter.ofMulti(batchResponses);
   }
 
   public void readBarcode(Long batchId) {
