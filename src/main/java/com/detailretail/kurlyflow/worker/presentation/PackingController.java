@@ -1,0 +1,36 @@
+package com.detailretail.kurlyflow.worker.presentation;
+
+import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
+import com.detailretail.kurlyflow.worker.command.application.LoginService;
+import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
+import com.detailretail.kurlyflow.worker.query.application.InvoiceResponse;
+import com.detailretail.kurlyflow.worker.query.application.PackingService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/packing")
+@RequiredArgsConstructor
+public class PackingController {
+
+  private final LoginService loginService;
+  private final PackingService packingService;
+
+  @PostMapping("/login")
+  public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
+    return ResponseEntity.ok(loginResponse);
+  }
+
+  @GetMapping("/{invoiceId}")
+  public ResponseEntity<InvoiceResponse> getInvoice(@PathVariable("invoiceId") Long invoiceId) {
+    InvoiceResponse invoiceForPacking = packingService.getInvoiceForPacking(invoiceId);
+    return ResponseEntity.ok(invoiceForPacking);
+  }
+}
