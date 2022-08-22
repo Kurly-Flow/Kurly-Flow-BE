@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.basket.query.application;
+package com.detailretail.kurlyflow.order.query.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EndBasketInvoiceResponse {
 
-  private Long basketId;
-  private Long invoiceId;
+  private String name;
   private Integer quantity;
 }
