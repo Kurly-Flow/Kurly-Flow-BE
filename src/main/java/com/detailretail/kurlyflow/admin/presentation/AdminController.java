@@ -92,8 +92,16 @@ public class AdminController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  @PostMapping("/detail")
+  @GetMapping("/detail")
   public ResponseEntity<List<DetailRegionResponse>> getDetails(
+      @CurrentUser CustomAdminsDetails admin) {
+    List<DetailRegionResponse> workers = adminQueryService.getDetailReionForWorkers(admin.getId());
+    return ResponseEntity.ok(workers);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/detail")
+  public ResponseEntity<List<DetailRegionResponse>> assignWorkers(
       @CurrentUser CustomAdminsDetails admin) {
     List<DetailRegionResponse> workers = adminRegionService.assignDetailRegion(admin.getId());
     return ResponseEntity.ok(workers);
