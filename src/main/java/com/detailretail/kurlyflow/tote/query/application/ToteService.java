@@ -1,5 +1,7 @@
 package com.detailretail.kurlyflow.tote.query.application;
 
+import static com.detailretail.kurlyflow.common.ToteWeightPolicy.MAX_TOTE_WEIGHT;
+
 import com.detailretail.kurlyflow.batch.Batch;
 import com.detailretail.kurlyflow.batch.BatchRepository;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
@@ -23,7 +25,7 @@ public class ToteService {
     double currentToteWeight = currentTote.stream().mapToDouble(
         batch -> batch.getInvoiceProduct().getQuantity() * batch.getInvoiceProduct().getProduct()
             .getWeight()).sum();
-    return currentToteWeight > 8.0 ? getNewTote() : currentTote.get(0).getTote().getId();
+    return currentToteWeight > MAX_TOTE_WEIGHT.getWeight() ? getNewTote() : currentTote.get(0).getTote().getId();
   }
 
   public Long getNewTote() {

@@ -1,11 +1,12 @@
 package com.detailretail.kurlyflow.batch;
 
+import static com.detailretail.kurlyflow.common.ToteWeightPolicy.MAX_TOTE_WEIGHT;
+
 import com.detailretail.kurlyflow.batch.MultiBatchResponse.BatchResponse;
 import java.util.List;
 
 public class BatchConverter {
 
-  private static final double MAX_TOTE_WEIGHT = 8.0;
 
   public static BatchResponse ofBatch(Batch batch) {
     return BatchResponse.builder().batchId(batch.getId())
@@ -25,6 +26,6 @@ public class BatchConverter {
     double sum = batchResponses.stream()
         .mapToDouble(batchResponse -> batchResponse.getWeight() * batchResponse.getQuantity())
         .sum();
-    return (int) Math.round(sum / MAX_TOTE_WEIGHT);
+    return (int) Math.round(sum / MAX_TOTE_WEIGHT.getWeight());
   }
 }
