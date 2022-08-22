@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.detailretail.kurlyflow.tote.command.domain;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

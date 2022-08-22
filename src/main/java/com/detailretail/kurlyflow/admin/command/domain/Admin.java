@@ -3,8 +3,8 @@ package com.detailretail.kurlyflow.admin.command.domain;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Region;
-import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
+import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,8 +49,6 @@ public class Admin {
   @Column(name = "region")
   private Region region = Region.UNASSIGNED;
 
-
-
   @Enumerated(EnumType.STRING)
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_ADMIN;
@@ -60,9 +58,6 @@ public class Admin {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
   private List<Worker> workers = new ArrayList<>();
 
-//  @ManyToOne
-//  @JoinColumn(name = "region")
-//  private RegionTO regionTO;
 
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
     Objects.requireNonNull(name, "name must not be null");

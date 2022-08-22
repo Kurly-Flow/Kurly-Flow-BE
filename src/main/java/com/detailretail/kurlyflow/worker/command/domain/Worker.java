@@ -5,11 +5,13 @@ import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
-import com.detailretail.kurlyflow.worker.command.application.LoginFailException;
+import com.detailretail.kurlyflow.worker.exception.AdminIdIsNullException;
+import com.detailretail.kurlyflow.worker.exception.AlreadyAssignedException;
+import com.detailretail.kurlyflow.worker.exception.LoginFailException;
+import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -48,7 +50,7 @@ public class Worker {
 
   @Embedded
   @Column(name = "employee_number")
-  private EmployeeNumber employeeNumber;
+  private EmployeeNumber employeeNumber = new EmployeeNumber(null);
 
   @Column(name = "password")
   private String password;

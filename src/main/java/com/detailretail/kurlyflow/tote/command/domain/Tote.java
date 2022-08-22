@@ -1,5 +1,6 @@
-package com.detailretail.kurlyflow.worker.command.domain;
+package com.detailretail.kurlyflow.tote.command.domain;
 
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

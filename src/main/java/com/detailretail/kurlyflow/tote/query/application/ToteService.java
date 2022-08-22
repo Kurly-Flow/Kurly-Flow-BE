@@ -1,9 +1,11 @@
-package com.detailretail.kurlyflow.worker.query.application;
+package com.detailretail.kurlyflow.tote.query.application;
 
-import com.detailretail.kurlyflow.worker.command.domain.Batch;
-import com.detailretail.kurlyflow.worker.command.domain.BatchRepository;
-import com.detailretail.kurlyflow.worker.command.domain.Tote;
-import com.detailretail.kurlyflow.worker.command.domain.ToteRepository;
+import static com.detailretail.kurlyflow.common.ToteWeightPolicy.MAX_TOTE_WEIGHT;
+
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
+import com.detailretail.kurlyflow.batch.command.domain.BatchRepository;
+import com.detailretail.kurlyflow.tote.command.domain.Tote;
+import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class ToteService {
     double currentToteWeight = currentTote.stream().mapToDouble(
         batch -> batch.getInvoiceProduct().getQuantity() * batch.getInvoiceProduct().getProduct()
             .getWeight()).sum();
-    return currentToteWeight > 8.0 ? getNewTote() : currentTote.get(0).getTote().getId();
+    return currentToteWeight > MAX_TOTE_WEIGHT.getWeight() ? getNewTote() : currentTote.get(0).getTote().getId();
   }
 
   public Long getNewTote() {

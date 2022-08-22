@@ -5,18 +5,15 @@ import com.detailretail.kurlyflow.worker.command.application.AdminCallRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
-import com.detailretail.kurlyflow.worker.command.domain.Batch;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
-import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse;
-import com.detailretail.kurlyflow.worker.query.application.MultiBatchResponse.BatchResponse;
+import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
-import java.util.List;
+import java.util.Objects;
 
 public class WorkerConverter {
 
   private static final String ATTENDANCE_API = "/api/workers/attendance";
-  private static final double MAX_TOTE_WEIGHT = 8.0;
 
   public static Worker toWorker(SignUpRequest signUpRequest) {
     return new Worker(signUpRequest.getName(), new Phone(signUpRequest.getPhone()),
@@ -43,27 +40,15 @@ public class WorkerConverter {
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
     return DetailRegionResponse.builder().region(worker.getRegion().name())
-        .detail(worker.getDetailRegion()).build();
+        .detailRegion(worker.getDetailRegion()).build();
   }
 
-  public static BatchResponse ofBatch(Batch batch) {
-    return BatchResponse.builder().batchId(batch.getId())
-        .name(batch.getInvoiceProduct().getProduct().getName())
-        .quantity(batch.getInvoiceProduct().getQuantity())
-        .weight(batch.getInvoiceProduct().getProduct().getWeight())
-        .region(batch.getInvoiceProduct().getProduct().getRegion())
-        .location(batch.getInvoiceProduct().getProduct().getLocation()).build();
+  public static InfoResponse ofInfo(Worker worker) {
+    return InfoResponse.builder().name(worker.getName()).phone(worker.getPhone().getNumber())
+        .employeeNumber(Objects.isNull(worker.getEmployeeNumber()) ? null
+            : worker.getEmployeeNumber().getEmployeeNumber())
+        .wishRegion(worker.getWishRegion().name()).region(worker.getRegion().name())
+        .detailRegion(worker.getDetailRegion()).isAttended(worker.getIsAttended()).build();
   }
 
-  public static MultiBatchResponse ofMulti(List<BatchResponse> batchResponses) {
-    return MultiBatchResponse.builder().recommendToteCount(calculateTote(batchResponses))
-        .batchResponses(batchResponses).build();
-  }
-
-  private static Integer calculateTote(List<BatchResponse> batchResponses) {
-    double sum = batchResponses.stream()
-        .mapToDouble(batchResponse -> batchResponse.getWeight() * batchResponse.getQuantity())
-        .sum();
-    return (int) Math.round(sum / MAX_TOTE_WEIGHT);
-  }
 }
