@@ -7,6 +7,7 @@ import com.detailretail.kurlyflow.admin.query.application.WorkerStatusResponse;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
+import java.util.Objects;
 
 
 public class AdminConverter {
@@ -24,9 +25,11 @@ public class AdminConverter {
   }
 
   public static WorkerStatusResponse ofStatus(Worker worker) {
-    return WorkerStatusResponse.builder()
-        .employeeNumber(worker.getEmployeeNumber().getEmployeeNumber()).name(worker.getName())
-        .detailRegion(worker.getDetailRegion()).build();
+    return WorkerStatusResponse.builder().employeeNumber(
+            Objects.isNull(worker.getEmployeeNumber()) ? null
+                : worker.getEmployeeNumber().getEmployeeNumber()).name(worker.getName())
+        .detailRegion(Objects.isNull(worker.getDetailRegion()) ? null : worker.getDetailRegion())
+        .build();
   }
 
 }

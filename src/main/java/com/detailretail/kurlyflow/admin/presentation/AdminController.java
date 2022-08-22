@@ -81,4 +81,11 @@ public class AdminController {
     return ResponseEntity.ok(null);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/attendance")
+  public ResponseEntity<Void> checkAttendance(@CurrentUser CustomAdminsDetails admin) {
+    toService.assignWorkers(admin.getId());
+    return ResponseEntity.ok(null);
+  }
+
 }
