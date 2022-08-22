@@ -50,7 +50,7 @@ public class Worker {
 
   @Embedded
   @Column(name = "employee_number")
-  private EmployeeNumber employeeNumber = new EmployeeNumber(null);
+  private EmployeeNumber employeeNumber;
 
   @Column(name = "password")
   private String password;

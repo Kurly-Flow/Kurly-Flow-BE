@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminRegionService {
     private final AdminRepository adminRepository;
 
-    public void modifyRegion(AdminRegionRequest adminRegionRequest, Long adminId){
+    public void assignRegion(AdminRegionRequest adminRegionRequest, Long adminId){
         Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
         admin.assignRegion(Region.of(adminRegionRequest.getRegion()));
     }
