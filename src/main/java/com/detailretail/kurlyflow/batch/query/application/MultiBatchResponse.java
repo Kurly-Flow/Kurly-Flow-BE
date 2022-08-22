@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.batch;
+package com.detailretail.kurlyflow.batch.query.application;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

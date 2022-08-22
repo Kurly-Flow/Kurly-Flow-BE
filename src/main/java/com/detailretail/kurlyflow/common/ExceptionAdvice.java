@@ -4,7 +4,7 @@ import com.detailretail.kurlyflow.common.exception.BadRequestException;
 import com.detailretail.kurlyflow.common.exception.ConflictException;
 import com.detailretail.kurlyflow.common.exception.NotFoundException;
 import com.detailretail.kurlyflow.common.exception.UnAuthorizedException;
-import com.detailretail.kurlyflow.worker.infra.FirebaseServerErrorException;
+import com.detailretail.kurlyflow.worker.exception.FirebaseServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,8 +1,10 @@
-package com.detailretail.kurlyflow.batch;
+package com.detailretail.kurlyflow.batch.util;
 
 import static com.detailretail.kurlyflow.common.ToteWeightPolicy.MAX_TOTE_WEIGHT;
 
-import com.detailretail.kurlyflow.batch.MultiBatchResponse.BatchResponse;
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
+import com.detailretail.kurlyflow.batch.query.application.MultiBatchResponse;
+import com.detailretail.kurlyflow.batch.query.application.MultiBatchResponse.BatchResponse;
 import java.util.List;
 
 public class BatchConverter {

@@ -44,6 +44,14 @@ public class WorkerController {
     return ResponseEntity.ok(null);
   }
 
+  @PreAuthorize("hasRole('WORKER')")
+  @GetMapping("/my")
+  public ResponseEntity<Void> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
+    adminCallService.callAdmin(worker.getId());
+    return ResponseEntity.ok(null);
+  }
+
+
   @PostMapping("/signup")
   public ResponseEntity<Void> signUp(@RequestBody SignUpRequest signUpRequest) {
     Long workerId = signUpService.signUp(signUpRequest);

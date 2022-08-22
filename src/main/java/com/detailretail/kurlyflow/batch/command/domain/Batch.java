@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.batch;
+package com.detailretail.kurlyflow.batch.command.domain;
 
 import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;

@@ -1,7 +1,7 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
-import com.detailretail.kurlyflow.batch.BatchService;
-import com.detailretail.kurlyflow.batch.MultiBatchResponse;
+import com.detailretail.kurlyflow.batch.query.application.BatchService;
+import com.detailretail.kurlyflow.batch.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.tote.query.application.ToteService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;

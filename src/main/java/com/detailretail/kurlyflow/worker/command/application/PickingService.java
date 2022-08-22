@@ -1,7 +1,7 @@
 package com.detailretail.kurlyflow.worker.command.application;
 
-import com.detailretail.kurlyflow.batch.Batch;
-import com.detailretail.kurlyflow.batch.BatchRepository;
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
+import com.detailretail.kurlyflow.batch.command.domain.BatchRepository;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;

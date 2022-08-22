@@ -2,8 +2,8 @@ package com.detailretail.kurlyflow.tote.query.application;
 
 import static com.detailretail.kurlyflow.common.ToteWeightPolicy.MAX_TOTE_WEIGHT;
 
-import com.detailretail.kurlyflow.batch.Batch;
-import com.detailretail.kurlyflow.batch.BatchRepository;
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
+import com.detailretail.kurlyflow.batch.command.domain.BatchRepository;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
