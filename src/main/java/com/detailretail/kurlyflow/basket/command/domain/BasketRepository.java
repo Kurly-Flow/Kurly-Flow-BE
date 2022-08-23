@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BasketRepository extends JpaRepository<Basket, Long> {
 
-  @Query("SELECT b FROM Basket b JOIN FETCH b.worker bw JOIN FETCH b.invoices bi WHERE bw.id = :workerId AND bi.endAt > :minusTwenty")
+  @Query("SELECT DISTINCT b FROM Basket b JOIN FETCH b.worker bw JOIN FETCH b.invoices bi WHERE bw.id = :workerId AND bi.endAt > :minusTwenty")
   List<Basket> findBasketByWorkerId(Long workerId, LocalDateTime minusTwenty);
 
 }
