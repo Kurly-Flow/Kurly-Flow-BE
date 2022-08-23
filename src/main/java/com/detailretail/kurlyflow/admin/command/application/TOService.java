@@ -3,6 +3,7 @@ package com.detailretail.kurlyflow.admin.command.application;
 import com.detailretail.kurlyflow.admin.command.domain.Admin;
 import com.detailretail.kurlyflow.admin.command.domain.AdminRepository;
 import com.detailretail.kurlyflow.admin.command.domain.WorkingTeam;
+import com.detailretail.kurlyflow.admin.exception.LackOfWorkingNumbersException;
 import com.detailretail.kurlyflow.admin.util.CalculateConverter;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
@@ -38,9 +39,9 @@ public class TOService {
     LocalTime minusHours = admin.getWorkingTeam().getStart().minusHours(1);
     List<Worker> workers = workerRepository.findWorkerWithWorkerHistory(
         LocalDateTime.of(LocalDate.now(), minusHours));
-    List<Worker> orderedWorker = orderingWorker(admin, workers);
     int seventyRateNumbers = (int) CalculateConverter.getSeventy(admin.getWorkingNumbers());
-    long max = Math.min(orderedWorker.size(), seventyRateNumbers);
+    isSatisfiedWorkingNumbers(admin, workers);
+    List<Worker> orderedWorker = orderingWorker(admin, workers);
     IntStream.range(0, seventyRateNumbers).forEach(idx -> {
       if (idx < seventyRateNumbers) {
         orderedWorker.get(idx).assignAdmin(admin);
@@ -48,6 +49,12 @@ public class TOService {
         orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
       }
     });
+  }
+
+  private void isSatisfiedWorkingNumbers(Admin admin, List<Worker> workers) {
+    if (workers.size() < admin.getWorkingNumbers()) {
+      throw new LackOfWorkingNumbersException();
+    }
   }
 
   public List<Worker> orderingWorker(Admin admin, List<Worker> workers) {

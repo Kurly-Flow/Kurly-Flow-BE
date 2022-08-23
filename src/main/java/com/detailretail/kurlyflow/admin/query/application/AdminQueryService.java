@@ -35,7 +35,7 @@ public class AdminQueryService {
         .collect(Collectors.toList());
   }
 
-  public List<DetailRegionResponse> getDetailReionForWorkers(Long adminId) {
+  public List<DetailRegionResponse> getDetailRegionForWorkers(Long adminId) {
     Admin admin = adminRepository.findWithWorkers(adminId).orElseThrow(AdminNotFoundException::new);
     return admin.getWorkers().stream().map(AdminConverter::ofDetailRegion)
         .collect(Collectors.toList());
