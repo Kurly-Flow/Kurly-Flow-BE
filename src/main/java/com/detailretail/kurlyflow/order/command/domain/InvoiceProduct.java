@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.order.command.domain;
 
-import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import com.detailretail.kurlyflow.product.command.domain.Product;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
@@ -36,8 +35,8 @@ public class InvoiceProduct {
   private Product product;
 
   @ManyToOne
-  @JoinColumn(name = "batch_id")
-  private Batch batch;
+  @JoinColumn(name = "tote_id")
+  private Tote tote;
 
   private Integer quantity;
 
@@ -52,11 +51,11 @@ public class InvoiceProduct {
       throw new UnAssignedFieldException();
     }
     this.isBarcodeRead = Boolean.TRUE;
-    this.batch.addTote(tote);
+    this.tote= tote;
     this.readAt = LocalDateTime.now();
   }
 
-  public void assignBatch(Batch batch) {
-    this.batch = batch;
+  public void moveTote(Tote tote) {
+    this.tote = tote;
   }
 }

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct, Long> {
 
-  @Query("SELECT ip FROM InvoiceProduct ip WHERE ip.isBarcodeRead = false AND ip.batch is null")
+  @Query("SELECT ip FROM InvoiceProduct ip WHERE ip.isBarcodeRead = false AND ip.tote is null")
   List<InvoiceProduct> findTop30NotRead();
+
+  List<InvoiceProduct> findByIdIn(List<Long> invoiceProductIds);
 }
