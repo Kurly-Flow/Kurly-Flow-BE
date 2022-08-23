@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ToteWeightPolicy {
-  MAX_TOTE_WEIGHT(8.0);
+  MAX_TOTE_WEIGHT(8000);
 
-  private final Double weight;
+  private final Integer weight;
 }

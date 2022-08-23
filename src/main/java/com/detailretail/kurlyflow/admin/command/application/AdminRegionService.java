@@ -20,7 +20,9 @@ public class AdminRegionService {
   private final AdminRepository adminRepository;
 
   public void assignRegion(AdminRegionRequest adminRegionRequest, Long adminId) {
+    System.out.println("admin.getId() = " + adminId);
     Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
+    System.out.println("admin.getId() = " + admin.getId());
     admin.assignRegion(Region.of(adminRegionRequest.getRegion()));
   }
 

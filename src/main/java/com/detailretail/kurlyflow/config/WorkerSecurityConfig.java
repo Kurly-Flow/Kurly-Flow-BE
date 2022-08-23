@@ -1,7 +1,6 @@
 package com.detailretail.kurlyflow.config;
 
 import com.detailretail.kurlyflow.config.jwt.JwtAuthenticationFilter;
-import com.detailretail.kurlyflow.config.jwt.JwtEntryPoint;
 import com.detailretail.kurlyflow.config.jwt.JwtTokenProvider;
 import com.detailretail.kurlyflow.worker.command.application.WorkerDetailService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final JwtTokenProvider jwtTokenProvider;
-  private final JwtEntryPoint jwtEntryPoint;
   private final WorkerDetailService workerDetailService;
 
   @Bean
