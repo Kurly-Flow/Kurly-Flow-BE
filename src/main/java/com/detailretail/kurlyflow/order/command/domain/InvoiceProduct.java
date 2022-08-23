@@ -1,6 +1,10 @@
 package com.detailretail.kurlyflow.order.command.domain;
 
+import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import com.detailretail.kurlyflow.product.command.domain.Product;
+import com.detailretail.kurlyflow.tote.command.domain.Tote;
+import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +35,28 @@ public class InvoiceProduct {
   @JoinColumn(name = "product_id")
   private Product product;
 
+  @ManyToOne
+  @JoinColumn(name = "batch_id")
+  private Batch batch;
+
   private Integer quantity;
 
+  @Column(name = "read_at")
+  private LocalDateTime readAt;
+
+  @Column(name = "is_barcode_read")
+  private Boolean isBarcodeRead = Boolean.FALSE;
+
+  public void readBarcode(Tote tote) {
+    if (isBarcodeRead) {
+      throw new UnAssignedFieldException();
+    }
+    this.isBarcodeRead = Boolean.TRUE;
+    this.batch.addTote(tote);
+    this.readAt = LocalDateTime.now();
+  }
+
+  public void assignBatch(Batch batch) {
+    this.batch = batch;
+  }
 }

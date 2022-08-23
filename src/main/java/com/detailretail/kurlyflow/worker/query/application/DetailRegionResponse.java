@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class DetailRegionResponse {
 
   private String name;
-  private String region;
+  private String employeeNumber;
   private String detailRegion;
 }

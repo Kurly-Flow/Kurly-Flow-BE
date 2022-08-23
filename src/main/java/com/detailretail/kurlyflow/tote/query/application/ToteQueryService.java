@@ -2,7 +2,7 @@ package com.detailretail.kurlyflow.tote.query.application;
 
 import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import com.detailretail.kurlyflow.batch.command.domain.BatchRepository;
-import java.util.List;
+import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +15,9 @@ public class ToteQueryService {
   private final BatchRepository batchRepository;
 
   public String getTote(Long workerId) {
-    List<Batch> currentTote = batchRepository.findByCurrentTote(workerId);
-    return currentTote.get(0).getTote().getId();
+    Batch batch = batchRepository.findByCurrentTote(workerId)
+        .orElseThrow(EntityNotFoundException::new);
+    return batch.getTotes().get(batch.getTotes().size() - 1).getId();
   }
 
 }
