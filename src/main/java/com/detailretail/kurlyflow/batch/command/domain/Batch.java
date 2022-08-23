@@ -3,14 +3,17 @@ package com.detailretail.kurlyflow.batch.command.domain;
 import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
-import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,32 +34,18 @@ public class Batch {
   @JoinColumn(name = "worker_id")
   private Worker worker;
 
-  @ManyToOne
-  @JoinColumn(name = "invoice_product_id")
-  private InvoiceProduct invoiceProduct;
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
+  private List<Tote> totes = new ArrayList<>();
 
-  @ManyToOne
-  @JoinColumn(name = "tote_id")
-  private Tote tote;
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
+  private List<InvoiceProduct> invoiceProducts = new ArrayList<>();
 
-  @Column(name = "is_barcode_read")
-  private Boolean isBarcodeRead = Boolean.FALSE;
-
-  @Column(name = "read_at")
-  private LocalDateTime readAt;
-
-  public Batch(Worker worker, InvoiceProduct invoiceProduct) {
+  public Batch(Worker worker) {
     this.worker = worker;
-    this.invoiceProduct = invoiceProduct;
   }
 
-  public void readBarcode(Tote tote) {
-    if (isBarcodeRead) {
-      throw new UnAssignedFieldException();
-    }
-    this.isBarcodeRead = Boolean.TRUE;
-    this.tote = tote;
-    this.readAt = LocalDateTime.now();
+  public void addTote(Tote tote) {
+    this.totes.add(tote);
+    tote.setBatch(this);
   }
-
 }

@@ -1,8 +1,8 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
-import com.detailretail.kurlyflow.batch.query.application.BatchService;
-import com.detailretail.kurlyflow.batch.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
+import com.detailretail.kurlyflow.order.query.application.MultiBatchResponse;
+import com.detailretail.kurlyflow.order.query.application.MultiPickingService;
 import com.detailretail.kurlyflow.tote.command.application.ToteCommandService;
 import com.detailretail.kurlyflow.tote.query.application.ToteQueryService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
@@ -29,7 +29,7 @@ public class PickingController {
 
   private final LoginService loginService;
   private final PickingService pickingService;
-  private final BatchService batchService;
+  private final MultiPickingService batchService;
   private final ToteQueryService toteQueryService;
   private final ToteCommandService toteCommandService;
 
@@ -48,10 +48,10 @@ public class PickingController {
   }
 
   @PreAuthorize("hasRole('WORKER')")
-  @GetMapping("/bacord/{batchId}")
-  public ResponseEntity<Void> readBarcode(@PathVariable("batchId") Long batchId,
-      @RequestParam(name = "toteId") Long toteId) {
-    pickingService.readBarcode(batchId, toteId);
+  @PostMapping("/barcode/{invoiceProductId}")
+  public ResponseEntity<Void> readBarcode(@PathVariable("invoiceProductId") Long invoiceProductId,
+      @RequestParam(name = "toteId") String toteId) {
+    pickingService.readBarcode(invoiceProductId, toteId);
     return ResponseEntity.ok(null);
   }
 
@@ -73,7 +73,7 @@ public class PickingController {
   @PostMapping("/tote")
   public ResponseEntity<String> assignTote(@RequestBody ToteRequest toteRequest,
       @CurrentUser CustomWorkerDetails worker) {
-    toteCommandService.assignTote(toteRequest);
+    toteCommandService.assignTote(toteRequest,worker.getId());
     return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
   }
 }
