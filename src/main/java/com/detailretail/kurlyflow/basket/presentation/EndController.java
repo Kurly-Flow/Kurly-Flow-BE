@@ -44,7 +44,7 @@ public class EndController {
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/{invoiceId}")
   public ResponseEntity<List<EndBasketInvoiceResponse>> getInvoice(
-      @PathVariable("invoiceId") Long invoiceId) {
+      @PathVariable("invoiceId") String invoiceId) {
     List<EndBasketInvoiceResponse> endBasketInvoiceResponses = endService.getInvoice(invoiceId);
     return ResponseEntity.ok(endBasketInvoiceResponses);
   }

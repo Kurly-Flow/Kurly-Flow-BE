@@ -35,7 +35,7 @@ public class Product {
   private String location;
 
   @Column(name = "image_url")
-  private String image;
+  private String imageUrl;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "packaging")

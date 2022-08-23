@@ -31,13 +31,13 @@ public class PackingController {
   }
 
   @GetMapping("/{invoiceId}")
-  public ResponseEntity<InvoiceResponse> getInvoice(@PathVariable("invoiceId") Long invoiceId) {
+  public ResponseEntity<InvoiceResponse> getInvoice(@PathVariable("invoiceId") String invoiceId) {
     InvoiceResponse invoiceForPacking = packingService.getInvoiceForPacking(invoiceId);
     return ResponseEntity.ok(invoiceForPacking);
   }
 
   @PostMapping("/{invoiceId}")
-  public ResponseEntity<Void> invoiceInconsistency(@PathVariable("invoiceId") Long invoiceId) {
+  public ResponseEntity<Void> invoiceInconsistency(@PathVariable("invoiceId") String invoiceId) {
     invoiceConsistencyService.changeInvoiceUnConsistency(invoiceId);
     return ResponseEntity.ok(null);
   }

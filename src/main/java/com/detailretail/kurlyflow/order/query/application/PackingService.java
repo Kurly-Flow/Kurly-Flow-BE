@@ -15,7 +15,7 @@ public class PackingService {
 
   private final InvoiceRepository invoiceRepository;
 
-  public InvoiceResponse getInvoiceForPacking(Long invoiceId) {
+  public InvoiceResponse getInvoiceForPacking(String invoiceId) {
     Invoice invoice = invoiceRepository.findInvoice(invoiceId)
         .orElseThrow(EntityNotFoundException::new);
     return InvoiceConverter.ofInvoice(invoice);

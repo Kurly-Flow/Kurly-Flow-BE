@@ -95,7 +95,7 @@ public class AdminController {
   @GetMapping("/detail")
   public ResponseEntity<List<DetailRegionResponse>> getDetails(
       @CurrentUser CustomAdminsDetails admin) {
-    List<DetailRegionResponse> workers = adminQueryService.getDetailReionForWorkers(admin.getId());
+    List<DetailRegionResponse> workers = adminQueryService.getDetailRegionForWorkers(admin.getId());
     return ResponseEntity.ok(workers);
   }
 

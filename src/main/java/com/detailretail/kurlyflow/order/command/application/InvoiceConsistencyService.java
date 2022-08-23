@@ -15,7 +15,7 @@ public class InvoiceConsistencyService {
   private final InvoiceRepository invoiceRepository;
 
 
-  public void changeInvoiceUnConsistency(Long invoiceId) {
+  public void changeInvoiceUnConsistency(String invoiceId) {
     Invoice invoice = invoiceRepository.findInvoice(invoiceId)
         .orElseThrow(EntityNotFoundException::new);
     invoice.changeUnConsistency();
