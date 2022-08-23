@@ -2,7 +2,6 @@ package com.detailretail.kurlyflow.basket.command.domain;
 
 import com.detailretail.kurlyflow.order.command.domain.Invoice;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -36,6 +35,4 @@ public class Basket {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "basket")
   private List<Invoice> invoices = new ArrayList<>();
 
-  @Column(name = "completed_at")
-  private LocalDateTime completedAt;
 }

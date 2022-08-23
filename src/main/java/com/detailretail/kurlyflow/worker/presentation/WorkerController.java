@@ -16,6 +16,7 @@ import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoService;
 import com.detailretail.kurlyflow.worker.query.application.RegionResponse;
+import java.io.IOException;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,14 +39,13 @@ public class WorkerController {
   private final AttendanceService attendanceService;
   private final CheckRegionService checkRegionService;
   private final InfoService infoService;
-
   private final AdminCallService adminCallService;
 
-  @PreAuthorize("hasRole('WORKER')")
-  @GetMapping("/call")
-  public ResponseEntity<Void> adminCall(@CurrentUser CustomWorkerDetails worker) {
-    adminCallService.callAdmin(worker.getId());
-    return ResponseEntity.ok(null);
+  @PostMapping("/call")
+  public ResponseEntity pushMessage(@CurrentUser CustomWorkerDetails worker,
+      @RequestHeader(value = "targetToken") String targetToken) throws IOException {
+    adminCallService.sendMessageTo(targetToken, String.valueOf(worker.getId()));
+    return ResponseEntity.ok().build();
   }
 
   @PreAuthorize("hasRole('WORKER')")
@@ -84,8 +85,10 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/region")
-  public ResponseEntity<DetailRegionResponse> checkDetailRegion(@CurrentUser CustomWorkerDetails worker) {
-    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(worker.getId());
+  public ResponseEntity<DetailRegionResponse> checkDetailRegion(
+      @CurrentUser CustomWorkerDetails worker) {
+    DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(
+        worker.getId());
     return ResponseEntity.ok(detailRegionResponse);
   }
 
