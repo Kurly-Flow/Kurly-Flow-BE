@@ -65,8 +65,7 @@ public class AdminController {
   public ResponseEntity<List<WorkerStatusResponse>> getWorkerStatus(
       @CurrentUser CustomAdminsDetails admin
   ) {
-    System.out.println("들어옴");
-    List<WorkerStatusResponse> workerStatus = adminQueryService.getWorkerStatus(null);
+    List<WorkerStatusResponse> workerStatus = adminQueryService.getWorkerStatus(admin.getId());
     return ResponseEntity.ok(workerStatus);
   }
 
@@ -86,7 +85,7 @@ public class AdminController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  @PostMapping("/attendance")
+  @GetMapping("/attendance")
   public ResponseEntity<List<WorkerAttendanceResponse>> checkAttendance(
       @CurrentUser CustomAdminsDetails admin) {
     List<WorkerAttendanceResponse> workers = adminQueryService.getWorkers(admin.getId());
