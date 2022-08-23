@@ -42,7 +42,8 @@ public class AdminConverter {
   }
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
-    return DetailRegionResponse.builder().name(worker.getName()).region(worker.getRegion().name())
+    return DetailRegionResponse.builder().name(worker.getName())
+        .employeeNumber(worker.getEmployeeNumber().getEmployeeNumber())
         .detailRegion(worker.getDetailRegion()).build();
   }
 }

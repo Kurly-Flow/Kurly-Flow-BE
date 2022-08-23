@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.batch.query.application;
+package com.detailretail.kurlyflow.order.query.application;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -13,15 +13,16 @@ import lombok.NoArgsConstructor;
 public class MultiBatchResponse {
 
   private Integer recommendToteCount;
-  private List<BatchResponse> batchResponses;
+  private Long batchId;
+  private List<InvoiceProductResponse> invoiceProductResponses;
 
   @Getter
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class BatchResponse {
+  public static class InvoiceProductResponse {
 
-    private Long batchId;
+    private Long invoiceProductId;
     private String name;
     private Integer quantity;
     private Double weight;
