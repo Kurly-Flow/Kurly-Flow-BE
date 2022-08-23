@@ -37,9 +37,6 @@ public class Batch {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
   private List<Tote> totes = new ArrayList<>();
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
-  private List<InvoiceProduct> invoiceProducts = new ArrayList<>();
-
   public Batch(Worker worker) {
     this.worker = worker;
   }
