@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.batch.command.domain;
 
-import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import java.util.ArrayList;
