@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.order.command.domain;
 
-import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import com.detailretail.kurlyflow.product.command.domain.Product;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
