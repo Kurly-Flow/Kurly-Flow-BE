@@ -36,7 +36,7 @@ public class EndService {
     return endCompleteResponses;
   }
 
-  public List<EndBasketInvoiceResponse> getInvoice(Long invoiceId) {
+  public List<EndBasketInvoiceResponse> getInvoice(String invoiceId) {
     Invoice invoice = invoiceRepository.findInvoiceWithBasket(invoiceId)
         .orElseThrow(EntityNotFoundException::new);
     return IntStream.range(0, invoice.getInvoiceProducts().size()).mapToObj(

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EndCompleteResponse {
 
-  private Long basketId;
-  private Long invoiceId;
+  private String basketId;
+  private String invoiceId;
   private LocalDateTime endAt;
 }

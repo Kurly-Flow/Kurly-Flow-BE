@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InvoiceResponse {
 
-  private Long id;
+  private String id;
   private List<InvoiceProductResponse> products;
 
   @Getter
