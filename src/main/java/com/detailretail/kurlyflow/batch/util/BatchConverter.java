@@ -15,6 +15,7 @@ public class BatchConverter {
         .name(batch.getInvoiceProduct().getProduct().getName())
         .quantity(batch.getInvoiceProduct().getQuantity())
         .weight(batch.getInvoiceProduct().getProduct().getWeight())
+        .imageUrl(batch.getInvoiceProduct().getProduct().getImageUrl())
         .region(batch.getInvoiceProduct().getProduct().getRegion())
         .location(batch.getInvoiceProduct().getProduct().getLocation()).build();
   }
