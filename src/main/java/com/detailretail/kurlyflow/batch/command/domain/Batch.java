@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.batch.command.domain;
 
-import com.detailretail.kurlyflow.order.command.domain.InvoiceProduct;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import java.util.ArrayList;
@@ -36,9 +35,6 @@ public class Batch {
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
   private List<Tote> totes = new ArrayList<>();
-
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
-  private List<InvoiceProduct> invoiceProducts = new ArrayList<>();
 
   public Batch(Worker worker) {
     this.worker = worker;

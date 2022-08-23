@@ -26,7 +26,6 @@ public class MultiPickingService {
     Worker worker = workerRepository.findById(workerId).orElseThrow(EntityNotFoundException::new);
     Batch newBatch = batchRepository.save(new Batch(worker));
     List<InvoiceProduct> pickingList = invoiceProductRepository.findTop30NotRead();
-    pickingList.stream().forEach(invoiceProduct -> invoiceProduct.assignBatch(newBatch));
     return InvoiceConverter.ofMulti(newBatch.getId(), pickingList);
   }
 }
