@@ -72,10 +72,6 @@ public class Worker {
   @Column(name = "is_worked")
   private Boolean isWorked = Boolean.FALSE;
 
-  //뭐하는건지 까먹었음
-  @Column(name = "location")
-  private String location;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "authority")
   private Authority authority = Authority.ROLE_WORKER;
