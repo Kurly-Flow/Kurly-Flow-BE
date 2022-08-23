@@ -10,7 +10,7 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
   List<Batch> findTop50ByWorker_IdAndIsBarcodeReadFalse(Long workerId);
 
   @Query(value =
-      "select b "
+      "select DISTINCT b "
           + "from batch as b "
           + "left join worker as w on b.worker_id = w.id "
           + "left join tote as t on b.tote_id  = t.id  "
