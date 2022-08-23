@@ -2,7 +2,6 @@ package com.detailretail.kurlyflow.config;
 
 import com.detailretail.kurlyflow.admin.command.application.AdminDetailService;
 import com.detailretail.kurlyflow.config.jwt.JwtAuthenticationFilter;
-import com.detailretail.kurlyflow.config.jwt.JwtEntryPoint;
 import com.detailretail.kurlyflow.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final JwtTokenProvider jwtTokenProvider;
-  private final JwtEntryPoint jwtEntryPoint;
   private final AdminDetailService adminDetailService;
 
   @Override
