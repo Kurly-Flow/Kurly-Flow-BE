@@ -4,6 +4,7 @@ import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.order.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.order.query.application.MultiPickingService;
 import com.detailretail.kurlyflow.tote.command.application.ToteCommandService;
+import com.detailretail.kurlyflow.tote.command.application.ToteMoveRequest;
 import com.detailretail.kurlyflow.tote.query.application.ToteQueryService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
@@ -17,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,7 +75,14 @@ public class PickingController {
   @PostMapping("/tote")
   public ResponseEntity<String> assignTote(@RequestBody ToteRequest toteRequest,
       @CurrentUser CustomWorkerDetails worker) {
-    toteCommandService.assignTote(toteRequest,worker.getId());
+    toteCommandService.assignTote(toteRequest, worker.getId());
+    return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
+  }
+
+  @PreAuthorize("hasRole('WORKER')")
+  @PutMapping("/tote")
+  public ResponseEntity<String> moveTote(@RequestBody ToteMoveRequest toteMoveRequest) {
+    toteCommandService.moveTote(toteMoveRequest);
     return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
   }
 }
