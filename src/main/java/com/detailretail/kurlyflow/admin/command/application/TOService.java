@@ -45,8 +45,10 @@ public class TOService {
     IntStream.range(0, seventyRateNumbers).forEach(idx -> {
       if (idx < seventyRateNumbers) {
         orderedWorker.get(idx).assignAdmin(admin);
+        orderedWorker.get(idx).assignRegion(admin.getRegion());
       } else {
         orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
+        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignRegion(admin.getRegion());
       }
     });
   }
