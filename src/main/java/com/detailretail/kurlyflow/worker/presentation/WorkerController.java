@@ -44,7 +44,7 @@ public class WorkerController {
   @PostMapping("/call")
   public ResponseEntity pushMessage(@CurrentUser CustomWorkerDetails worker,
       @RequestHeader(value = "targetToken") String targetToken) throws IOException {
-    adminCallService.sendMessageTo(targetToken, String.valueOf(worker.getId()));
+    adminCallService.sendMessageTo(targetToken, worker.getId());
     return ResponseEntity.ok().build();
   }
 

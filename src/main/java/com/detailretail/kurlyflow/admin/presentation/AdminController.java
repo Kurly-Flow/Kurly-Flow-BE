@@ -63,8 +63,7 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
   public ResponseEntity<List<WorkerStatusResponse>> getWorkerStatus(
-      @CurrentUser CustomAdminsDetails admin
-  ) {
+      @CurrentUser CustomAdminsDetails admin) {
     List<WorkerStatusResponse> workerStatus = adminQueryService.getWorkerStatus(admin.getId());
     return ResponseEntity.ok(workerStatus);
   }
