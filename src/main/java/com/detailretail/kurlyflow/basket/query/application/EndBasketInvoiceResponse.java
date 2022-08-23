@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.admin.command.application;
+package com.detailretail.kurlyflow.basket.query.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TOResponse {
-    private AdminResponse adminResponse;
+public class EndBasketInvoiceResponse {
+
+  private String name;
+  private Integer quantity;
 }

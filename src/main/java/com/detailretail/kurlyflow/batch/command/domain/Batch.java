@@ -39,8 +39,8 @@ public class Batch {
   @JoinColumn(name = "tote_id")
   private Tote tote;
 
-  @Column(name = "is_barcord_read")
-  private Boolean isBarcordRead = Boolean.FALSE;
+  @Column(name = "is_barcode_read")
+  private Boolean isBarcodeRead = Boolean.FALSE;
 
   @Column(name = "read_at")
   private LocalDateTime readAt;
@@ -51,10 +51,10 @@ public class Batch {
   }
 
   public void readBarcode(Tote tote) {
-    if (isBarcordRead) {
+    if (isBarcodeRead) {
       throw new UnAssignedFieldException();
     }
-    this.isBarcordRead = Boolean.TRUE;
+    this.isBarcodeRead = Boolean.TRUE;
     this.tote = tote;
     this.readAt = LocalDateTime.now();
   }

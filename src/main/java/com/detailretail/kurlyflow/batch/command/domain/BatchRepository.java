@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
-  List<Batch> findTop50ByWorker_IdAndIsBarcordReadFalse(Long workerId);
+  List<Batch> findTop50ByWorker_IdAndIsBarcodeReadFalse(Long workerId);
 
   @Query(value =
       "select b "

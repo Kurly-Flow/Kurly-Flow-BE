@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.query.application;
+package com.detailretail.kurlyflow.admin.query.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DetailRegionResponse {
-
+public class WorkerStatusResponse {
+  private String employeeNumber;
   private String name;
-  private String region;
   private String detailRegion;
 }

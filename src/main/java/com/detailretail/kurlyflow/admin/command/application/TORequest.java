@@ -1,6 +1,6 @@
 package com.detailretail.kurlyflow.admin.command.application;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TORequest {
-    private LocalDateTime workingDate;
+    private LocalDate workingDate;
     private String workingTeam;
-    private Long workingNumbers;
+    private Integer workingNumbers;
 }
