@@ -4,5 +4,5 @@ import java.io.IOException;
 
 public interface AdminCallService {
 
-  public void sendMessageTo(String targetToken, String adminId) throws IOException;
+  public void sendMessageTo(String targetToken, Long adminId) throws IOException;
 }
