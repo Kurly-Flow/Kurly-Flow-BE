@@ -18,7 +18,7 @@ public class BatchService {
   private final BatchRepository batchRepository;
 
   public MultiBatchResponse getMultiPickingList(Long workerId) {
-    List<Batch> pickingList = batchRepository.findTop50ByWorker_IdAndIsBarcodeReadFalse(workerId);
+    List<Batch> pickingList = batchRepository.findTop30ByWorker_IdAndIsBarcodeReadFalse(workerId);
     List<BatchResponse> batchResponses = pickingList.stream().map(BatchConverter::ofBatch)
         .collect(Collectors.toList());
     return BatchConverter.ofMulti(batchResponses);
