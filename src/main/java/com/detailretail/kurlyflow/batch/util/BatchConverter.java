@@ -29,6 +29,6 @@ public class BatchConverter {
     double sum = batchResponses.stream()
         .mapToDouble(batchResponse -> batchResponse.getWeight() * batchResponse.getQuantity())
         .sum();
-    return (int) Math.round(sum / MAX_TOTE_WEIGHT.getWeight());
+    return (int) Math.round(sum / (double) MAX_TOTE_WEIGHT.getWeight());
   }
 }
