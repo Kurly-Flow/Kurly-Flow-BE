@@ -40,7 +40,8 @@ public class TOService {
     List<Worker> workers = workerRepository.findWorkerWithWorkerHistory(
         LocalDateTime.of(LocalDate.now(), minusHours));
     int seventyRateNumbers = (int) CalculateConverter.getSeventy(admin.getWorkingNumbers());
-    isSatisfiedWorkingNumbers(admin, workers);
+    //isSatisfiedWorkingNumbers(admin, workers);
+    System.out.println("workers = " + workers.size());
     List<Worker> orderedWorker = orderingWorker(admin, workers);
     IntStream.range(0, seventyRateNumbers).forEach(idx -> {
       if (idx < seventyRateNumbers) {
