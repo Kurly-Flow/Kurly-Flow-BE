@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
+import com.detailretail.kurlyflow.admin.command.domain.CustomDetails;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.worker.command.application.AdminCallService;
 import com.detailretail.kurlyflow.worker.command.application.AttendanceService;
@@ -10,7 +11,6 @@ import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.SignUpService;
-import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import com.detailretail.kurlyflow.worker.query.application.CheckRegionService;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
@@ -42,7 +42,7 @@ public class WorkerController {
   private final AdminCallService adminCallService;
 
   @PostMapping("/call")
-  public ResponseEntity pushMessage(@CurrentUser CustomWorkerDetails worker,
+  public ResponseEntity pushMessage(@CurrentUser CustomDetails worker,
       @RequestHeader(value = "targetToken") String targetToken) throws IOException {
     adminCallService.sendMessageTo(targetToken, worker.getId());
     return ResponseEntity.ok().build();
@@ -50,7 +50,7 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/my")
-  public ResponseEntity<InfoResponse> getMyInfo(@CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<InfoResponse> getMyInfo(@CurrentUser CustomDetails worker) {
     InfoResponse workerInfo = infoService.findWorkerInfo(worker.getId());
     return ResponseEntity.ok(workerInfo);
   }
@@ -71,22 +71,21 @@ public class WorkerController {
   @PreAuthorize("hasRole('WORKER')")
   @PostMapping
   public ResponseEntity<Void> inputEmployeeNumberAndWishRegion(
-      @RequestBody InputRequest inputRequest, @CurrentUser CustomWorkerDetails worker) {
+      @RequestBody InputRequest inputRequest, @CurrentUser CustomDetails worker) {
     inputService.inputEmployeeNumberAndWishRegion(inputRequest, worker.getId());
     return ResponseEntity.ok(null);
   }
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping
-  public ResponseEntity<RegionResponse> checkRegion(@CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<RegionResponse> checkRegion(@CurrentUser CustomDetails worker) {
     RegionResponse regionResponse = checkRegionService.checkRegion(worker.getId());
     return ResponseEntity.ok(regionResponse);
   }
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/region")
-  public ResponseEntity<DetailRegionResponse> checkDetailRegion(
-      @CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<DetailRegionResponse> checkDetailRegion(@CurrentUser CustomDetails worker) {
     DetailRegionResponse detailRegionResponse = checkRegionService.checkDetailRegion(
         worker.getId());
     return ResponseEntity.ok(detailRegionResponse);
@@ -94,7 +93,7 @@ public class WorkerController {
 
   @PreAuthorize("hasRole('WORKER')")
   @PostMapping("/attendance")
-  public ResponseEntity<Void> attend(@CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<Void> attend(@CurrentUser CustomDetails worker) {
     attendanceService.attend(worker.getId());
     return ResponseEntity.ok(null);
   }
