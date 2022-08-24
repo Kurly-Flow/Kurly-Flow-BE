@@ -77,6 +77,7 @@ public class Admin {
     this.name = name;
     this.employeeNumber = employeeNumber;
     this.password = password;
+    this.authority = Authority.ROLE_ADMIN;
     this.createdAt = LocalDateTime.now();
   }
 
