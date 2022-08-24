@@ -2,6 +2,7 @@ package com.detailretail.kurlyflow.common;
 
 import com.detailretail.kurlyflow.common.exception.BadRequestException;
 import com.detailretail.kurlyflow.common.exception.ConflictException;
+import com.detailretail.kurlyflow.common.exception.NotFoundException;
 import com.detailretail.kurlyflow.common.exception.UnAuthorizedException;
 import com.detailretail.kurlyflow.worker.exception.FirebaseServerErrorException;
 import org.springframework.http.HttpStatus;
