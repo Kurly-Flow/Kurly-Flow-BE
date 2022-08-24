@@ -1,10 +1,8 @@
 package com.detailretail.kurlyflow.config.aop;
 
-import java.util.Collection;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -25,7 +23,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
       NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+      System.out.println("authentication.getAuthorities().toString() = " + authentication.getAuthorities().toString());
       return authentication.getPrincipal();
     } else {
       return null;
