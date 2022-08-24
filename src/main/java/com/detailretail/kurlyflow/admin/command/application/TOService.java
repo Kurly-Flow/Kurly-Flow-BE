@@ -48,7 +48,8 @@ public class TOService {
         orderedWorker.get(idx).assignRegion(admin.getRegion());
       } else {
         orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
-        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignRegion(admin.getRegion());
+        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1)
+            .assignRegion(admin.getRegion());
       }
     });
   }
@@ -61,11 +62,14 @@ public class TOService {
 
   public List<Worker> orderingWorker(Admin admin, List<Worker> workers) {
     return workers.stream().sorted((o1, o2) -> {
-      long order1 = o1.getHistories().stream()
+      long o1Proficiency = o1.getHistories().stream()
           .filter(workerHistory -> workerHistory.getRegion().equals(admin.getRegion())).count();
-      long order2 = o2.getHistories().stream()
+      long o2Proficiency = o2.getHistories().stream()
           .filter(workerHistory -> workerHistory.getRegion().equals(admin.getRegion())).count();
-      return (int) order1 - (int) order2;
+      if (o1Proficiency == o2Proficiency) {
+        return o1.getWishRegion().equals(o2.getWishRegion()) == true ? 1 : -1;
+      }
+      return (int) o2Proficiency - (int) o1Proficiency;
     }).collect(Collectors.toList());
   }
 }
