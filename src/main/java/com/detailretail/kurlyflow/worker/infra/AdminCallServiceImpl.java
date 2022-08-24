@@ -33,7 +33,7 @@ public class AdminCallServiceImpl implements AdminCallService {
 
   public void sendMessageTo(String targetToken, Long workerId) throws IOException {
     Worker worker = workerRepository.findById(workerId).orElseThrow(EntityNotFoundException::new);
-    String message = makeMessage(targetToken, worker.getName(), makeLocation(worker));
+    String message = makeMessage(targetToken, makeName(worker.getName()), makeLocation(worker));
 
     OkHttpClient client = new OkHttpClient();
     RequestBody requestBody = RequestBody.create(message,
