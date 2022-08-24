@@ -28,8 +28,9 @@ public class ToteCommandService {
   }
 
   public void moveTote(ToteMoveRequest toteMoveRequest) {
-    Tote tote = toteRepository.findById(toteMoveRequest.getNewToteId())
+    Batch batch = batchRepository.findById(toteMoveRequest.getBatchId())
         .orElseThrow(EntityNotFoundException::new);
+    Tote tote = toteRepository.save(new Tote(toteMoveRequest.getNewToteId(), batch));
     List<InvoiceProduct> moveList = invoiceProductRepository.findByIdIn(
         toteMoveRequest.getInvoiceProductIds());
     moveList.stream().forEach(invoiceProduct -> invoiceProduct.moveTote(tote));
