@@ -44,8 +44,12 @@ public class AdminCallServiceImpl implements AdminCallService {
     Response response = client.newCall(request).execute();
   }
 
+  private String makeName(String name) {
+    return "'"+ name + "'"+ "님이 호출했습니다.";
+  }
+
   private String makeLocation(Worker worker) {
-    return worker.getRegion().name() + " - " + worker.getDetailRegion();
+    return "위치: " + worker.getRegion().name() + " - " + worker.getDetailRegion();
   }
 
   private String makeMessage(String targetToken, String title, String body)
