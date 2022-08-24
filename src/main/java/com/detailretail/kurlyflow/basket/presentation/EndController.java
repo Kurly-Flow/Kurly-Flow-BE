@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.basket.presentation;
 
+import com.detailretail.kurlyflow.admin.command.domain.CustomDetails;
 import com.detailretail.kurlyflow.basket.query.application.EndBasketInvoiceResponse;
 import com.detailretail.kurlyflow.basket.query.application.EndCompleteResponse;
 import com.detailretail.kurlyflow.basket.query.application.EndService;
@@ -7,7 +8,6 @@ import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
-import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,7 @@ public class EndController {
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping
   public ResponseEntity<List<EndCompleteResponse>> getEndStatus(
-      @CurrentUser CustomWorkerDetails worker) {
+      @CurrentUser CustomDetails worker) {
     List<EndCompleteResponse> endCompleteResponses = endService.getEndStatus(worker.getId());
     return ResponseEntity.ok(endCompleteResponses);
   }

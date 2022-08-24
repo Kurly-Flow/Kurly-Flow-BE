@@ -1,5 +1,6 @@
 package com.detailretail.kurlyflow.worker.presentation;
 
+import com.detailretail.kurlyflow.admin.command.domain.CustomDetails;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.order.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.order.query.application.MultiPickingService;
@@ -11,7 +12,6 @@ import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.PickingService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
-import com.detailretail.kurlyflow.worker.command.domain.CustomWorkerDetails;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +44,7 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/multi")
-  public ResponseEntity<MultiBatchResponse> multiPickingList(
-      @CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<MultiBatchResponse> multiPickingList(@CurrentUser CustomDetails worker) {
     MultiBatchResponse multiPickingList = batchService.getMultiPickingList(worker.getId());
     return ResponseEntity.ok(multiPickingList);
   }
@@ -60,14 +59,14 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping()
-  public ResponseEntity<Void> workingToggle(@CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<Void> workingToggle(@CurrentUser CustomDetails worker) {
     pickingService.workingToggle(worker.getId());
     return ResponseEntity.ok(null);
   }
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/tote")
-  public ResponseEntity<String> getTote(@CurrentUser CustomWorkerDetails worker) {
+  public ResponseEntity<String> getTote(@CurrentUser CustomDetails worker) {
     String toteId = toteQueryService.getTote(worker.getId());
     return ResponseEntity.ok(toteId);
   }
@@ -75,7 +74,7 @@ public class PickingController {
   @PreAuthorize("hasRole('WORKER')")
   @PostMapping("/tote")
   public ResponseEntity<String> assignTote(@RequestBody ToteRequest toteRequest,
-      @CurrentUser CustomWorkerDetails worker) {
+      @CurrentUser CustomDetails worker) {
     toteCommandService.assignTote(toteRequest, worker.getId());
     return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
   }
