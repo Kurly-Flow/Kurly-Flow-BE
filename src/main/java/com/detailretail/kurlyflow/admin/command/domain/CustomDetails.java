@@ -1,6 +1,10 @@
 package com.detailretail.kurlyflow.admin.command.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,28 +13,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomAdminsDetails  implements UserDetails {
+public class CustomDetails implements UserDetails {
     private Long id;
 
     @Builder.Default
     private List<String> authorities = new ArrayList<>();
 
-    public CustomAdminsDetails(Long id, List<String> authorities) {
+    public CustomDetails(Long id, List<String> authorities) {
         this.id = id;
         this.authorities = authorities;
-    }
-
-    public static CustomAdminsDetails of(Admin admin) {
-        return CustomAdminsDetails.builder().id(admin.getId())
-                .authorities(List.of(admin.getAuthority().name())).build();
     }
 
     public boolean validate(Long id) {

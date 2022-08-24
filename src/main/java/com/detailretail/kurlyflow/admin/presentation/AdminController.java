@@ -9,7 +9,7 @@ import com.detailretail.kurlyflow.admin.command.application.AdminSignUpRequest;
 import com.detailretail.kurlyflow.admin.command.application.AdminSignUpService;
 import com.detailretail.kurlyflow.admin.command.application.TORequest;
 import com.detailretail.kurlyflow.admin.command.application.TOService;
-import com.detailretail.kurlyflow.admin.command.domain.CustomAdminsDetails;
+import com.detailretail.kurlyflow.admin.command.domain.CustomDetails;
 import com.detailretail.kurlyflow.admin.query.application.AdminQueryService;
 import com.detailretail.kurlyflow.admin.query.application.WorkerAttendanceResponse;
 import com.detailretail.kurlyflow.admin.query.application.WorkerStatusResponse;
@@ -54,7 +54,7 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/region")
-  public ResponseEntity<Void> selectRegion(@CurrentUser CustomAdminsDetails admin,
+  public ResponseEntity<Void> selectRegion(@CurrentUser CustomDetails admin,
       @RequestBody AdminRegionRequest adminRegionRequest) {
     adminRegionService.assignRegion(adminRegionRequest, admin.getId());
     return ResponseEntity.ok(null);
@@ -63,14 +63,14 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
   public ResponseEntity<List<WorkerStatusResponse>> getWorkerStatus(
-      @CurrentUser CustomAdminsDetails admin) {
+      @CurrentUser CustomDetails admin) {
     List<WorkerStatusResponse> workerStatus = adminQueryService.getWorkerStatus(admin.getId());
     return ResponseEntity.ok(workerStatus);
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/to")
-  public ResponseEntity<Void> inputTo(@CurrentUser CustomAdminsDetails admin,
+  public ResponseEntity<Void> inputTo(@CurrentUser CustomDetails admin,
       @RequestBody TORequest toRequest) {
     toService.inputTO(toRequest, admin.getId());
     return ResponseEntity.ok(null);
@@ -78,7 +78,7 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/assignment")
-  public ResponseEntity<Void> workerAssignment(@CurrentUser CustomAdminsDetails admin) {
+  public ResponseEntity<Void> workerAssignment(@CurrentUser CustomDetails admin) {
     toService.assignWorkers(admin.getId());
     return ResponseEntity.ok(null);
   }
@@ -86,15 +86,14 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/attendance")
   public ResponseEntity<List<WorkerAttendanceResponse>> checkAttendance(
-      @CurrentUser CustomAdminsDetails admin) {
+      @CurrentUser CustomDetails admin) {
     List<WorkerAttendanceResponse> workers = adminQueryService.getWorkers(admin.getId());
     return ResponseEntity.ok(workers);
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/detail")
-  public ResponseEntity<List<DetailRegionResponse>> getDetails(
-      @CurrentUser CustomAdminsDetails admin) {
+  public ResponseEntity<List<DetailRegionResponse>> getDetails(@CurrentUser CustomDetails admin) {
     List<DetailRegionResponse> workers = adminQueryService.getDetailRegionForWorkers(admin.getId());
     return ResponseEntity.ok(workers);
   }
@@ -102,7 +101,7 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/detail")
   public ResponseEntity<List<DetailRegionResponse>> assignWorkers(
-      @CurrentUser CustomAdminsDetails admin) {
+      @CurrentUser CustomDetails admin) {
     List<DetailRegionResponse> workers = adminRegionService.assignDetailRegion(admin.getId());
     return ResponseEntity.ok(workers);
   }
