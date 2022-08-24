@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToteMoveRequest {
 
+  private Long batchId;
   private String oldToteId;
   private String newToteId;
   private List<Long> invoiceProductIds;
