@@ -7,7 +7,6 @@ import com.detailretail.kurlyflow.order.command.domain.InvoiceProductRepository;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
-import com.detailretail.kurlyflow.worker.presentation.ToteRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
