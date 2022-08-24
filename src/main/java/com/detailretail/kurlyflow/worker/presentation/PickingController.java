@@ -5,6 +5,7 @@ import com.detailretail.kurlyflow.order.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.order.query.application.MultiPickingService;
 import com.detailretail.kurlyflow.tote.command.application.ToteCommandService;
 import com.detailretail.kurlyflow.tote.command.application.ToteMoveRequest;
+import com.detailretail.kurlyflow.tote.command.application.ToteRequest;
 import com.detailretail.kurlyflow.tote.query.application.ToteQueryService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginService;
@@ -81,8 +82,8 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @PutMapping("/tote")
-  public ResponseEntity<String> moveTote(@RequestBody ToteMoveRequest toteMoveRequest) {
+  public ResponseEntity<Void> moveTote(@RequestBody ToteMoveRequest toteMoveRequest) {
     toteCommandService.moveTote(toteMoveRequest);
-    return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
+    return ResponseEntity.ok(null);
   }
 }
