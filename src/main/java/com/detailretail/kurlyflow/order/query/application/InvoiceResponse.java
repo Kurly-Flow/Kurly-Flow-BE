@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InvoiceResponse {
 
-  private String id;
-  private String ordererName;
-  private String ordererAddress;
+  private String invoiceId;
   private List<InvoiceProductResponse> products;
 
   @Getter
