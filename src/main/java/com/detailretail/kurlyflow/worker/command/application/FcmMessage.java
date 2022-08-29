@@ -1,4 +1,4 @@
-package com.detailretail.kurlyflow.worker.infra;
+package com.detailretail.kurlyflow.worker.command.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
