@@ -19,9 +19,11 @@ public class InvoiceConverter {
   }
 
   public static InvoiceResponse ofInvoice(Invoice invoice) {
-    return InvoiceResponse.builder().id(invoice.getId()).products(
-        invoice.getInvoiceProducts().stream().map(InvoiceConverter::ofInvoiceProduct)
-            .collect(Collectors.toList())).build();
+    return InvoiceResponse.builder().id(invoice.getId())
+        .ordererName(invoice.getOrder().getOrderer().getName())
+        .ordererAddress(invoice.getOrder().getOrderer().getAddress()).products(
+            invoice.getInvoiceProducts().stream().map(InvoiceConverter::ofInvoiceProduct)
+                .collect(Collectors.toList())).build();
   }
 
   public static MultiBatchResponse.InvoiceProductResponse ofMultiInvoiceProduct(
@@ -34,10 +36,9 @@ public class InvoiceConverter {
         .location(invoiceProduct.getProduct().getLocation()).build();
   }
 
-  public static MultiBatchResponse ofMulti(Long batchId,List<InvoiceProduct> invoiceProducts) {
+  public static MultiBatchResponse ofMulti(Long batchId, List<InvoiceProduct> invoiceProducts) {
     return MultiBatchResponse.builder().recommendToteCount(calculateTote(invoiceProducts))
-        .batchId(batchId)
-        .invoiceProductResponses(
+        .batchId(batchId).invoiceProductResponses(
             invoiceProducts.stream().map(InvoiceConverter::ofMultiInvoiceProduct)
                 .collect(Collectors.toList())).build();
   }
