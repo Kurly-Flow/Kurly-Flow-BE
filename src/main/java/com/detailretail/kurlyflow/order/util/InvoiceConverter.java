@@ -19,11 +19,9 @@ public class InvoiceConverter {
   }
 
   public static InvoiceResponse ofInvoice(Invoice invoice) {
-    return InvoiceResponse.builder().id(invoice.getId())
-        .ordererName(invoice.getOrder().getOrderer().getName())
-        .ordererAddress(invoice.getOrder().getOrderer().getAddress()).products(
-            invoice.getInvoiceProducts().stream().map(InvoiceConverter::ofInvoiceProduct)
-                .collect(Collectors.toList())).build();
+    return InvoiceResponse.builder().invoiceId(invoice.getId()).products(
+        invoice.getInvoiceProducts().stream().map(InvoiceConverter::ofInvoiceProduct)
+            .collect(Collectors.toList())).build();
   }
 
   public static MultiBatchResponse.InvoiceProductResponse ofMultiInvoiceProduct(
