@@ -35,17 +35,16 @@ public class EndController {
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping
-  public ResponseEntity<List<EndCompleteResponse>> getEndStatus(
-      @CurrentUser CustomDetails worker) {
+  public ResponseEntity<List<EndCompleteResponse>> getEndStatus(@CurrentUser CustomDetails worker) {
     List<EndCompleteResponse> endCompleteResponses = endService.getEndStatus(worker.getId());
     return ResponseEntity.ok(endCompleteResponses);
   }
 
   @PreAuthorize("hasRole('WORKER')")
   @GetMapping("/{invoiceId}")
-  public ResponseEntity<List<EndBasketInvoiceResponse>> getInvoice(
+  public ResponseEntity<EndBasketInvoiceResponse> getInvoice(
       @PathVariable("invoiceId") String invoiceId) {
-    List<EndBasketInvoiceResponse> endBasketInvoiceResponses = endService.getInvoice(invoiceId);
+    EndBasketInvoiceResponse endBasketInvoiceResponses = endService.getInvoice(invoiceId);
     return ResponseEntity.ok(endBasketInvoiceResponses);
   }
 }

@@ -9,7 +9,6 @@ import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,11 +35,9 @@ public class EndService {
     return endCompleteResponses;
   }
 
-  public List<EndBasketInvoiceResponse> getInvoice(String invoiceId) {
+  public EndBasketInvoiceResponse getInvoice(String invoiceId) {
     Invoice invoice = invoiceRepository.findInvoiceWithBasket(invoiceId)
         .orElseThrow(EntityNotFoundException::new);
-    return IntStream.range(0, invoice.getInvoiceProducts().size()).mapToObj(
-            idx -> BasketConverter.ofEndInvoice(invoice, invoice.getInvoiceProducts().get(idx)))
-        .collect(Collectors.toList());
+    return BasketConverter.ofEndInvoice(invoice);
   }
 }
