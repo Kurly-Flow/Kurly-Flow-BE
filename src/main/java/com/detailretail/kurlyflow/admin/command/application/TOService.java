@@ -4,7 +4,6 @@ import com.detailretail.kurlyflow.admin.command.domain.Admin;
 import com.detailretail.kurlyflow.admin.command.domain.AdminRepository;
 import com.detailretail.kurlyflow.admin.command.domain.WorkingTeam;
 import com.detailretail.kurlyflow.admin.exception.LackOfWorkingNumbersException;
-import com.detailretail.kurlyflow.admin.util.CalculateConverter;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,23 +34,24 @@ public class TOService {
 
   public void assignWorkers(Long adminId) {
     Admin admin = adminRepository.findById(adminId).orElseThrow(EntityNotFoundException::new);
-    LocalTime minusHours = admin.getWorkingTeam().getStart().minusHours(1);
+    LocalTime minusOneHour = admin.getWorkingTeam().getStart().minusHours(1);
     List<Worker> workers = workerRepository.findWorkerWithWorkerHistory(
-        LocalDateTime.of(LocalDate.now(), minusHours));
-    int seventyRateNumbers = (int) CalculateConverter.getSeventy(admin.getWorkingNumbers());
-    //isSatisfiedWorkingNumbers(admin, workers);
-    System.out.println("workers = " + workers.size());
-    List<Worker> orderedWorker = orderingWorker(admin, workers);
-    IntStream.range(0, seventyRateNumbers).forEach(idx -> {
-      if (idx < seventyRateNumbers) {
-        orderedWorker.get(idx).assignAdmin(admin);
-        orderedWorker.get(idx).assignRegion(admin.getRegion());
-      } else {
-        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
-        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1)
-            .assignRegion(admin.getRegion());
-      }
-    });
+        LocalDateTime.of(LocalDate.now(), minusOneHour));
+    System.out.println(workers.size());
+    workers.stream().forEach(worker -> System.out.println(worker.getLoginAt()));
+//    int seventyRateNumbers = (int) CalculateConverter.getSeventy(admin.getWorkingNumbers());
+//    isSatisfiedWorkingNumbers(admin, workers);
+//    List<Worker> orderedWorker = orderingWorker(admin, workers);
+//    IntStream.range(0, seventyRateNumbers).forEach(idx -> {
+//      if (idx < seventyRateNumbers) {
+//        orderedWorker.get(idx).assignAdmin(admin);
+//        orderedWorker.get(idx).assignRegion(admin.getRegion());
+//      } else {
+//        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
+//        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1)
+//            .assignRegion(admin.getRegion());
+//      }
+//    });
   }
 
   private void isSatisfiedWorkingNumbers(Admin admin, List<Worker> workers) {

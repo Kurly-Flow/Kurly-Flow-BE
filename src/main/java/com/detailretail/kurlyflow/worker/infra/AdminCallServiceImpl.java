@@ -1,6 +1,7 @@
 package com.detailretail.kurlyflow.worker.infra;
 
 import com.detailretail.kurlyflow.worker.command.application.AdminCallService;
+import com.detailretail.kurlyflow.worker.command.application.FcmMessage;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
@@ -45,7 +46,7 @@ public class AdminCallServiceImpl implements AdminCallService {
   }
 
   private String makeName(String name) {
-    return "'"+ name + "'"+ "님이 호출했습니다.";
+    return "'" + name + "'" + "님이 호출했습니다.";
   }
 
   private String makeLocation(Worker worker) {
