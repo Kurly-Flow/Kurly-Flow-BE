@@ -14,8 +14,6 @@ import java.util.Objects;
 
 public class AdminConverter {
 
-  private static final String ATTENDANCE_API = "/api/admins/attendance";
-
   public static Admin toAdmin(AdminSignUpRequest adminSignUpRequest) {
     return new Admin(adminSignUpRequest.getName(),
         new EmployeeNumber(adminSignUpRequest.getEmployeeNumber()),
