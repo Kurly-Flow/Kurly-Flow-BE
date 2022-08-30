@@ -3,10 +3,12 @@ package com.detailretail.kurlyflow.admin.command.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.detailretail.kurlyflow.admin.exception.NegativeTOException;
 import com.detailretail.kurlyflow.admin.exception.WorkingTeamNotMatchException;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
+import com.detailretail.kurlyflow.common.vo.RegionNotMatchException;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
@@ -73,7 +75,7 @@ class AdminTest {
     @Test
     public void 근무지_배정_예외_발생() {
       assertThatThrownBy(() -> admin.assignRegion(Region.of("wrong"))).isInstanceOf(
-          LoginFailException.class);
+          RegionNotMatchException.class);
     }
   }
 
@@ -111,7 +113,7 @@ class AdminTest {
 
     @Test
     public void 음수_입력으로_TO_배정_예외_발생() {
-      assertThatThrownBy(() -> admin.assignTo(-1)).isInstanceOf(WorkingTeamNotMatchException.class);
+      assertThatThrownBy(() -> admin.assignTo(-1)).isInstanceOf(NegativeTOException.class);
     }
   }
 }
