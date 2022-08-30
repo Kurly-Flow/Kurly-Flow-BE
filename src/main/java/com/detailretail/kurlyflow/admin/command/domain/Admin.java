@@ -1,5 +1,8 @@
 package com.detailretail.kurlyflow.admin.command.domain;
 
+import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
+
+import com.detailretail.kurlyflow.admin.exception.NegativeTOException;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Region;
@@ -100,6 +103,9 @@ public class Admin {
   }
 
   public void assignTo(Integer workingNumbers) {
+    if (workingNumbers < INTEGER_ZERO) {
+      throw new NegativeTOException();
+    }
     this.workingNumbers = workingNumbers;
   }
 
