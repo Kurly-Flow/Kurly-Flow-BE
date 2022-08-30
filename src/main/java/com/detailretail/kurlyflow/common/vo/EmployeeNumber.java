@@ -11,6 +11,9 @@ public class EmployeeNumber {
   private String employeeNumber;
 
   public EmployeeNumber(String employeeNumber) {
+    if(employeeNumber.length()!=4) {
+      throw new IllegalArgumentException();
+    }
     this.employeeNumber = employeeNumber;
   }
 
