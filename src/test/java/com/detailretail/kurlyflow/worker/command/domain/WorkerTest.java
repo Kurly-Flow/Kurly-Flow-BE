@@ -9,7 +9,6 @@ import com.detailretail.kurlyflow.common.vo.Phone;
 import com.detailretail.kurlyflow.common.vo.Region;
 import com.detailretail.kurlyflow.worker.exception.AdminIdIsNullException;
 import com.detailretail.kurlyflow.worker.exception.AlreadyAssignedException;
-import com.detailretail.kurlyflow.worker.exception.AlreadyAttendedException;
 import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.exception.UnAssignedFieldException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
@@ -41,6 +40,12 @@ class WorkerTest {
     public void 잘못된_번호_양식으로_회원가입_예외_발생() {
       assertThatThrownBy(() -> new Worker("강완수", new Phone("0140-42344-3465"),
           PasswordEncrypter.encrypt("kang1234"))).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void 잘못된_양식으로_회원가입_예외_발생() {
+      assertThatThrownBy(() -> new Worker(null, null,
+          PasswordEncrypter.encrypt("kang1234"))).isInstanceOf(NullPointerException.class);
     }
   }
 
