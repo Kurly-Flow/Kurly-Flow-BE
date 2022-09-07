@@ -4,56 +4,10 @@
 
 ## ✨ Common
 
-### Pattern - DDD (Domain-Driven Design)
-도메인 주도 설계
-
 ### Architecture
+![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/188840327-fd0e3fd8-f4aa-4828-bc54-e20e32d87596.svg)
+
 > User - Presentation - Application - Domain - Infrastructure - DB
 
-
-## ✨ Structure
-```text
-api-server-spring-boot
-  > * build
-  > gradle
-  > src.main.java.com.detailretail.kurlyflow
-    > admin  // 관리자 비지니스 로직
-    
-    > common // 공통적으로 사용되는 exception, response 로직들을 관리하는 곳
-      > converter
-      > exception
-       | BadRequestException.java // Controller, Service, Provider 에서 Response 용으로 공통적으로 사용 될 익셉션 클래스
-       | ConflictException
-       | NotFoundException
-       | UnAuthorizedException
-      > vo
-       | EmployeeNumber
-       | Phone
-       | Region
-       | RegionNotMatchException
-      | ErrorResponse.java // Controller 에서 Response 용으로 공통적으로 사용되는 구조를 위한 모델 클래스
-      | ExceptionAdvice.java 
-      
-    > config // 설정파일 관리
-      | CorsConfig
-      | CurrentUserArgumentResolver
-      
-    > worker // 작업자 비지니스 로직
-      > Command
-        > application
-        > domain
-      > util
-        | PasswordEncrypter
-        | WorkerConverter
-        
-    | DemoApplication // Application 서버 시작 지점
-    
-   > src.test
-    > java
-    > resources
-     | application.yml // Database 연동을 위한 설정 값 세팅 및 Port 정의 파일
-     
-build.gradle // gradle 빌드시에 필요한 dependency 설정하는 곳
-.gitignore // git 에 포함되지 않아야 하는 폴더, 파일들을 작성 해놓는 곳
-
-```
+### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
+![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)
