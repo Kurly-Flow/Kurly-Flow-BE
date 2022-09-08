@@ -2,7 +2,6 @@
 본 프로젝트는 "KURLY HACK FESTA 2022" 과제 해결을 위해 개발된 
 디테일 리테일 팀의 프로젝트 "Kurly-Flow"의 백엔드 파트입니다.
 
-## ✨ Common
 
 ### Architecture
 ![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/188840327-fd0e3fd8-f4aa-4828-bc54-e20e32d87596.svg)
