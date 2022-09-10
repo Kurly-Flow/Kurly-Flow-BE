@@ -2,7 +2,16 @@
 본 프로젝트는 "KURLY HACK FESTA 2022" 과제 해결을 위해 개발된 
 디테일 리테일 팀의 프로젝트 "Kurly-Flow"의 백엔드 파트입니다.
 
-## 링크 모음
+### 프로젝트 소개
+풀필먼트 내 소통 솔루션
+
+### 개발 기간
+2022.08.19 ~ 2022.08.24
+
+### 기술 스택
+Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkins, Code Deploy, AWS(EC2, S3)
+
+### 링크 모음
 [과제 계획서](https://drive.google.com/file/d/10bG3zmDK-itsKCObTtsnK3s-HUjMxr2P/view?usp=sharing)  
 [컬리플로우 PPT](https://docs.google.com/presentation/d/1HO0knuIgcyGL32xdSNezxrLFk-Ua40_i/edit?usp=sharing&ouid=114543955451291444059&rtpof=true&sd=true)  
 [시연 영상](https://drive.google.com/file/d/1uGB9EZBm2O5QXG8CKU1E7gVHrD_dA0Vq/view?usp=sharing)  
@@ -14,3 +23,218 @@
 
 ### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
 ![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)
+애그리거트를 분리하고 문맥별로 묶은 그림을 그려봤다. 각 프로세스의 관심사가 확실히 눈에 보이는 장점이 있었다.
+
+
+## 개발 기능
+![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
+
+### 핵심 기능
+관리자의 작업자 근무지 및 세부 작업장 배정  
+토트 옮겨담기  
+관리자 호출  
+
+## 개발 중점 사항
+DDD 및 CQRS 모델에 집중하며 만들었다.  
+
+명령 모델 프로세스  
+User - Presentation - Command - Application - Domain - Repository  
+조회 모델 프로세스  
+User - Presentation - Query - Application - Domain - Repository  
+
+### CQRS 패턴
+단일 데이터 베이스로 이루어져 현재의 장점은 명령, 조회 로직의 분리로 인한 높아진 집중도?라고 밖에 말할 수 없다. 추후에 조회용 DB에 NoSQL을 추가한다면 성능 상의 이점을 얻을 수 있을 것이다.
+
+
+### DIP, SRP, 적절한 패키지 단위
+의존 역전 원칙을 지키기 위해 외부 라이브러리인 FCM을 infra에 작성하고 인터페이스는 domain 내부에 존재하게 했다.
+
+그동안 WorkerService에 모든 관련 로직을 넣어 관리했는데 기능의 목적별로 서비스를 나누어 단일 책임 원칙을 최대한 지키려 노력했다. 그런데 이렇게 구성하니 패키지 당 클래스가 너무 많아지는 문제가 있었다. 예외를 분리해 적절한 패키지 단위를 유지하려 했다.(10 ~ 15개)
+
+### 예외 처리
+예외 처리는 대표적인 예외들을 common 폴더에 두고 각 도메인에 맞게 상속받아 작성했다.
+
+```java
+public class LackOfWorkingNumbersException extends BadRequestException {
+
+  private static final String LACK_OF_WORKING_NUMBERS = "근무자 수가 부족합니다.";
+
+  public LackOfWorkingNumbersException() {
+    super(LACK_OF_WORKING_NUMBERS);
+  }
+}
+```
+
+### 값 객체 사용
+값 객체를 사용하여 도메인은 값 객체에 대한 검증이 없이 도메인 모델에만 집중할 수 있도록 했다.
+
+```java
+@Entity
+@Table(name = "worker")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Worker {
+
+  @Id
+  @GeneratedValue
+  @Column(name = "id")
+  private Long id;
+
+  private String name;
+
+  @Embedded
+  @Column(name = "phone", unique = true)
+  private Phone phone;
+
+  @Embedded
+  @Column(name = "employee_number")
+  private EmployeeNumber employeeNumber;
+
+  ... 생략
+}
+```
+
+```java
+@EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Phone {
+
+  private static final String PHONE_REGX = "^\\d{3}-\\d{3,4}-\\d{4}$";
+  private String number;
+
+  public Phone(String number) {
+    validationPhone(number);
+    this.number = number;
+  }
+
+  public String getNumber() {
+    return number;
+  }
+
+  public void validationPhone(String number) {
+    if (StringUtils.isBlank(number) || !number.matches(PHONE_REGX)) {
+      throw new IllegalArgumentException();
+    }
+  }
+
+}
+```
+
+### 스케줄러 사용
+유저 히스토리 테이블을 위한 기능이었다. 스케줄러를 활용해 일을 한 작업자들이 작업한 기록이 남도록 트래픽이 거의 없는 새벽 5시에 테이블에 추가되도록 했다.
+
+```java
+@Component
+@RequiredArgsConstructor
+@Transactional
+public class WorkerHistoryService {
+
+  private final WorkerRepository workerRepository;
+
+  @Scheduled(cron = "0 0 5 * * *") //새벽 5시에 상태 변경
+  public void saveWorkerHistory() {
+    List<Worker> workers = workerRepository.findAllByIsWorkedTrueAndLoginAtBetween(
+        LocalDateTime.now().minusDays(1L), LocalDateTime.now());
+    workers.stream()
+        .forEach(worker -> worker.addHistory(new WorkerHistory(worker.getRegion(), worker)));
+  }
+}
+```
+
+### 여러 개의 userDetails
+여러 개의 loadByusername을 구현해 config에서 여러 개를 등록해줘야 했다.
+Admin과 Worker를 나누어 설정해주었다.
+
+```java
+@RequiredArgsConstructor
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final JwtTokenProvider jwtTokenProvider;
+  private final AdminDetailService adminDetailService;
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.httpBasic().disable() 
+        .csrf().disable() 
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+            UsernamePasswordAuthenticationFilter.class);
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(adminDetailService);
+  }
+}
+```
+```java
+@RequiredArgsConstructor
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final JwtTokenProvider jwtTokenProvider;
+  private final WorkerDetailService workerDetailService;
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
+
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.httpBasic().disable() 
+        .csrf().disable() 
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+            UsernamePasswordAuthenticationFilter.class);
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(workerDetailService);
+  }
+}
+```
+
+
+### 근무지 배정 로직
+작업자의 숙련도와 선호도를 고려해 70%를 배정하고 나머지 30%는 랜덤하게 배정하도록 했다. 구현을 위해 스트림을 사용했다.
+
+```java
+public List<Worker> orderingWorker(Admin admin, List<Worker> workers) {
+  return workers.stream().sorted((o1, o2) -> {
+    long o1Proficiency = o1.getHistories().stream()
+        .filter(workerHistory -> workerHistory.getRegion().equals(admin.getRegion())).count();
+    long o2Proficiency = o2.getHistories().stream()
+        .filter(workerHistory -> workerHistory.getRegion().equals(admin.getRegion())).count();
+    if (o1Proficiency == o2Proficiency) {
+      return o1.getWishRegion().equals(o2.getWishRegion()) == true ? 1 : -1;
+    }
+    return (int) o2Proficiency - (int) o1Proficiency;
+  }).collect(Collectors.toList());
+}
+```
+
+### Enum 활용
+ENUM을 활용해 정책을 부여하였다. 기존에 상수로 활용했을땐, 정책이 바뀌면서 여러 가지 변경할 점이 많았는데 Enum으로 관리하니 변경점이 적어 좋았다. 불변성 또한 보장할 수 있다는 점도 장점이다.
+
+```java
+@Getter
+@RequiredArgsConstructor
+public enum ToteWeightPolicy {
+  MAX_TOTE_WEIGHT(8000);
+
+  private final Integer weight;
+}
+```
+
