@@ -29,11 +29,6 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 ## 개발 기능
 ![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
 
-### 핵심 기능
-관리자의 작업자 근무지 및 세부 작업장 배정  
-토트 옮겨담기  
-관리자 호출  
-
 ## 개발 중점 사항
 DDD 및 CQRS 모델에 집중하며 만들었다.  
 
