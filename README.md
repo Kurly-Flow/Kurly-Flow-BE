@@ -19,8 +19,6 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 ### Architecture
 ![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/188840327-fd0e3fd8-f4aa-4828-bc54-e20e32d87596.svg)
 
-> User - Presentation - Application - Domain - Infrastructure - DB
-
 ### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
 ![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)
 애그리거트를 분리하고 문맥별로 묶은 그림을 그려봤다. 각 프로세스의 관심사가 확실히 눈에 보이는 장점이 있었다.
@@ -38,8 +36,9 @@ User - Presentation - Command - Application - Domain - Repository
 User - Presentation - Query - Application - Domain - Repository  
 
 ### CQRS 패턴
-단일 데이터 베이스로 이루어져 현재의 장점은 명령, 조회 로직의 분리로 인한 높아진 집중도?라고 밖에 말할 수 없다. 추후에 조회용 DB에 NoSQL을 추가한다면 성능 상의 이점을 얻을 수 있을 것이다.
-
+명령 조회 모델을 분리하며 조회 모델 쪽에 트래픽에 대비할 수 있는 여러 장치를 줄 수 있다.  
+**DB Replication**을 한다던지, 조회 모델 쪽에만 **Cache**를 적용할 수도 있다. **인덱스**를 조회 모델에 최적화되도록 걸 수도 있어 보인다.  
+높은 수준의 CQRS 패턴을 적용하기 위해선 추후에 조회용 DB를 NoSQL로 추가한다면 성능 상의 이점을 얻을 수 있을 것이다.  
 
 ### DIP, SRP, 적절한 패키지 단위
 의존 역전 원칙을 지키기 위해 외부 라이브러리인 FCM을 infra에 작성하고 인터페이스는 domain 내부에 존재하게 했다.
