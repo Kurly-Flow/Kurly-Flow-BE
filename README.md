@@ -29,14 +29,19 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 ![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
 
 ## 개발 중점 사항
+### Git-Flow 전략
+Git-Flow 브랜치 전략에 따라서 이슈를 발행하고 기능별로 브랜치를 나누어 적용했다. 짧은 개발 기간이기에 Hotfix, Release 브랜치는 굳이 사용하지 않았다.  
+Master <- develop <- feature 순의 프로세스를 가지고 있다.  
+![image](https://user-images.githubusercontent.com/58693617/189517348-7ce523c4-8ef9-48ef-860c-99042f31e1b3.png)  
+
+### CQRS 패턴
 DDD 및 CQRS 모델에 집중하며 만들었다.  
 
 명령 모델 프로세스  
 User - Presentation - Command - Application - Domain - Repository  
 조회 모델 프로세스  
-User - Presentation - Query - Application - Domain - Repository  
+User - Presentation - Query - Application - Domain - Repository   
 
-### CQRS 패턴
 명령 조회 모델을 분리하며 조회 모델 쪽에 트래픽에 대비할 수 있는 여러 장치를 줄 수 있다.  
 **DB Replication**을 한다던지, 조회 모델 쪽에만 **Cache**를 적용할 수도 있다. **인덱스**를 조회 모델에 최적화되도록 걸 수도 있어 보인다.  
 높은 수준의 CQRS 패턴을 적용하기 위해선 추후에 조회용 DB를 NoSQL로 추가한다면 성능 상의 이점을 얻을 수 있을 것이다.  
