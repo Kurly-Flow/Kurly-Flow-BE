@@ -22,7 +22,7 @@ public class ToteCommandService {
   private final InvoiceProductRepository invoiceProductRepository;
 
   public void assignTote(ToteRequest toteRequest, Long workerId) {
-    Batch batch = batchRepository.findFirstByTotesIsNullAndWorker_Id(workerId)
+    Batch batch = batchRepository.findFirstByTotesIsNullAndWorkerId(workerId)
         .orElseThrow(EntityNotFoundException::new);
     toteRepository.save(new Tote(toteRequest.getToteId(), batch));
   }
