@@ -21,9 +21,8 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 ![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/188840327-fd0e3fd8-f4aa-4828-bc54-e20e32d87596.svg)
 
 ### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
-![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)
-애그리거트를 분리하고 문맥별로 묶은 그림을 그려봤다. 각 프로세스의 관심사가 확실히 눈에 보이는 장점이 있었다.
-
+도메인 제약 사항을 공유하고 함께 생성되고 삭제되는 분야를 묶었다.
+![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)ㄱ
 
 ## 개발 기능
 ![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
@@ -33,6 +32,10 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 Git-Flow 브랜치 전략에 따라서 이슈를 발행하고 기능별로 브랜치를 나누어 적용했다. 짧은 개발 기간이기에 Hotfix, Release 브랜치는 굳이 사용하지 않았다.  
 Master <- develop <- feature 순의 프로세스를 가지고 있다.  
 ![image](https://user-images.githubusercontent.com/58693617/189517348-7ce523c4-8ef9-48ef-860c-99042f31e1b3.png)  
+
+### 객체 참조 대신 ID 참조
+가장 강한 결합도를 가지는 객체 참조를 사용을 자체하고, ID 참조를 통해 객체 간 결합도를 분리했다.  
+애그리거트 정의와 더불어 트랜잭션 경계를 제어하기 위해서도 ID 참조가 필요했다.
 
 ### CQRS 패턴
 DDD 및 CQRS 모델에 집중하며 만들었다.  
