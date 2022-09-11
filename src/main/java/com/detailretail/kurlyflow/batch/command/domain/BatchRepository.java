@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
-  @Query("SELECT b FROM Batch b JOIN FETCH b.totes bt WHERE b.worker.id = :workerId ")
+  @Query("SELECT b FROM Batch b JOIN FETCH b.totes bt WHERE b.workerId = :workerId ")
   Optional<Batch> findByCurrentTote(Long workerId);
 
-  Optional<Batch> findFirstByTotesIsNullAndWorker_Id(Long workerId);
+  Optional<Batch> findFirstByTotesIsNullAndWorkerId(Long workerId);
 }

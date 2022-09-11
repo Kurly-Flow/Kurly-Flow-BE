@@ -29,15 +29,14 @@ public class Batch {
   @Column(name = "id")
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "worker_id")
-  private Worker worker;
+  @Column(name = "worker_id")
+  private Long workerId;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "batch")
   private List<Tote> totes = new ArrayList<>();
 
-  public Batch(Worker worker) {
-    this.worker = worker;
+  public Batch(Long workerId) {
+    this.workerId = workerId;
   }
 
   public void addTote(Tote tote) {
