@@ -220,7 +220,8 @@ public List<Worker> orderingWorker(Admin admin, List<Worker> workers) {
 ```
 
 ### Enum 활용
-ENUM을 활용해 정책을 부여하였다. 기존에 상수로 활용했을땐, 정책이 바뀌면서 여러 가지 변경할 점이 많았는데 Enum으로 관리하니 변경점이 적어 좋았다. 불변성 또한 보장할 수 있다는 점도 장점이다.
+ENUM을 활용해 정책을 부여하였다. 기존에 상수로 활용했을땐, 정책이 바뀌면서 여러 가지 변경할 점이 많았는데 Enum으로 관리하니 변경점이 적어 좋았다. 불변성 또한 보장할 수 있다는 점도 장점이다.  
+
 
 ```java
 @Getter
@@ -231,4 +232,28 @@ public enum ToteWeightPolicy {
   private final Integer weight;
 }
 ```
+```java
+@Getter
+@RequiredArgsConstructor
+public enum WorkingTeam {
+  주간조(LocalTime.of(10, 00), LocalTime.of(19, 00)), 
+  점심조(LocalTime.of(13, 00), LocalTime.of(22, 00)), 
+  풀타임(LocalTime.of(15, 30), LocalTime.of(12, 50)), 
+  미들(LocalTime.of(17, 00), LocalTime.of(12, 50)), 
+  파트(LocalTime.of(19, 30), LocalTime.of(12, 50));
 
+  private final LocalTime start;
+  private final LocalTime end;
+
+  public static WorkingTeam of(String team) {
+    return Arrays.stream(WorkingTeam.values())
+        .filter(workingTeam -> workingTeam.name().equals(teams)).findFirst()
+        .orElseThrow(WorkingTeamNotMatchException::new);
+  }
+}
+
+```
+
+### FCM 사용
+기술 선택 과정 중 SSE와 FCM을 고민했었다. SSE는 웹소켓과는 다르게 HTTP 프로토콜만으로 사용이 가능하고, 가볍다. 대부분의 브라우저에서 지원하기도 하고 PDA에서 사용하는 안드로이드 환경에서도 완벽히 대응한다. 단방향 연결이고 한 번 연결 후 지속되기 때문에 배터리 사용 빈도도 WebSocket보다 나을 것이며 연결을 계속해서 확인하지 않아도 된다.  
+그런데도 FCM을 선택한 이유는 개발 속도때문이다. 프론트 개발자 분과 내가 사용해보지 않았기에 얼마나 걸릴지 모를 일이었다. 해결해나가야 할 과제가 마지막 날까지도 지속적으로 있었기 때문에 지체할 수 없었다.
