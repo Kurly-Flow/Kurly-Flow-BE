@@ -17,6 +17,9 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 [컬리플로우 PPT](https://docs.google.com/presentation/d/1HO0knuIgcyGL32xdSNezxrLFk-Ua40_i/edit?usp=sharing&ouid=114543955451291444059&rtpof=true&sd=true)   
 [시연 영상](https://drive.google.com/file/d/1uGB9EZBm2O5QXG8CKU1E7gVHrD_dA0Vq/view?usp=sharing)  
 
+### ERD 다이어그램
+<img width="733" alt="스크린샷 2022-09-13 03 13 48" src="https://user-images.githubusercontent.com/58693617/189726446-f78bd928-cbfc-4cc5-95bf-ac9a11474711.png">
+
 ### Architecture
 ![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/189577647-896d35f1-0520-4278-abd9-4fc5b90b0764.png)
 
