@@ -18,7 +18,8 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 [시연 영상](https://drive.google.com/file/d/1uGB9EZBm2O5QXG8CKU1E7gVHrD_dA0Vq/view?usp=sharing)  
 
 ### Architecture
-![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/188840327-fd0e3fd8-f4aa-4828-bc54-e20e32d87596.svg)
+![컬리 아키텍처 이미지](https://user-images.githubusercontent.com/58693617/189577647-896d35f1-0520-4278-abd9-4fc5b90b0764.png)
+
 
 ### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
 도메인 제약 사항을 공유하고 함께 생성되고 삭제되는 분야를 묶었다.
