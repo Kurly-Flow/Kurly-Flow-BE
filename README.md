@@ -23,7 +23,7 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 
 ### 컬리 플로우 애그리거트 및 바운디드 컨텍스트
 도메인 제약 사항을 공유하고 함께 생성되고 삭제되는 분야를 묶었다.
-![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)ㄱ
+![컬리_바운디드 컨텍스트](https://user-images.githubusercontent.com/58693617/188844113-f5746151-7288-4936-9342-ba5eb01c55f0.jpg)
 
 ## 개발 기능
 ![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
