@@ -26,8 +26,7 @@ public class AdminRegionService {
 
   public List<DetailRegionResponse> assignDetailRegion(Long adminId) {
     Admin admin = adminRepository.findWithWorkers(adminId).orElseThrow(AdminNotFoundException::new);
-    admin.getWorkers().stream()
-        .forEach(worker -> worker.assignDetailRegion("ASSIGN_DETAIL_REGION"));
+    admin.assignDetailRegion();
     return admin.getWorkers().stream().map(AdminConverter::ofDetailRegion)
         .collect(Collectors.toList());
   }

@@ -109,5 +109,8 @@ public class Admin {
     this.workingNumbers = workingNumbers;
   }
 
+  public void assignDetailRegion() {
+    this.getWorkers().stream().forEach(worker -> worker.assignDetailRegion("ASSIGN_DETAIL_REGION"));
+  }
 
 }
