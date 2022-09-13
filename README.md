@@ -270,3 +270,43 @@ public enum WorkingTeam {
 ### FCM 사용
 기술 선택 과정 중 SSE와 FCM을 고민했었다. SSE는 웹소켓과는 다르게 HTTP 프로토콜만으로 사용이 가능하고, 가볍다. 대부분의 브라우저에서 지원하기도 하고 PDA에서 사용하는 안드로이드 환경에서도 완벽히 대응한다. 단방향 연결이고 한 번 연결 후 지속되기 때문에 배터리 사용 빈도도 WebSocket보다 나을 것이며 연결을 계속해서 확인하지 않아도 된다.  
 그런데도 FCM을 선택한 이유는 개발 속도때문이다. 프론트 개발자 분과 내가 사용해보지 않았기에 얼마나 걸릴지 모를 일이었다. 해결해나가야 할 과제가 마지막 날까지도 지속적으로 있었기 때문에 지체할 수 없었다.
+
+### 리팩토링 과정
+작업자 배정 메서드가 지저분해 가독성이 좋고 단일 책임 원칙을 준수하는 코드로 리팩토링했다.
+
+리팩토링 전
+```java
+public void assignWorkers(Long adminId) {
+    Admin admin = adminRepository.findById(adminId).orElseThrow(EntityNotFoundException::new);
+    LocalDateTime beforeOneHourWorkStartTime = LocalDateTime.of(admin.getWorkingDate(),
+        admin.getWorkingTeam().getStart().minusHours(1));
+    LocalDateTime workStartTime = LocalDateTime.of(admin.getWorkingDate(),
+        admin.getWorkingTeam().getStart());
+    List<Worker> workers = workerRepository.findByEmployeeNumberIsNotNullAndIsAttendedTrueAndAdminIsNullAndLoginAtBetween(
+        beforeOneHourWorkStartTime, workStartTime);
+    checkSatisfiedWorkingNumbers(admin, workers);
+    int seventyRateNumbers = CalculateConverter.getSeventy(admin.getWorkingNumbers());
+    List<Worker> orderedWorker = orderingWorker(admin, workers);
+    IntStream.range(0, seventyRateNumbers).forEach(idx -> {
+      if (idx < seventyRateNumbers) {
+        orderedWorker.get(idx).assignAdmin(admin);
+        orderedWorker.get(idx).assignRegion(admin.getRegion());
+      } else {
+        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
+        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1)
+            .assignRegion(admin.getRegion());
+      }
+    });
+  }
+}
+```
+
+리팩토링 후
+```java
+public void assignWorkers(Long adminId) {
+    Admin admin = adminRepository.findById(adminId).orElseThrow(EntityNotFoundException::new);
+    List<Worker> workers = findUnassignedWorkers(admin);
+    admin.assignWorkers(workers);
+  }
+}
+```
