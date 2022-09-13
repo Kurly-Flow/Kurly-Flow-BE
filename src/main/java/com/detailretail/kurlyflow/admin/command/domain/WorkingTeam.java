@@ -17,9 +17,8 @@ public enum WorkingTeam {
   private final LocalTime end;
 
   public static WorkingTeam of(String team) {
-    String teams = team.split("\\(")[0];
     return Arrays.stream(WorkingTeam.values())
-        .filter(workingTeam -> workingTeam.name().equals(teams)).findFirst()
+        .filter(workingTeam -> workingTeam.name().equals(team)).findFirst()
         .orElseThrow(WorkingTeamNotMatchException::new);
   }
 }

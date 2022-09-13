@@ -3,6 +3,7 @@ package com.detailretail.kurlyflow.admin.command.domain;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 
 import com.detailretail.kurlyflow.admin.exception.NegativeTOException;
+import com.detailretail.kurlyflow.admin.util.CalculateConverter;
 import com.detailretail.kurlyflow.common.vo.Authority;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
 import com.detailretail.kurlyflow.common.vo.Region;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -109,5 +111,21 @@ public class Admin {
     this.workingNumbers = workingNumbers;
   }
 
+  public void assignDetailRegion() {
+    this.getWorkers().stream().forEach(worker -> worker.assignDetailRegion("ASSIGN_DETAIL_REGION"));
+  }
 
+
+  public void assignWorkers(List<Worker> workers) {
+    int seventyRateNumbers = CalculateConverter.getSeventy(this.getWorkingNumbers());
+    IntStream.range(0, seventyRateNumbers).forEach(idx -> {
+      if (idx < seventyRateNumbers) {
+        workers.get(idx).assignAdmin(this);
+        workers.get(idx).assignRegion(this.getRegion());
+      } else {
+        workers.get(workers.size() + seventyRateNumbers - idx - 1).assignAdmin(this);
+        workers.get(workers.size() + seventyRateNumbers - idx - 1).assignRegion(this.getRegion());
+      }
+    });
+  }
 }
