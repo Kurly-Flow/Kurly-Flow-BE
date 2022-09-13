@@ -4,14 +4,12 @@ import com.detailretail.kurlyflow.admin.command.domain.Admin;
 import com.detailretail.kurlyflow.admin.command.domain.AdminRepository;
 import com.detailretail.kurlyflow.admin.command.domain.WorkingTeam;
 import com.detailretail.kurlyflow.admin.exception.LackOfWorkingNumbersException;
-import com.detailretail.kurlyflow.admin.util.CalculateConverter;
 import com.detailretail.kurlyflow.worker.command.domain.Worker;
 import com.detailretail.kurlyflow.worker.command.domain.WorkerRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +32,11 @@ public class TOService {
 
   public void assignWorkers(Long adminId) {
     Admin admin = adminRepository.findById(adminId).orElseThrow(EntityNotFoundException::new);
+    List<Worker> workers = findUnassignedWorkers(admin);
+    admin.assignWorkers(workers);
+  }
+
+  public List<Worker> findUnassignedWorkers(Admin admin) {
     LocalDateTime beforeOneHourWorkStartTime = LocalDateTime.of(admin.getWorkingDate(),
         admin.getWorkingTeam().getStart().minusHours(1));
     LocalDateTime workStartTime = LocalDateTime.of(admin.getWorkingDate(),
@@ -41,18 +44,7 @@ public class TOService {
     List<Worker> workers = workerRepository.findByEmployeeNumberIsNotNullAndIsAttendedTrueAndAdminIsNullAndLoginAtBetween(
         beforeOneHourWorkStartTime, workStartTime);
     checkSatisfiedWorkingNumbers(admin, workers);
-    int seventyRateNumbers = CalculateConverter.getSeventy(admin.getWorkingNumbers());
-    List<Worker> orderedWorker = orderingWorker(admin, workers);
-    IntStream.range(0, seventyRateNumbers).forEach(idx -> {
-      if (idx < seventyRateNumbers) {
-        orderedWorker.get(idx).assignAdmin(admin);
-        orderedWorker.get(idx).assignRegion(admin.getRegion());
-      } else {
-        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1).assignAdmin(admin);
-        orderedWorker.get(orderedWorker.size() + seventyRateNumbers - idx - 1)
-            .assignRegion(admin.getRegion());
-      }
-    });
+    return orderingWorker(admin, workers);
   }
 
   private void checkSatisfiedWorkingNumbers(Admin admin, List<Worker> workers) {
