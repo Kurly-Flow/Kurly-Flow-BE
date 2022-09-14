@@ -1,14 +1,15 @@
 package com.detailretail.kurlyflow.basket.command.domain;
 
-import com.detailretail.kurlyflow.order.command.domain.Invoice;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.CascadeType;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,7 +29,8 @@ public class Basket {
   @Column(name = "worker_id")
   private Long workerId;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "basket")
-  private List<Invoice> invoices = new ArrayList<>();
+  @ElementCollection
+  @CollectionTable(name = "basket_invoice", joinColumns = @JoinColumn(name = "id"))
+  private List<String> invoices = new LinkedList<>();
 
 }
