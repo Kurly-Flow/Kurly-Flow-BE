@@ -73,7 +73,7 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @PostMapping("/tote")
-  public ResponseEntity<String> assignTote(@RequestBody ToteRequest toteRequest,
+  public ResponseEntity<Void> assignTote(@RequestBody ToteRequest toteRequest,
       @CurrentUser CustomDetails worker) {
     toteCommandService.assignTote(toteRequest, worker.getId());
     return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);

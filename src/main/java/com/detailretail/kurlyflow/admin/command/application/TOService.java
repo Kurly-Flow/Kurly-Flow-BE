@@ -23,7 +23,7 @@ public class TOService {
   private final WorkerRepository workerRepository;
 
   public void inputTO(TORequest toRequest, Long adminId) {
-    Admin admin = adminRepository.findWithWorkers(adminId)
+    Admin admin = adminRepository.findById(adminId)
         .orElseThrow(EntityNotFoundException::new);
     admin.assignWorkingDate(toRequest.getWorkingDate());
     admin.assignWorkingTeam(WorkingTeam.of(toRequest.getWorkingTeam()));

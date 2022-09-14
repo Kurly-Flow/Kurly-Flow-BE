@@ -12,21 +12,16 @@ import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.IntStream;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -71,11 +66,6 @@ public class Admin {
   private Authority authority = Authority.ROLE_ADMIN;
 
   private LocalDateTime createdAt;
-
-  @ElementCollection
-  @CollectionTable(name = "admin_worker", joinColumns = @JoinColumn(name = "id"))
-  private Set<Long> workerIds = new HashSet<>();
-
 
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
     Objects.requireNonNull(name, "name must not be null");

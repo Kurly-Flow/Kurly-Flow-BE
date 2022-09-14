@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
-  List<Worker> findByIdIn(List<Long> ids);
+  List<Worker> findByAdminId(Long adminId);
 
   Optional<Worker> findByPhone(Phone phone);
 

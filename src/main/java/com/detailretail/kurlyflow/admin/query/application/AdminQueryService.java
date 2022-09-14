@@ -24,23 +24,23 @@ public class AdminQueryService {
   private final WorkerRepository workerRepository;
 
   public List<WorkerStatusResponse> getWorkerStatus(Long adminId) {
-    Admin admin = adminRepository.findWithWorkers(adminId)
+    Admin admin = adminRepository.findById(adminId)
         .orElseThrow(EntityNotFoundException::new);
-    return workerRepository.findByIdIn(List.copyOf(admin.getWorkerIds())).stream()
+    return workerRepository.findByAdminId(admin.getId()).stream()
         .sorted(Comparator.comparing(Worker::getLoginAt).reversed()).map(AdminConverter::ofStatus)
         .collect(Collectors.toList());
   }
 
   public List<WorkerAttendanceResponse> getWorkers(Long adminId) {
-    Admin admin = adminRepository.findWithWorkers(adminId)
+    Admin admin = adminRepository.findById(adminId)
         .orElseThrow(EntityNotFoundException::new);
-    return workerRepository.findByIdIn(List.copyOf(admin.getWorkerIds())).stream()
+    return workerRepository.findByAdminId(admin.getId()).stream()
         .map(AdminConverter::ofAttendance).collect(Collectors.toList());
   }
 
   public List<DetailRegionResponse> getDetailRegionForWorkers(Long adminId) {
-    Admin admin = adminRepository.findWithWorkers(adminId).orElseThrow(AdminNotFoundException::new);
-    return workerRepository.findByIdIn(List.copyOf(admin.getWorkerIds())).stream()
+    Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
+    return workerRepository.findByAdminId(admin.getId()).stream()
         .map(AdminConverter::ofDetailRegion).collect(Collectors.toList());
   }
 }

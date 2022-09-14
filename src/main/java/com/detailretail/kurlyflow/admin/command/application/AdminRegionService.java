@@ -28,8 +28,8 @@ public class AdminRegionService {
   }
 
   public List<DetailRegionResponse> assignDetailRegion(Long adminId) {
-    Admin admin = adminRepository.findWithWorkers(adminId).orElseThrow(AdminNotFoundException::new);
-    List<Worker> workers = workerRepository.findByIdIn(List.copyOf(admin.getWorkerIds()));
+    Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
+    List<Worker> workers = workerRepository.findByAdminId(admin.getId());
     admin.assignDetailRegion(workers);
     return workers.stream().map(AdminConverter::ofDetailRegion).collect(Collectors.toList());
   }
