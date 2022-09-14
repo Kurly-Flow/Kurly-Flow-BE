@@ -9,7 +9,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
   Optional<Admin> findByEmployeeNumber(EmployeeNumber employeeNumber);
 
-  @Query("SELECT a FROM Admin a LEFT JOIN FETCH a.workers WHERE a.id =:adminId")
+  @Query("SELECT a FROM Admin a LEFT JOIN FETCH a.workerIds WHERE a.id =:adminId")
   Optional<Admin> findWithWorkers(Long adminId);
 
 }

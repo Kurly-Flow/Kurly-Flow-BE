@@ -23,8 +23,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -82,9 +80,8 @@ public class Worker {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "worker")
   private List<WorkerHistory> histories = new ArrayList<>();
 
-  @ManyToOne
-  @JoinColumn(name = "admin_id")
-  private Admin admin;
+  @Column(name = "admin_id")
+  private Long adminId;
 
   public Worker(String name, Phone phone, String password) {
     Objects.requireNonNull(name, "name must not be null");
@@ -105,7 +102,7 @@ public class Worker {
     if (Objects.isNull(admin)) {
       throw new AdminIdIsNullException();
     }
-    this.admin = admin;
+    this.adminId = admin.getId();
   }
 
   public void matchPassword(String password) {

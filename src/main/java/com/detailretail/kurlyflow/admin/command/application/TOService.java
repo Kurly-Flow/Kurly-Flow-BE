@@ -36,12 +36,12 @@ public class TOService {
     admin.assignWorkers(workers);
   }
 
-  public List<Worker> findUnassignedWorkers(Admin admin) {
+  private List<Worker> findUnassignedWorkers(Admin admin) {
     LocalDateTime beforeOneHourWorkStartTime = LocalDateTime.of(admin.getWorkingDate(),
         admin.getWorkingTeam().getStart().minusHours(1));
     LocalDateTime workStartTime = LocalDateTime.of(admin.getWorkingDate(),
         admin.getWorkingTeam().getStart());
-    List<Worker> workers = workerRepository.findByEmployeeNumberIsNotNullAndIsAttendedTrueAndAdminIsNullAndLoginAtBetween(
+    List<Worker> workers = workerRepository.findByEmployeeNumberIsNotNullAndIsAttendedTrueAndLoginAtBetween(
         beforeOneHourWorkStartTime, workStartTime);
     checkSatisfiedWorkingNumbers(admin, workers);
     return orderingWorker(admin, workers);
@@ -53,7 +53,7 @@ public class TOService {
     }
   }
 
-  public List<Worker> orderingWorker(Admin admin, List<Worker> workers) {
+  private List<Worker> orderingWorker(Admin admin, List<Worker> workers) {
     return workers.stream().sorted((o1, o2) -> {
       long o1Proficiency = o1.getHistories().stream()
           .filter(workerHistory -> workerHistory.getRegion().equals(admin.getRegion())).count();

@@ -22,7 +22,7 @@ public class WorkerConverter {
 
   public static AdminCallRequest toCall(Worker worker) {
     return AdminCallRequest.builder().workerId(worker.getId()).region(worker.getRegion())
-        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdmin().getId()).build();
+        .detailRegion(worker.getDetailRegion()).adminId(worker.getAdminId()).build();
   }
 
   public static LoginResponse ofLogin(String accessToken, String name) {
@@ -39,8 +39,8 @@ public class WorkerConverter {
   }
 
   public static DetailRegionResponse ofDetailRegion(Worker worker) {
-    return DetailRegionResponse.builder().name(worker.getName()).employeeNumber(worker.getRegion().name())
-        .detailRegion(worker.getDetailRegion()).build();
+    return DetailRegionResponse.builder().name(worker.getName())
+        .employeeNumber(worker.getRegion().name()).detailRegion(worker.getDetailRegion()).build();
   }
 
   public static InfoResponse ofInfo(Worker worker) {
