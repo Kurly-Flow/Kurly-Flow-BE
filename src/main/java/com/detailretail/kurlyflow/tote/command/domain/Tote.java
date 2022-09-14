@@ -4,8 +4,6 @@ import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,16 +19,12 @@ public class Tote {
   @Column(name = "id")
   private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "batch_id")
-  private Batch batch;
+  @Column(name = "batch_id")
+  private Long batchId;
 
   public Tote(String id, Batch batch) {
     this.id = id;
-    this.batch = batch;
+    this.batchId = batch.getId();
   }
 
-  public void setBatch(Batch batch) {
-    this.batch = batch;
-  }
 }
