@@ -4,7 +4,7 @@ import com.detailretail.kurlyflow.order.command.application.InvoiceConsistencySe
 import com.detailretail.kurlyflow.order.query.application.InvoiceResponse;
 import com.detailretail.kurlyflow.order.query.application.PackingService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
-import com.detailretail.kurlyflow.worker.command.application.LoginService;
+import com.detailretail.kurlyflow.worker.command.application.WorkerStartService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PackingController {
 
-  private final LoginService loginService;
+  private final WorkerStartService workerStartService;
   private final PackingService packingService;
   private final InvoiceConsistencyService invoiceConsistencyService;
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
+    WorkingPlaceLoginResponse loginResponse = workerStartService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 

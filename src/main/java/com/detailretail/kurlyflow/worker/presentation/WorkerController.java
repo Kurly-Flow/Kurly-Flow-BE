@@ -8,9 +8,10 @@ import com.detailretail.kurlyflow.worker.command.application.InputRequest;
 import com.detailretail.kurlyflow.worker.command.application.InputService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
 import com.detailretail.kurlyflow.worker.command.application.LoginResponse;
-import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.SignUpRequest;
 import com.detailretail.kurlyflow.worker.command.application.SignUpService;
+import com.detailretail.kurlyflow.worker.command.application.WorkerLoginService;
+import com.detailretail.kurlyflow.worker.command.application.WorkerStartService;
 import com.detailretail.kurlyflow.worker.query.application.CheckRegionService;
 import com.detailretail.kurlyflow.worker.query.application.DetailRegionResponse;
 import com.detailretail.kurlyflow.worker.query.application.InfoResponse;
@@ -34,7 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class WorkerController {
 
   private final SignUpService signUpService;
-  private final LoginService loginService;
+  private final WorkerStartService workerStartService;
+  private final WorkerLoginService workerLoginService;
   private final InputService inputService;
   private final AttendanceService attendanceService;
   private final CheckRegionService checkRegionService;
@@ -64,7 +66,7 @@ public class WorkerController {
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    LoginResponse loginResponse = loginService.login(loginRequest);
+    LoginResponse loginResponse = workerLoginService.login(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 

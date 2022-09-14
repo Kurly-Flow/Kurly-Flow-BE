@@ -6,7 +6,7 @@ import com.detailretail.kurlyflow.basket.query.application.EndCompleteResponse;
 import com.detailretail.kurlyflow.basket.query.application.EndService;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
-import com.detailretail.kurlyflow.worker.command.application.LoginService;
+import com.detailretail.kurlyflow.worker.command.application.WorkerStartService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EndController {
 
   private final EndService endService;
-  private final LoginService loginService;
+  private final WorkerStartService workerStartService;
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
+    WorkingPlaceLoginResponse loginResponse = workerStartService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 
