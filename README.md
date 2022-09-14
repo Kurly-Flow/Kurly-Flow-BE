@@ -56,7 +56,7 @@ User - Presentation - Query - Application - Domain - Repository
 
 ### DIP, SRP, 적절한 패키지 단위
 의존 역전 원칙을 지키기 위해 외부 라이브러리인 FCM을 infra에 작성하고 인터페이스는 domain 내부에 존재하게 했다.
-그동안 WorkerService에 모든 관련 로직을 넣어 관리했는데 기능의 목적별로 서비스를 나누어 단일 책임 원칙을 최대한 지키려 노력했다. 그런데 이렇게 구성하니 패키지 당 클래스가 너무 많아지는 문제가 있었다. 예외를 분리해 적절한 패키지 단위를 유지하려 했다.(10 ~ 15개)
+그동안 WorkerService에 모든 관련 로직을 넣어 관리했는데 기능의 목적별로 서비스를 나누어 단일 책임 원칙을 최대한 지키려 노력했다. 그런데 이렇게 구성하니 패키지 당 클래스가 너무 많아지는 문제가 있었다. 예외를 분리해 적절한 패키지 단위를 유지하려 했다.(10 ~ 15개)  
 <img width="378" alt="스크린샷 2022-09-14 14 28 11" src="https://user-images.githubusercontent.com/58693617/190066888-7278b630-0412-4223-8d5b-74ed2d3c74d8.png">  
 <img width="303" alt="스크린샷 2022-09-14 14 30 32" src="https://user-images.githubusercontent.com/58693617/190067359-1d1b9d55-867b-47d5-bb1f-338c172e4647.png">  
 
