@@ -32,6 +32,7 @@ Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkin
 ![image](https://user-images.githubusercontent.com/58693617/189472362-fa5be769-8f33-4332-ae81-24f56020e077.png)
 
 ## 개발 중점 사항
+
 ### Git-Flow 전략
 Git-Flow 브랜치 전략에 따라서 이슈를 발행하고 기능별로 브랜치를 나누어 적용했다. 짧은 개발 기간이기에 Hotfix, Release 브랜치는 굳이 사용하지 않았다.  
 Master <- develop <- feature 순의 프로세스를 가지고 있다.  
@@ -55,8 +56,10 @@ User - Presentation - Query - Application - Domain - Repository
 
 ### DIP, SRP, 적절한 패키지 단위
 의존 역전 원칙을 지키기 위해 외부 라이브러리인 FCM을 infra에 작성하고 인터페이스는 domain 내부에 존재하게 했다.
-
 그동안 WorkerService에 모든 관련 로직을 넣어 관리했는데 기능의 목적별로 서비스를 나누어 단일 책임 원칙을 최대한 지키려 노력했다. 그런데 이렇게 구성하니 패키지 당 클래스가 너무 많아지는 문제가 있었다. 예외를 분리해 적절한 패키지 단위를 유지하려 했다.(10 ~ 15개)
+<img width="378" alt="스크린샷 2022-09-14 14 28 11" src="https://user-images.githubusercontent.com/58693617/190066888-7278b630-0412-4223-8d5b-74ed2d3c74d8.png">  
+<img width="303" alt="스크린샷 2022-09-14 14 30 32" src="https://user-images.githubusercontent.com/58693617/190067359-1d1b9d55-867b-47d5-bb1f-338c172e4647.png">  
+
 
 ### 예외 처리
 예외 처리는 대표적인 예외들을 common 폴더에 두고 각 도메인에 맞게 상속받아 작성했다.
