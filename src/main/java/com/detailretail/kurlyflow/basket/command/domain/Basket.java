@@ -1,13 +1,8 @@
 package com.detailretail.kurlyflow.basket.command.domain;
 
-import java.util.LinkedList;
-import java.util.List;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,9 +21,5 @@ public class Basket {
 
   @Column(name = "worker_id")
   private Long workerId;
-
-  @ElementCollection
-  @CollectionTable(name = "basket_invoice", joinColumns = @JoinColumn(name = "id"))
-  private List<String> invoices = new LinkedList<>();
 
 }
