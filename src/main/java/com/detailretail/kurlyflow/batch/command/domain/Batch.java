@@ -36,8 +36,4 @@ public class Batch {
     this.workerId = workerId;
   }
 
-  public void addTote(Tote tote) {
-    this.totes.add(tote);
-    tote.setBatch(this);
-  }
 }
