@@ -25,6 +25,10 @@ public class EndService {
   public List<EndCompleteResponse> getEndStatus(Long workerId) {
     List<Basket> baskets = basketRepository.findBasketByWorkerId(workerId,
         LocalDateTime.now().minusMinutes(20L));
+    return getEndCompleteResponses(baskets);
+  }
+
+  private List<EndCompleteResponse> getEndCompleteResponses(List<Basket> baskets) {
     List<EndCompleteResponse> endCompleteResponses = new ArrayList<>();
     IntStream.range(0, baskets.size()).forEach(basketIdx -> {
       IntStream.range(0, baskets.get(basketIdx).getInvoices().size()).forEach(basketInvoiceIdx -> {
