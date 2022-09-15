@@ -12,6 +12,7 @@
 Java 11, Spring Boot 2.6.11, MySQL 8.0, firebase-admin 6.8.1, jjwt 0.9.1, Jenkins, Code Deploy, AWS(EC2, S3)
 
 ### 링크 모음
+[우승 회고](https://crazy-horse.tistory.com/entry/%EB%A7%88%EC%BC%93%EC%BB%AC%EB%A6%AC-%ED%95%B4%EC%BB%A4%ED%86%A4-%EC%9A%B0%EC%8A%B9-%ED%9A%8C%EA%B3%A0)
 [노션 팀 페이지](https://cuddly-force-7ca.notion.site/KURLY-HACK-FESTA-2022-ac1128c8694e496e91461ffb8cb4da22)  
 [과제 계획서](https://drive.google.com/file/d/10bG3zmDK-itsKCObTtsnK3s-HUjMxr2P/view?usp=sharing)  
 [컬리플로우 PPT](https://docs.google.com/presentation/d/1HO0knuIgcyGL32xdSNezxrLFk-Ua40_i/edit?usp=sharing&ouid=114543955451291444059&rtpof=true&sd=true)   
