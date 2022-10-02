@@ -1,28 +1,27 @@
-package com.detailretail.kurlyflow.tote.query.application;
+package com.detailretail.kurlyflow.tote.command.application;
 
 import com.detailretail.kurlyflow.batch.command.domain.Batch;
 import com.detailretail.kurlyflow.batch.command.domain.BatchRepository;
+import com.detailretail.kurlyflow.order.command.domain.InvoiceProductRepository;
 import com.detailretail.kurlyflow.tote.command.domain.Tote;
 import com.detailretail.kurlyflow.tote.command.domain.ToteRepository;
 import com.detailretail.kurlyflow.worker.exception.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
-public class ToteQueryService {
+public class ToteAssignService {
 
-  private final BatchRepository batchRepository;
   private final ToteRepository toteRepository;
+  private final BatchRepository batchRepository;
+  private final InvoiceProductRepository invoiceProductRepository;
 
-  public String getTote(Long workerId) {
-    Batch batch = batchRepository.findByCurrentTote(workerId)
+  public void assignTote(ToteRequest toteRequest, Long workerId) {
+    Batch batch = batchRepository.findFirstByTotesIsNullAndWorkerId(workerId)
         .orElseThrow(EntityNotFoundException::new);
-    List<Tote> totes = toteRepository.findByBatchId(batch.getId());
-    return totes.get(totes.size() - 1).getId();
+    toteRepository.save(new Tote(toteRequest.getToteId(), batch));
   }
-
 }

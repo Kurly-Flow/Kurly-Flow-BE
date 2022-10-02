@@ -12,20 +12,16 @@ import com.detailretail.kurlyflow.worker.exception.LoginFailException;
 import com.detailretail.kurlyflow.worker.util.PasswordEncrypter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -71,10 +67,6 @@ public class Admin {
 
   private LocalDateTime createdAt;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "admin")
-  private List<Worker> workers = new ArrayList<>();
-
-
   public Admin(String name, EmployeeNumber employeeNumber, String password) {
     Objects.requireNonNull(name, "name must not be null");
     Objects.requireNonNull(employeeNumber, "employeeNumber must not be null");
@@ -111,8 +103,8 @@ public class Admin {
     this.workingNumbers = workingNumbers;
   }
 
-  public void assignDetailRegion() {
-    this.getWorkers().stream().forEach(worker -> worker.assignDetailRegion("ASSIGN_DETAIL_REGION"));
+  public void assignDetailRegion(List<Worker> workers) {
+    workers.stream().forEach(worker -> worker.assignDetailRegion("ASSIGN_DETAIL_REGION"));
   }
 
 

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class LoginService {
+public class WorkerLoginService {
 
   private final WorkerRepository workerRepository;
   private final JwtTokenProvider jwtTokenProvider;
@@ -26,15 +26,5 @@ public class LoginService {
     worker.updateLoginAt();
     return WorkerConverter.ofLogin(jwtTokenProvider.createToken(String.valueOf(worker.getId()),
         List.of(worker.getAuthority().name())), worker.getName());
-  }
-
-  public WorkingPlaceLoginResponse startWork(LoginRequest loginRequest) {
-    Worker worker = workerRepository.findByPhone(new Phone(loginRequest.getPhone()))
-        .orElseThrow(EntityNotFoundException::new);
-    worker.matchPassword(loginRequest.getPassword());
-    worker.startWork();
-    return WorkerConverter.ofWorkingPlaceLogin(
-        jwtTokenProvider.createToken(String.valueOf(worker.getId()),
-            List.of(worker.getAuthority().name())), worker);
   }
 }

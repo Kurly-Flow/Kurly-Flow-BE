@@ -15,17 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ToteCommandService {
+public class ToteMoveService {
 
   private final ToteRepository toteRepository;
   private final BatchRepository batchRepository;
   private final InvoiceProductRepository invoiceProductRepository;
-
-  public void assignTote(ToteRequest toteRequest, Long workerId) {
-    Batch batch = batchRepository.findFirstByTotesIsNullAndWorkerId(workerId)
-        .orElseThrow(EntityNotFoundException::new);
-    toteRepository.save(new Tote(toteRequest.getToteId(), batch));
-  }
 
   public void moveTote(ToteMoveRequest toteMoveRequest) {
     Batch batch = batchRepository.findById(toteMoveRequest.getBatchId())

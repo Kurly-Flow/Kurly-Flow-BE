@@ -34,9 +34,8 @@ public class InvoiceProduct {
   @JoinColumn(name = "product_id")
   private Product product;
 
-  @ManyToOne
-  @JoinColumn(name = "tote_id")
-  private Tote tote;
+  @Column(name = "tote_id")
+  private String toteId;
 
   private Integer quantity;
 
@@ -51,11 +50,11 @@ public class InvoiceProduct {
       throw new UnAssignedFieldException();
     }
     this.isBarcodeRead = Boolean.TRUE;
-    this.tote= tote;
+    this.toteId = tote.getId();
     this.readAt = LocalDateTime.now();
   }
 
   public void moveTote(Tote tote) {
-    this.tote = tote;
+    this.toteId = tote.getId();
   }
 }

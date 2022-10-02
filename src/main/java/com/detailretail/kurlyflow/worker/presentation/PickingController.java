@@ -4,13 +4,14 @@ import com.detailretail.kurlyflow.admin.command.domain.CustomDetails;
 import com.detailretail.kurlyflow.config.aop.CurrentUser;
 import com.detailretail.kurlyflow.order.query.application.MultiBatchResponse;
 import com.detailretail.kurlyflow.order.query.application.MultiPickingService;
-import com.detailretail.kurlyflow.tote.command.application.ToteCommandService;
+import com.detailretail.kurlyflow.tote.command.application.ToteAssignService;
 import com.detailretail.kurlyflow.tote.command.application.ToteMoveRequest;
+import com.detailretail.kurlyflow.tote.command.application.ToteMoveService;
 import com.detailretail.kurlyflow.tote.command.application.ToteRequest;
 import com.detailretail.kurlyflow.tote.query.application.ToteQueryService;
 import com.detailretail.kurlyflow.worker.command.application.LoginRequest;
-import com.detailretail.kurlyflow.worker.command.application.LoginService;
 import com.detailretail.kurlyflow.worker.command.application.PickingService;
+import com.detailretail.kurlyflow.worker.command.application.WorkerStartService;
 import com.detailretail.kurlyflow.worker.command.application.WorkingPlaceLoginResponse;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PickingController {
 
-  private final LoginService loginService;
+  private final WorkerStartService workerStartService;
   private final PickingService pickingService;
   private final MultiPickingService batchService;
   private final ToteQueryService toteQueryService;
-  private final ToteCommandService toteCommandService;
+  private final ToteAssignService toteAssignService;
+  private final ToteMoveService toteMoveService;
 
   @PostMapping("/login")
   public ResponseEntity<WorkingPlaceLoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    WorkingPlaceLoginResponse loginResponse = loginService.startWork(loginRequest);
+    WorkingPlaceLoginResponse loginResponse = workerStartService.startWork(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
 
@@ -73,16 +75,16 @@ public class PickingController {
 
   @PreAuthorize("hasRole('WORKER')")
   @PostMapping("/tote")
-  public ResponseEntity<String> assignTote(@RequestBody ToteRequest toteRequest,
+  public ResponseEntity<Void> assignTote(@RequestBody ToteRequest toteRequest,
       @CurrentUser CustomDetails worker) {
-    toteCommandService.assignTote(toteRequest, worker.getId());
+    toteAssignService.assignTote(toteRequest, worker.getId());
     return ResponseEntity.created(URI.create("/api/picking/tote")).body(null);
   }
 
   @PreAuthorize("hasRole('WORKER')")
   @PutMapping("/tote")
   public ResponseEntity<Void> moveTote(@RequestBody ToteMoveRequest toteMoveRequest) {
-    toteCommandService.moveTote(toteMoveRequest);
+    toteMoveService.moveTote(toteMoveRequest);
     return ResponseEntity.ok(null);
   }
 }

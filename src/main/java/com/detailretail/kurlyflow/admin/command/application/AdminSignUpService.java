@@ -5,7 +5,6 @@ import com.detailretail.kurlyflow.admin.command.domain.AdminRepository;
 import com.detailretail.kurlyflow.admin.exception.EmployeeNumberConflictException;
 import com.detailretail.kurlyflow.admin.util.AdminConverter;
 import com.detailretail.kurlyflow.common.vo.EmployeeNumber;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,7 @@ public class AdminSignUpService {
         return admin.getId();
     }
 
-    public void validateExistEmployeeNumber(String employeeNumber) {
+    private void validateExistEmployeeNumber(String employeeNumber) {
         adminRepository.findByEmployeeNumber(new EmployeeNumber(employeeNumber)).ifPresent((s) -> {
             throw new EmployeeNumberConflictException();
         });

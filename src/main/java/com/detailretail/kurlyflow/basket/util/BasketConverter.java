@@ -10,9 +10,8 @@ import java.util.stream.Collectors;
 
 public class BasketConverter {
 
-  public static EndCompleteResponse ofEnd(Basket basket, Invoice invoice) {
-    return EndCompleteResponse.builder().basketId(basket.getId()).invoiceId(invoice.getId())
-        .endAt(invoice.getEndAt()).build();
+  public static EndCompleteResponse ofEnd(Basket basket, String invoiceId) {
+    return EndCompleteResponse.builder().basketId(basket.getId()).invoiceId(invoiceId).build();
   }
 
   public static EndBasketInvoiceResponse ofEndInvoice(Invoice invoice) {

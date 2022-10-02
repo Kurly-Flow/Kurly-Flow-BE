@@ -1,6 +1,5 @@
 package com.detailretail.kurlyflow.order.command.domain;
 
-import com.detailretail.kurlyflow.basket.command.domain.Basket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +30,8 @@ public class Invoice {
   @JoinColumn(name = "order_id")
   private Order order;
 
-  @ManyToOne
-  @JoinColumn(name = "basket_id")
-  private Basket basket;
+  @Column(name = "basket_id")
+  private String basketId;
 
   @Column(name = "is_consistency")
   private Boolean isConsistency = Boolean.TRUE;

@@ -25,18 +25,23 @@ public class EndService {
   public List<EndCompleteResponse> getEndStatus(Long workerId) {
     List<Basket> baskets = basketRepository.findBasketByWorkerId(workerId,
         LocalDateTime.now().minusMinutes(20L));
+    return getEndCompleteResponses(baskets);
+  }
+
+  private List<EndCompleteResponse> getEndCompleteResponses(List<Basket> baskets) {
     List<EndCompleteResponse> endCompleteResponses = new ArrayList<>();
     IntStream.range(0, baskets.size()).forEach(basketIdx -> {
-      IntStream.range(0, baskets.get(basketIdx).getInvoices().size()).forEach(basketInvoiceIdx -> {
-        endCompleteResponses.add(BasketConverter.ofEnd(baskets.get(basketIdx),
-            baskets.get(basketIdx).getInvoices().get(basketInvoiceIdx)));
+      List<Invoice> invoices = invoiceRepository.findByBasketId(baskets.get(basketIdx).getId());
+      IntStream.range(0, invoices.size()).forEach(basketInvoiceIdx -> {
+        endCompleteResponses.add(
+            BasketConverter.ofEnd(baskets.get(basketIdx), invoices.get(basketInvoiceIdx).getId()));
       });
     });
     return endCompleteResponses;
   }
 
   public EndBasketInvoiceResponse getInvoice(String invoiceId) {
-    Invoice invoice = invoiceRepository.findInvoiceWithBasket(invoiceId)
+    Invoice invoice = invoiceRepository.findInvoice(invoiceId)
         .orElseThrow(EntityNotFoundException::new);
     return BasketConverter.ofEndInvoice(invoice);
   }
